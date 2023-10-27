@@ -1,0 +1,7 @@
+Key	Value
+Mango	6.5
+Orange	3.3
+Apple	4.2
+Mango 24.50
+appple 14.50
+hell 24.50
