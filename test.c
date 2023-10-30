@@ -4,7 +4,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <stdint.h>
-
+#include <remove.c>
 
 struct Fruit {
     char key[20];
@@ -23,7 +23,7 @@ void openfile(){
     }
     printf("The contents of %s file are:\n", "test.txt");
 
-    while((ch = fgetc(fp)) != EOF){
+    while((ch = fgetc(fp)) != EOF){ //read the file character by character till the end of file EOF meaning end of file
         printf("%c", ch);
     }
     fclose(fp);
@@ -45,8 +45,10 @@ int main(){
     int choice;
     scanf("%d", &choice);
     getchar(); // to get rid of the \n character
+
     if (choice == 1){
         openfile();
+        
     }
     //for now we just try to add a new fruit with prices with the struct 
     else if (choice == 4){
@@ -55,8 +57,9 @@ int main(){
         scanf("%s", fruit.key);
         printf("Enter the price of the fruit: ");
         scanf("%lf", &fruit.price);
+
         FILE *fp;
-        fp = fopen("FruitPrice.txt", "a");
+        fp = fopen("FruitPrice.txt", "a"); //append to the file
         if (fp == NULL){
             printf("Error while opening the file.\n");
             exit(EXIT_FAILURE);
