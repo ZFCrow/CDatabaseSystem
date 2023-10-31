@@ -73,6 +73,33 @@ void PrintReverse(struct node *head) {
 }
 
 
+//TODO change scanf to fgets as scanf will stop reading when it encounters a space 
+//todo add a check to see if the module code already exists
+struct node * addModule(struct node *head) {
+    struct Module newModule;
+    printf("Enter the module code: ");
+    scanf("%s", newModule.key);
+    printf("Enter the module name: ");
+    scanf("%s", newModule.name);
+    printf("Enter the module lead: ");
+    scanf("%s", newModule.lead);
+
+    struct node *newNode = (struct node *)malloc(sizeof(struct node));
+    if (newNode == NULL) {
+        perror("Memory allocation failed");
+        exit(1);
+    }
+
+    newNode->module = newModule;
+    newNode->next = head; // connect the new node to the current head of the list
+    head = newNode;
+
+
+
+    return head;
+
+}
+
 int main() {
     //! ask user to open a file first to set them to memory with linkedlist
     printf("What file do you want to open?\n");
@@ -115,42 +142,50 @@ int main() {
     struct node *head = openFile(filename);
 
     struct node *current = head;
+    int choice=0;
 
-    //! ask user what they want to do? 
-    printf("What do you want to do?\n");
-    printf("1. Display all the modules\n");
-    printf("2. Display 1 module\n");
-    printf("3. Change 1 specific module\n");
-    printf("4. Add a new module\n");
-    printf("5. Delete a module\n");
-    printf("6. Exit\n");
+    while (choice != 6){
 
-    int choice;
-    scanf("%d", &choice);
-    getchar(); // to get rid of the \n character
+        //! ask user what they want to do? 
+        printf("What do you want to do?\n");
+        printf("1. Display all the modules\n");
+        printf("2. Display 1 module\n");
+        printf("3. Change 1 specific module\n");
+        printf("4. Add a new module\n");
+        printf("5. Delete a module\n");
+        printf("6. Exit\n");
 
-    if (choice == 1){
-        //! print in reverse, so the header will be printed out first! 
-        PrintReverse(head); 
-
-
-    }
-    //exit the application
-    else{
-        printf("Exiting the application\n");
         
-        //* free the memory and exit
-        //* go through the linked list and free the memory 
-        current = head;
-        while (current != NULL) {
-            struct node *next = current->next;
-            free(current);
-            current = next;
-        }
+        scanf("%d", &choice);
+        getchar(); // to get rid of the \n character
 
-        //sleep for 5 seconds 
-        sleep(5);
+        if (choice == 1){
+            //! print in reverse, so the header will be printed out first! 
+            PrintReverse(head); 
+
+
+        }
+        //add function
+        else if (choice == 4){
+            head = addModule(head);
+        }
     }
+
+    //exit the application    
+    printf("Exiting the application\n");
+    
+    //* free the memory and exit
+    //* go through the linked list and free the memory 
+    current = head;
+    while (current != NULL) {
+        struct node *next = current->next;
+        free(current);
+        current = next;
+    }
+
+    //sleep for 5 seconds 
+    sleep(5);
+
 
 
 
