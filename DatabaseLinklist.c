@@ -105,20 +105,20 @@ struct node *addModule(struct node *head)
 }
 
 /* Checks whether the value x is present in linked list */
-bool query(struct node *head)
+bool query(struct node *head, char *data)
 {
-    char *value;
-    printf("Enter the module code: ");
-    scanf("%ms", &value);
+    // char *value;
+    // printf("Enter the module code: ");
+    // scanf("%ms", &value);
 
     // printf("Hi %s\n", value);
     // printf("What's head: %s\t%s\t%s\n", head->module.key, head->module.name, head->module.lead);
     struct node *current = head; // Initialize current
     while (current != NULL)
     {
-        if (strcasecmp(current->module.key, value) == 0)
+        if (strcasecmp(current->module.key, data) == 0)
         {
-            printf("\nModule code \"%s\" is found in database. Below are the details:\n\n", value);
+            printf("\nModule code \"%s\" is found in database. Below are the details:\n\n", data);
             printf("Module Code: %s\n", current->module.key);
             printf("Module Name: %s\n", current->module.name);
             printf("Module Lead: %s\n", current->module.lead);
@@ -128,10 +128,34 @@ bool query(struct node *head)
         current = current->next;
     }
 
-    printf("\nModule code \"%s\" is not found in database.\n", value);
-    free(value);
+    printf("\nModule code \"%s\" is not found in database.\n", data);
+    free(data);
 
     return false;
+}
+
+char *inputString(FILE *fp, size_t size)
+{
+    // The size is extended by the input with the value of the provisional
+    char *str;
+    int ch;
+    size_t len = 0;
+    str = realloc(NULL, sizeof(*str) * size); // size is start size
+    if (!str)
+        return str;
+    while (EOF != (ch = fgetc(fp)) && ch != '\n')
+    {
+        str[len++] = ch;
+        if (len == size)
+        {
+            str = realloc(str, sizeof(*str) * (size += 16));
+            if (!str)
+                return str;
+        }
+    }
+    str[len++] = '\0';
+
+    return realloc(str, sizeof(*str) * len);
 }
 
 int main()
@@ -186,34 +210,66 @@ int main()
     struct node *current = head;
     int choice = 0;
 
+    char *input;
+
     while (choice != 6)
     {
 
         //! ask user what they want to do?
         printf("\nWhat do you want to do?\n");
-        printf("1. Display all the modules\n");
-        printf("2. Display 1 module\n");
-        printf("3. Change 1 specific module\n");
-        printf("4. Add a new module\n");
-        printf("5. Delete a module\n");
-        printf("6. Exit\n");
+        printf("SHOW_ALL - Display all the modules (Enter 1 OR SHOW_ALL)\n");
+        printf("INSERT - Add a new module (Enter 2 <key> <values...> or INSERT <key> <values...>)\n");
+        printf("QUERY - Display 1 module (Enter 3 <key> OR QUERY <key>)\n");
+        printf("UPDATE - Change 1 specific module (Enter 4 <key> <values...> or UPDATE <key> <values...>)\n");
+        printf("DELETE - Delete a module (Enter 5 or DELETE <key>)\n");
+        printf("EXIT (Enter 6 or EXIT)\n");
 
-        scanf("%d", &choice);
-        getchar(); // to get rid of the \n character
+        // scanf("%d", &choice);
+        // getchar(); // to get rid of the \n character
 
-        if (choice == 1)
+        input = inputString(stdin, 10);
+        // printf("Input: %s\n", input);
+        printf("Length: %d\n", strlen(input));
+
+        // Get command from input
+        int i = 0;
+        char command[strlen(input)];
+        for (i = 0; input[i] != '\0'; i++)
         {
+            if (input[i] == ' ')
+                break;
+            command[i] = input[i];
+        }
+        command[i] = '\0';
+        // printf("i = %d\n", i);
+
+        // Get data from input
+        int j = 0;
+        char data[strlen(input)];
+        for (j; input[j + i + 1] != '\0'; j++)
+        {
+            data[j] = input[i + j + 1];
+        }
+        // printf("j = %d\n", j);
+        data[j] = '\0';
+
+        printf("Command: %s\n", command);
+        printf("Data: %s\n", data);
+
+        if (strcasecmp(command, "show_all") == 0 || strcasecmp(command, "1") == 0)
+        {
+            printf("\n");
             //! print in reverse, so the header will be printed out first!
             PrintReverse(head);
+            printf("\n");
         }
-        else if (choice == 2)
-        {
-            query(head);
-        }
-        // add function
-        else if (choice == 4)
+        else if (strcasecmp(command, "insert") == 0 || strcasecmp(command, "2") == 0)
         {
             head = addModule(head);
+        }
+        else if (strcasecmp(command, "query") == 0 || strcasecmp(command, "3") == 0)
+        {
+            query(head, data);
         }
     }
 
