@@ -218,12 +218,12 @@ int main()
 
         //! ask user what they want to do?
         printf("\nWhat do you want to do?\n");
-        printf("1. SHOW_ALL - display all the modules\n\tCommand: 1 or\n\t\t SHOW_ALL\n\n");
-        printf("2. INSERT - add a new module\n\tCommand: 2 <key> <values...> or\n\t\t INSERT <key> <values...>\n\n");
-        printf("3. QUERY - display a module\n\tCommand: 3 <key> or\n\t\t QUERY <key>\n\n");
-        printf("4. UPDATE - change a specific module\n\tCommand: 4 <key> <values...> or\n\t\t UPDATE <key> <values...>\n\n");
-        printf("5. DELETE - delete a module\n\tCommand: 5 <key> or\n\t\t DELETE <key>\n\n");
-        printf("6. EXIT - close the application\n\tCommand: 6 or\n\t\t EXIT\n\n");
+        printf("1. SHOW_ALL - display all the modules\n\tCommand: SHOW_ALL or\n\t\t 1\n\n");
+        printf("2. INSERT - add a new module\n\tCommand: INSERT <key> <values...> or\n\t\t 2 <key> <values...>\n\n");
+        printf("3. QUERY - display a module\n\tCommand: QUERY <key> or\n\t\t 3 <key>\n\n");
+        printf("4. UPDATE - change a specific module\n\tCommand: UPDATE <key> <values...> or\n\t\t 4 <key> <values...>\n\n");
+        printf("5. DELETE - delete a module\n\tCommand: DELETE <key> or\n\t\t 5 <key>\n\n");
+        printf("6. EXIT - close the application\n\tCommand: EXIT or\n\t\t 6\n\n");
         printf("Enter here: ");
         // scanf("%d", &choice);
         // getchar(); // to get rid of the \n character
@@ -289,6 +289,12 @@ int main()
             // EXIT: close the application
             // exit the while loop
             choice = 0;
+        }
+        else
+        {
+            // If command not found
+            printf("Command not found. Please try again.\n");
+            sleep(1);
         }
     }
 
