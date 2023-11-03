@@ -125,23 +125,20 @@ struct node *addModule(struct node *head)
 }
 
 /* Checks whether the value x is present in linked list */
-bool query(struct node *head)
+bool query(struct node *head, char *data)
 {
-    printf("in query");
-    char *value = NULL;
-    //char value[50];
-    printf("Enter the module code: ");
-    scanf("%ms", &value);
-    //scanf("%s", value);
+    // char *value;
+    // printf("Enter the module code: ");
+    // scanf("%ms", &value);
 
     printf("Hi %s\n", value);
     // printf("What's head: %s\t%s\t%s\n", head->module.key, head->module.name, head->module.lead);
     struct node *current = head; // Initialize current
     while (current != NULL)
     {
-        if (strcasecmp(current->module.key, value) == 0)
+        if (strcasecmp(current->module.key, data) == 0)
         {
-            printf("\nModule code \"%s\" is found in database. Below are the details:\n\n", value);
+            printf("\nModule code \"%s\" is found in database. Below are the details:\n\n", data);
             printf("Module Code: %s\n", current->module.key);
             printf("Module Name: %s\n", current->module.name);
             printf("Module Lead: %s\n", current->module.lead);
@@ -151,10 +148,34 @@ bool query(struct node *head)
         current = current->next;
     }
 
-    printf("\nModule code \"%s\" is not found in database.\n", value);
-    free(value);
+    printf("\nModule code \"%s\" is not found in database.\n", data);
+    free(data);
 
     return false;
+}
+
+char *inputString(FILE *fp, size_t size)
+{
+    // The size is extended by the input with the value of the provisional
+    char *str;
+    int ch;
+    size_t len = 0;
+    str = realloc(NULL, sizeof(*str) * size); // size is start size
+    if (!str)
+        return str;
+    while (EOF != (ch = fgetc(fp)) && ch != '\n')
+    {
+        str[len++] = ch;
+        if (len == size)
+        {
+            str = realloc(str, sizeof(*str) * (size += 16));
+            if (!str)
+                return str;
+        }
+    }
+    str[len++] = '\0';
+
+    return realloc(str, sizeof(*str) * len);
 }
 
 int main()
@@ -163,6 +184,7 @@ int main()
     printf("What file do you want to open?\n");
     printf("Available files: \n");
     printf("1. ModuleCode.txt\n");
+    printf("Enter here: ");
     // scan the choice, user can enter either 'OPEN 1' or 'open ModuleCode.txt' or just '1'
     char filename[25];
     // scanf("%s", filename);
@@ -207,37 +229,92 @@ int main()
     struct node *head = openFile(filename);
 
     struct node *current = head;
-    int choice = 0;
+    int choice = 1;
 
-    while (choice != 6)
+    char *input;
+
+    while (choice)
     {
 
         //! ask user what they want to do?
         printf("\nWhat do you want to do?\n");
-        printf("1. Display all the modules\n");
-        printf("2. Display 1 module\n");
-        printf("3. Change 1 specific module\n");
-        printf("4. Add a new module\n");
-        printf("5. Delete a module\n");
-        printf("6. Exit\n");
+        printf("1. SHOW_ALL - display all the modules\n\tCommand: SHOW_ALL or\n\t\t 1\n\n");
+        printf("2. INSERT - add a new module\n\tCommand: INSERT <key> <values...> or\n\t\t 2 <key> <values...>\n\n");
+        printf("3. QUERY - display a module\n\tCommand: QUERY <key> or\n\t\t 3 <key>\n\n");
+        printf("4. UPDATE - change a specific module\n\tCommand: UPDATE <key> <values...> or\n\t\t 4 <key> <values...>\n\n");
+        printf("5. DELETE - delete a module\n\tCommand: DELETE <key> or\n\t\t 5 <key>\n\n");
+        printf("6. EXIT - close the application\n\tCommand: EXIT or\n\t\t 6\n\n");
+        printf("Enter here: ");
+        // scanf("%d", &choice);
+        // getchar(); // to get rid of the \n character
 
-        scanf("%d", &choice);
-        getchar(); // to get rid of the \n character
+        input = inputString(stdin, 10);
+        // printf("Input: %s\n", input);
+        // printf("Length: %d\n", strlen(input));
 
-        if (choice == 1)
+        // Get command from input
+        int i = 0;
+        char command[strlen(input)];
+        for (i = 0; input[i] != '\0'; i++)
         {
+            if (input[i] == ' ')
+                break;
+            command[i] = input[i];
+        }
+        command[i] = '\0';
+        // printf("i = %d\n", i);
+
+        // Get data from input
+        int j = 0;
+        char data[strlen(input)];
+        for (j; input[j + i + 1] != '\0'; j++)
+        {
+            data[j] = input[i + j + 1];
+        }
+        // printf("j = %d\n", j);
+        data[j] = '\0';
+
+        // printf("Command: %s\n", command);
+        // printf("Data: %s\n", data);
+
+        if (strcasecmp(command, "show_all") == 0 || strcasecmp(command, "1") == 0)
+        {
+            // SHOW_ALL: display all the modules
+            printf("\n");
             //! print in reverse, so the header will be printed out first!
             PrintReverse(head);
+            printf("\n");
         }
-        else if (choice == 2)
+        else if (strcasecmp(command, "insert") == 0 || strcasecmp(command, "2") == 0)
         {
-            printf("going query");
-            query(head);
-        }
-        // add function
-        else if (choice == 4)
-        {
+            // INSERT: add a new module
+            printf("Data: %s\n", data);
             head = addModule(head);
+        }
+        else if (strcasecmp(command, "query") == 0 || strcasecmp(command, "3") == 0)
+        {
+            // QUERY: display a module
+            query(head, data);
+        }
+        else if (strcasecmp(command, "update") == 0 || strcasecmp(command, "4") == 0)
+        {
+            // UPDATE: change a specific module
+        }
+        else if (strcasecmp(command, "delete") == 0 || strcasecmp(command, "5") == 0)
+        {
+            // DELETE: delete a module
+        }
+        else if (strcasecmp(command, "exit") == 0 || strcasecmp(command, "6") == 0)
+        {
+            // EXIT: close the application
+            // exit the while loop
+            choice = 0;
+        }
+        else
+        {
+            // If command not found
+            printf("Command not found. Please try again.\n");
+            sleep(1);
         }
     }
 
