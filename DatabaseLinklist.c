@@ -164,6 +164,7 @@ int main()
     printf("What file do you want to open?\n");
     printf("Available files: \n");
     printf("1. ModuleCode.txt\n");
+    printf("Enter here: ");
     // scan the choice, user can enter either 'OPEN 1' or 'open ModuleCode.txt' or just '1'
     char filename[25];
     // scanf("%s", filename);
@@ -217,19 +218,19 @@ int main()
 
         //! ask user what they want to do?
         printf("\nWhat do you want to do?\n");
-        printf("SHOW_ALL - Display all the modules (Enter 1 OR SHOW_ALL)\n");
-        printf("INSERT - Add a new module (Enter 2 <key> <values...> or INSERT <key> <values...>)\n");
-        printf("QUERY - Display 1 module (Enter 3 <key> OR QUERY <key>)\n");
-        printf("UPDATE - Change 1 specific module (Enter 4 <key> <values...> or UPDATE <key> <values...>)\n");
-        printf("DELETE - Delete a module (Enter 5 or DELETE <key>)\n");
-        printf("EXIT (Enter 6 or EXIT)\n");
-
+        printf("1. SHOW_ALL - display all the modules\n\tCommand: 1 or\n\t\t SHOW_ALL\n\n");
+        printf("2. INSERT - add a new module\n\tCommand: 2 <key> <values...> or\n\t\t INSERT <key> <values...>\n\n");
+        printf("3. QUERY - display a module\n\tCommand: 3 <key> or\n\t\t QUERY <key>\n\n");
+        printf("4. UPDATE - change a specific module\n\tCommand: 4 <key> <values...> or\n\t\t UPDATE <key> <values...>\n\n");
+        printf("5. DELETE - delete a module\n\tCommand: 5 <key> or\n\t\t DELETE <key>\n\n");
+        printf("6. EXIT - close the application\n\tCommand: 6 or\n\t\t EXIT\n\n");
+        printf("Enter here: ");
         // scanf("%d", &choice);
         // getchar(); // to get rid of the \n character
 
         input = inputString(stdin, 10);
         // printf("Input: %s\n", input);
-        printf("Length: %d\n", strlen(input));
+        // printf("Length: %d\n", strlen(input));
 
         // Get command from input
         int i = 0;
@@ -253,11 +254,12 @@ int main()
         // printf("j = %d\n", j);
         data[j] = '\0';
 
-        printf("Command: %s\n", command);
-        printf("Data: %s\n", data);
+        // printf("Command: %s\n", command);
+        // printf("Data: %s\n", data);
 
         if (strcasecmp(command, "show_all") == 0 || strcasecmp(command, "1") == 0)
         {
+            // SHOW_ALL: display all the modules
             printf("\n");
             //! print in reverse, so the header will be printed out first!
             PrintReverse(head);
@@ -265,14 +267,27 @@ int main()
         }
         else if (strcasecmp(command, "insert") == 0 || strcasecmp(command, "2") == 0)
         {
+            // INSERT: add a new module
+            printf("Data: %s\n", data);
             head = addModule(head);
         }
         else if (strcasecmp(command, "query") == 0 || strcasecmp(command, "3") == 0)
         {
+            // QUERY: display a module
             query(head, data);
+        }
+        else if (strcasecmp(command, "update") == 0 || strcasecmp(command, "4") == 0)
+        {
+            // UPDATE: change a specific module
+        }
+        else if (strcasecmp(command, "delete") == 0 || strcasecmp(command, "5") == 0)
+        {
+            // DELETE: delete a module
         }
         else if (strcasecmp(command, "exit") == 0 || strcasecmp(command, "6") == 0)
         {
+            // EXIT: close the application
+            // exit the while loop
             choice = 0;
         }
     }
