@@ -208,11 +208,11 @@ int main()
     struct node *head = openFile(filename);
 
     struct node *current = head;
-    int choice = 0;
+    int choice = 1;
 
     char *input;
 
-    while (choice != 6)
+    while (choice)
     {
 
         //! ask user what they want to do?
@@ -270,6 +270,10 @@ int main()
         else if (strcasecmp(command, "query") == 0 || strcasecmp(command, "3") == 0)
         {
             query(head, data);
+        }
+        else if (strcasecmp(command, "exit") == 0 || strcasecmp(command, "6") == 0)
+        {
+            choice = 0;
         }
     }
 
