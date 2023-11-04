@@ -348,7 +348,7 @@ void save(struct node *head, char *filename)
     {
         if (strlen(filename) >= 5) // check if filename has at least 5chars
         {
-            char filetype[4]; // Include space for the null terminator
+            char filetype[4]; // Include space for the null
             strcpy(filetype, filename + strlen(filename) - 3);
 
             if (strncmp(filetype, "txt", 3) == 0) // check if last 3 chars matches txt
@@ -359,9 +359,11 @@ void save(struct node *head, char *filename)
 
         if (check)
         {
-            printf("Invalid File. Please save to a txt file!\n");
-            printf("Enter filename again: ");
-            scanf("%s", filename);
+            printf("Invalid File. Please save to a .txt file!\n");
+            printf("Please enter filename again: ");
+            fgets(filename, 25, stdin);
+            filename[strcspn(filename, "\n")] = '\0'; // Remove the newline character from fgets
+            printf("%s\n", filename);
         }
     }
 
@@ -374,7 +376,6 @@ void save(struct node *head, char *filename)
     fclose(file);
     printf("File Saved!\n");
 
-    getchar();
     return;
 }
 
@@ -501,7 +502,7 @@ int main()
         data[j] = '\0';
 
         // printf("Command: %s\n", command);
-        // printf("Data: %s\n", data);
+        printf("Data: %s\n", data);
 
         if (strcasecmp(command, "show_all") == 0 || strcasecmp(command, "1") == 0)
         {
