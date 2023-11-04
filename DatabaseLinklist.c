@@ -103,10 +103,11 @@ void PrintReverse(struct node *head)
     printf("%-15s\t%-40s\t%-3d\n", head->module.key, head->module.name, head->module.credit);
 }
 
-// todo except 1 line of arguments
+
 struct node *addModule(struct node *head, char *data)
 {
     struct Module newModule;
+     
     // only prompt the next 2 if the data is not empty, if the last data is not a int, we remove the data part 
     // and prompt the user to enter again
     printf("Data: %s\n", data);
@@ -120,6 +121,8 @@ struct node *addModule(struct node *head, char *data)
     {
 
         printf("Invalid input. will be prompting you to add values manually now.\n");
+        char buffer[100]; //this is to check for extra input key in by user
+
         do{
         printf("Enter the module code: ");
 
@@ -143,9 +146,40 @@ struct node *addModule(struct node *head, char *data)
         printf("Enter the module name: ");
         fgets(newModule.name, sizeof(newModule.name), stdin);
         newModule.name[strlen(newModule.name) - 1] = '\0'; // get rid of the \n character at the end of the string
-        printf("Enter the module credit: ");
-        scanf("%d", &newModule.credit);
-        getchar(); //remove the \n character from the buffer
+
+
+        while (1)
+        {
+           printf("Enter the module credit: ");
+           if (scanf("%d", &newModule.credit) == 1){
+                //check if user enter extra input
+                fgets(buffer, sizeof(buffer), stdin);
+                if (buffer[0] != '\n')
+                {
+                    printf("Invalid input. Please try again.\n");
+                    continue;
+                }
+                else
+                {
+                    break;
+                }
+            } 
+            else //if user enter a non-integer
+                {
+                    
+                    printf("Invalid input. Please try again.\n");
+                    scanf("%*[^\n]"); //clear input buffer
+                    continue;
+                }
+           
+        }
+        
+    
+
+
+        
+        
+
 
 
         struct node *newNode = (struct node *)malloc(sizeof(struct node));
