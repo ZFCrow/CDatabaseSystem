@@ -41,13 +41,19 @@ struct node *openFile(char *filename)
         // Parse the line and populate newModule with data from the file
         // You can use strtok() to split the line into tokens
         // You can use strcpy() to copy the tokens into the newModule structure
-
+        //ignore the first line 
+        if (strcmp(line, "ModuleCode//ModuleName//Credit\n") == 0)
+        {
+            printf("Ignoring the first line\n");
+            continue;
+        }
         char *token = strtok(line, "//"); // Split the line into tokens separated by //
         strcpy(newModule.key, token);
         token = strtok(NULL, "//"); // NULL as the first argument tells strtok() to continue splitting the same string
         strcpy(newModule.name, token);
         token = strtok(NULL, "//");
-        strcpy(newModule.credit, token);
+        newModule.credit = atoi(token);
+        //strcpy(newModule.credit, token);
 
         // Create a new node
         struct node *newNode = (struct node *)malloc(sizeof(struct node)); // Allocate memory for the new node
@@ -74,9 +80,13 @@ void PrintReverse(struct node *head)
     {
         return;
     }
-
+    //print the header once only
+    if (head->next == NULL)
+    {
+        printf("%-15s\t%-40s\t%-3s\n", "Module Code", "Module Name", "Credit");
+    }
     PrintReverse(head->next);  // Recursively print the rest of the list
-    printf("%-15s\t%-40s\t%-30s\n", head->module.key, head->module.name, head->module.credit);
+    printf("%-15s\t%-40s\t%-3d\n", head->module.key, head->module.name, head->module.credit);
 
 }
 
@@ -106,8 +116,9 @@ struct node *addModule(struct node *head, char *data)
     fgets(newModule.name, sizeof(newModule.name), stdin);
     newModule.name[strlen(newModule.name) - 1] = '\0'; // get rid of the \n character at the end of the string
     printf("Enter the module credit: ");
-    fgets(newModule.credit, sizeof(newModule.credit), stdin);
-    newModule.credit[strlen(newModule.credit) - 1] = '\0'; // get rid of the \n character at the end of the string
+    scanf("%d", &newModule.credit);
+    //fgets(newModule.credit, sizeof(newModule.credit), stdin);
+    //newModule.credit[strlen(newModule.credit) - 1] = '\0'; // get rid of the \n character at the end of the string
 
 
     struct node *newNode = (struct node *)malloc(sizeof(struct node));
@@ -141,7 +152,7 @@ bool query(struct node *head, char *data)
             printf("\nModule code \"%s\" is found in database. Below are the details:\n\n", data);
             printf("Module Code: %s\n", current->module.key);
             printf("Module Name: %s\n", current->module.name);
-            printf("Module credit: %s\n", current->module.credit);
+            printf("Module credit: %d\n", current->module.credit);
 
             return true;
         }
