@@ -19,19 +19,18 @@ struct node
     struct node *next;
 };
 
-
-
-//validation functions
-int containsSpace(const char *str) {
-    for (int i = 0; str[i] != '\0'; i++) {
-        if (isspace(str[i])) {
+// validation functions
+int containsSpace(const char *str)
+{
+    for (int i = 0; str[i] != '\0'; i++)
+    {
+        if (isspace(str[i]))
+        {
             return 1; // String contains a space
         }
     }
     return 0; // String does not contain a space
 }
-
-
 
 // instead of reading all these modules from the file in main, create a openfile function and create a linkedlist from there,
 // then return the head of the linked list to main
@@ -116,7 +115,7 @@ struct node *addModule(struct node *head, char *data)
     int result = sscanf(data, "%8[^,],%54[^,],%d", newModule.key, newModule.name, &newModule.credit);
     // theres a chacne that modulename contains a number, so we need to check if the last part is a number
     printf("result: %d\n", result);
-    
+
     if (result != 3 || containsSpace(newModule.key)) // if the result is not 3 or modulecode contain spaces, then we need to prompt the user to enter again
     {
 
@@ -126,12 +125,11 @@ struct node *addModule(struct node *head, char *data)
         do{
         printf("Enter the module code: ");
 
-        fgets(newModule.key, sizeof(newModule.key), stdin);
-        newModule.key[strlen(newModule.key) - 1] = '\0'; // get rid of the \n character at the end of the string
-        } while (strlen(newModule.key) > 8 || containsSpace(newModule.key) == 1 ); // if the length of the module code is more than 8 or contains spacing, then we need to prompt the user again
+            fgets(newModule.key, sizeof(newModule.key), stdin);
+            newModule.key[strlen(newModule.key) - 1] = '\0';                      // get rid of the \n character at the end of the string
+        } while (strlen(newModule.key) > 8 || containsSpace(newModule.key) == 1); // if the length of the module code is more than 8 or contains spacing, then we need to prompt the user again
 
-
-        //check if the module code already exists 
+        // check if the module code already exists
         struct node *current = head; // Initialize current
         while (current != NULL)
         {
@@ -194,10 +192,11 @@ struct node *addModule(struct node *head, char *data)
         head = newNode;
 
         return head;
+    }
+    else
+    {
 
-    } else{
-
-        //check if the module code already exists 
+        // check if the module code already exists
         struct node *current = head; // Initialize current
         while (current != NULL)
         {
@@ -220,9 +219,13 @@ struct node *addModule(struct node *head, char *data)
         newNode->next = head; // connect the new node to the current head of the list
         head = newNode;
 
+        printf("\nData is inserted into the database.\n");
+        printf("Module Code: %s\n", head->module.key);
+        printf("Module Name: %s\n", head->module.name);
+        printf("Module Credit: %d\n", head->module.credit);
+
         return head;
     }
-    
 }
 
 /* Checks whether the value x is present in linked list */
@@ -234,17 +237,21 @@ bool query(struct node *head, char *data)
 
     // printf("Hi %s\n", value);
     //  printf("What's head: %s\t%s\t%s\n", head->module.key, head->module.name, head->module.credit);
+    printf("Data: %s\n", data);
+
+    // char *attribute = strtok(data,"=");
+
     struct node *current = head; // Initialize current
     while (current != NULL)
     {
         if (strcasecmp(current->module.key, data) == 0)
         {
-            printf("\nA record of Module Code (key) = %s, Module Name (value) = %s, Module Credit (value) = %d\n1is found in the database.\n", current->module.key, current->module.name, current->module.credit);
+            // printf("\nA record of Module Code (key) = %s, Module Name (value) = %s, Module Credit (value) = %d\n1is found in the database.\n", current->module.key, current->module.name, current->module.credit);
 
-            // printf("\nModule code \"%s\" is found in database. Below are the details:\n\n", data);
-            // printf("Module Code: %s\n", current->module.key);
-            // printf("Module Name: %s\n", current->module.name);
-            // printf("Module Credit: %d\n", current->module.credit);
+            printf("\nA record for Module code (key) = %s is found in the database. Below are the details:\n", data);
+            printf("Module Code: %s\n", current->module.key);
+            printf("Module Name: %s\n", current->module.name);
+            printf("Module Credit: %d\n", current->module.credit);
 
             return true;
         }
@@ -344,7 +351,7 @@ int main()
         //! ask user what they want to do?
         printf("\nWhat do you want to do?\n");
         printf("1. SHOW_ALL - display all the modules\n\tCommand: SHOW_ALL or\n\t\t 1\n\n");
-        printf("2. INSERT - add a new module\n\tCommand: INSERT <key> <values...> or\n\t\t 2 <key> <values...>\n\n");
+        printf("2. INSERT - add a new module\n\tCommand: INSERT <key>,<value 1>,<value 2>,...,<value n> or\n\t\t 2 <key>,<value 1>,<value 2>,...,<value n>\n\n");
         printf("3. QUERY - display a module\n\tCommand: QUERY <key> or\n\t\t 3 <key>\n\n");
         printf("4. UPDATE - change a specific module\n\tCommand: UPDATE <key> <values...> or\n\t\t 4 <key> <values...>\n\n");
         printf("5. DELETE - delete a module\n\tCommand: DELETE <key> or\n\t\t 5 <key>\n\n");
@@ -394,7 +401,7 @@ int main()
         {
             // todo, pass in the data as a string, then split it into tokens, if the data contains anything
             //  INSERT: add a new module
-            printf("Data: %s\n", data);
+            // printf("Data: %s\n", data);
             head = addModule(head, data);
         }
         else if (strcasecmp(command, "query") == 0 || strcasecmp(command, "3") == 0)
