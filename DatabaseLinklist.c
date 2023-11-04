@@ -112,17 +112,17 @@ void PrintReverse_save(struct node *head, FILE *file)
     // print the header once only
     if (head->next == NULL)
     {
-        fprintf(file,"%s//%s//%s\n", "ModuleCode", "ModuleName", "Credit");
+        fprintf(file, "%s//%s//%s\n", "ModuleCode", "ModuleName", "Credit");
     }
-    PrintReverse_save(head->next, file); 
+    PrintReverse_save(head->next, file);
     fprintf(file, "%s//%s//%d\n", head->module.key, head->module.name, head->module.credit); // Print the current node, the first one will run last!
 }
 
 struct node *addModule(struct node *head, char *data)
 {
     struct Module newModule;
-     
-    // only prompt the next 2 if the data is not empty, if the last data is not a int, we remove the data part 
+
+    // only prompt the next 2 if the data is not empty, if the last data is not a int, we remove the data part
     // and prompt the user to enter again
     printf("Data: %s\n", data);
     // see if the data has 3 parts, if it does, then we can add the module
@@ -135,10 +135,11 @@ struct node *addModule(struct node *head, char *data)
     {
 
         printf("Invalid input. will be prompting you to add values manually now.\n");
-        char buffer[100]; //this is to check for extra input key in by user
+        char buffer[100]; // this is to check for extra input key in by user
 
-        do{
-        printf("Enter the module code: ");
+        do
+        {
+            printf("Enter the module code: ");
 
             fgets(newModule.key, sizeof(newModule.key), stdin);
             newModule.key[strlen(newModule.key) - 1] = '\0';                      // get rid of the \n character at the end of the string
@@ -160,12 +161,12 @@ struct node *addModule(struct node *head, char *data)
         fgets(newModule.name, sizeof(newModule.name), stdin);
         newModule.name[strlen(newModule.name) - 1] = '\0'; // get rid of the \n character at the end of the string
 
-
         while (1)
         {
-           printf("Enter the module credit: ");
-           if (scanf("%d", &newModule.credit) == 1){
-                //check if user enter extra input
+            printf("Enter the module credit: ");
+            if (scanf("%d", &newModule.credit) == 1)
+            {
+                // check if user enter extra input
                 fgets(buffer, sizeof(buffer), stdin);
                 if (buffer[0] != '\n')
                 {
@@ -176,24 +177,15 @@ struct node *addModule(struct node *head, char *data)
                 {
                     break;
                 }
-            } 
-            else //if user enter a non-integer
-                {
-                    
-                    printf("Invalid input. Please try again.\n");
-                    scanf("%*[^\n]"); //clear input buffer
-                    continue;
-                }
-           
+            }
+            else // if user enter a non-integer
+            {
+
+                printf("Invalid input. Please try again.\n");
+                scanf("%*[^\n]"); // clear input buffer
+                continue;
+            }
         }
-        
-    
-
-
-        
-        
-
-
 
         struct node *newNode = (struct node *)malloc(sizeof(struct node));
         if (newNode == NULL)
@@ -285,27 +277,25 @@ void save(struct node *head, char *filename)
     int check = 1;
     while (check)
     {
-        if (strlen(filename) >= 5) //check if filename has at least 5chars
+        if (strlen(filename) >= 5) // check if filename has at least 5chars
         {
             char filetype[4]; // Include space for the null terminator
             strcpy(filetype, filename + strlen(filename) - 3);
 
-            if (strncmp(filetype, "txt", 3) == 0) //check if last 3 chars matches txt
+            if (strncmp(filetype, "txt", 3) == 0) // check if last 3 chars matches txt
             {
-                check = 0; //break out of loop and continue to save into file
+                check = 0; // break out of loop and continue to save into file
             }
-
         }
-        
+
         if (check)
         {
             printf("Invalid File. Please save to a txt file!\n");
             printf("Enter filename again: ");
             scanf("%s", filename);
         }
-
     }
-        
+
     FILE *file = fopen(filename, "w"); // Open the file for writing
 
     printf("Saving File...\n");
@@ -314,9 +304,10 @@ void save(struct node *head, char *filename)
     printf("Closing File...\n");
     fclose(file);
     printf("File Saved!\n");
+
+    getchar();
     return;
 }
-
 
 char *inputString(FILE *fp, size_t size)
 {
@@ -402,14 +393,14 @@ int main()
     {
 
         //! ask user what they want to do?
-        printf("\nWhat do you want to do?\n");
+        printf("\nWhat do you want to do with %s?\n", filename);
         printf("1. SHOW_ALL - display all the modules\n\tCommand: SHOW_ALL or\n\t\t 1\n\n");
         printf("2. INSERT - add a new module\n\tCommand: INSERT <key>,<value 1>,<value 2>,...,<value n> or\n\t\t 2 <key>,<value 1>,<value 2>,...,<value n>\n\n");
         printf("3. QUERY - display a module\n\tCommand: QUERY <key> or\n\t\t 3 <key>\n\n");
         printf("4. UPDATE - change a specific module\n\tCommand: UPDATE <key> <values...> or\n\t\t 4 <key> <values...>\n\n");
         printf("5. DELETE - delete a module\n\tCommand: DELETE <key> or\n\t\t 5 <key>\n\n");
         printf("6. EXIT - close the application\n\tCommand: EXIT or\n\t\t 6\n\n");
-        printf("7. SAVE - to save all the latest records in memory into the database file\n\tCommand: SAVE <filename> or\n\t\t7 <filename>\n\n");
+        printf("7. SAVE - save all the latest records in memory into the database file\n\tCommand: SAVE <filename> or\n\t\t 7 <filename>\n\n");
         printf("Enter here: ");
         // scanf("%d", &choice);
         // getchar(); // to get rid of the \n character
@@ -441,7 +432,7 @@ int main()
         data[j] = '\0';
 
         // printf("Command: %s\n", command);
-        printf("Data: %s\n", data);
+        // printf("Data: %s\n", data);
 
         if (strcasecmp(command, "show_all") == 0 || strcasecmp(command, "1") == 0)
         {
@@ -487,6 +478,7 @@ int main()
             // If command not found
             printf("Command not found. Please try again.\n");
         }
+
         sleep(2);
     }
 
