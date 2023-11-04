@@ -147,20 +147,23 @@ bool query(struct node *head, char *data)
     {
         if (strcasecmp(current->module.key, data) == 0)
         {
-            printf("\nModule code \"%s\" is found in database. Below are the details:\n\n", data);
-            printf("Module Code: %s\n", current->module.key);
-            printf("Module Name: %s\n", current->module.name);
-            printf("Module Credit: %d\n", current->module.credit);
+            printf("\nA record of\nModule Code (key) = %s,\nModule Name (value) = %s,\nModule Credit (value) = %d\nis found in the database.\n", current->module.key, current->module.name, current->module.credit);
+
+            // printf("\nModule code \"%s\" is found in database. Below are the details:\n\n", data);
+            // printf("Module Code: %s\n", current->module.key);
+            // printf("Module Name: %s\n", current->module.name);
+            // printf("Module Credit: %d\n", current->module.credit);
 
             return true;
         }
         current = current->next;
     }
 
-    printf("\nModule code \"%s\" is not found in database.\n", data);
-    free(data);
+    printf("\nThere is no record with Module Code (key) = %s found in the database.\n", data);
+    // printf("\nModule code \"%s\" is not found in database.\n", data);
+    // free(data);
 
-    return false;
+    return true;
 }
 
 char *inputString(FILE *fp, size_t size)
