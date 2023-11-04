@@ -1,4 +1,4 @@
-ModuleCode//ModuleName//Credit
+Module Code//Module Name//Module Credit
 ict1101//computer architecture and organization//6
 ict1102//data structures and algorithms//4
 ict1103//software engineering//5

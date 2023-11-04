@@ -5,9 +5,9 @@
 #include <unistd.h>
 #include <stdbool.h>
 
-#define MKEY "ModuleCode"
-#define MNAME "ModuleName"
-#define MCREDIT "Credit"
+// #define MKEY "ModuleCode"
+// #define MNAME "ModuleName"
+// #define MCREDIT "Credit"
 
 #define PRINTKEY "Module Code"
 #define PRINTNAME "Module Name"
@@ -63,7 +63,10 @@ struct node *openFile(char *filename)
         // You can use strtok() to split the line into tokens
         // You can use strcpy() to copy the tokens into the newModule structure
         // ignore the first line
-        if (strcmp(line, "ModuleCode//ModuleName//Credit\n") == 0)
+        
+        if (strcmp(line, "Module Code//Module Name//Module Credit\n") == 0)
+        // use the define instead 
+        
         {
             printf("Ignoring the first line\n");
             continue;
@@ -106,6 +109,7 @@ void PrintReverse(struct node *head)
     {
         printf("%-15s\t%-40s\t%-3s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
     }
+
     PrintReverse(head->next); // Recursively print the rest of the list
     printf("%-15s\t%-40s\t%-3d\n", head->module.key, head->module.name, head->module.credit);
 }
@@ -120,8 +124,9 @@ void PrintReverse_save(struct node *head, FILE *file)
     // print the header once only
     if (head->next == NULL)
     {
-        fprintf(file, "%s//%s//%s\n", MKEY, MNAME, MCREDIT);
+        fprintf(file, "%s//%s//%s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
     }
+    
     PrintReverse_save(head->next, file);
     fprintf(file, "%s//%s//%d\n", head->module.key, head->module.name, head->module.credit); // Print the current node, the first one will run last!
 }
