@@ -104,7 +104,7 @@ void PrintReverse(struct node *head)
     // print the header once only
     if (head->next == NULL)
     {
-        printf("%-15s\t%-40s\t%-3s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
+        printf("%-15s\t%-40s\t%-3s\n", MKEY, MNAME, MCREDIT);
     }
     PrintReverse(head->next); // Recursively print the rest of the list
     printf("%-15s\t%-40s\t%-3d\n", head->module.key, head->module.name, head->module.credit);
@@ -256,43 +256,88 @@ bool query(struct node *head, char *data)
     // scanf("%ms", &value);
 
     // printf("Hi %s\n", value);
-    printf("What's head: %s\t%s\t%d\n", head->module.key, head->module.name, head->module.credit);
-    printf("Data: %s\n", data);
+    // printf("What's head: %s\t%s\t%d\n", head->module.key, head->module.name, head->module.credit);
+    // printf("Data: %s\n", data);
 
-    int attrNo = 0;
+    int count = 0;
+    char *attribute;
+    char *value;
+
     if (strchr(data, '=') != NULL)
     {
-        char *attribute = strtok(data, "=");
-        printf("Attribute: %s\n", attribute);
-        char *value = strtok(NULL, "=");
-        printf("Value: %s", value);
+        attribute = strtok(data, "=");
+        // printf("Attribute: %s\n", attribute);
+        value = strtok(NULL, "=");
+        // printf("Value: %s\n", value);
     }
     else
     {
-        attrNo = 0;
+        attribute = MKEY;
+        value = data;
     }
 
     struct node *current = head; // Initialize current
-    while (current != NULL)
+
+    if (strcasecmp(attribute, MKEY) == 0)
     {
-        if (strcasecmp(current->module.key, data) == 0)
+        while (current != NULL)
         {
-            // printf("\nA record of Module Code (key) = %s, Module Name (value) = %s, Module Credit (value) = %d\n1is found in the database.\n", current->module.key, current->module.name, current->module.credit);
+            if (strcasecmp(current->module.key, value) == 0)
+            {
+                printf("\nA record for %s(key) = %s is found in the database. Below are the details:\n", MKEY, value);
+                printf("%s: %s\n", PRINTKEY, current->module.key);
+                printf("%s: %s\n", PRINTNAME, current->module.name);
+                printf("%s: %d\n", PRINTCREDIT, current->module.credit);
 
-            printf("\nA record for %s (key) = %s is found in the database. Below are the details:\n", PRINTKEY, data);
-            printf("%s: %s\n", PRINTKEY, current->module.key);
-            printf("%s: %s\n", PRINTNAME, current->module.name);
-            printf("%s: %d\n", PRINTCREDIT, current->module.credit);
-
-            return true;
+                count++;
+            }
+            current = current->next;
         }
-        current = current->next;
+    }
+    else if (strcasecmp(attribute, MNAME) == 0)
+    {
+        while (current != NULL)
+        {
+            if (strcasecmp(current->module.name, value) == 0)
+            {
+                printf("\nA record for %s(value) = %s is found in the database. Below are the details:\n", MNAME, value);
+                printf("%s: %s\n", PRINTKEY, current->module.key);
+                printf("%s: %s\n", PRINTNAME, current->module.name);
+                printf("%s: %d\n", PRINTCREDIT, current->module.credit);
+
+                count++;
+            }
+            current = current->next;
+        }
+    }
+    else if (strcasecmp(attribute, MCREDIT) == 0)
+    {
+        while (current != NULL)
+        {
+            if (current->module.credit == atoi(value))
+            {
+                printf("\nA record for %s(value) = %s is found in the database. Below are the details:\n", MCREDIT, value);
+                printf("%s: %s\n", PRINTKEY, current->module.key);
+                printf("%s: %s\n", PRINTNAME, current->module.name);
+                printf("%s: %d\n", PRINTCREDIT, current->module.credit);
+
+                count++;
+            }
+            current = current->next;
+        }
+    }
+    else
+    {
+        printf("Attribute name %s not found.\n", attribute);
+        printf("Available attributes: %s , %s , %s\n", MKEY, MNAME, MCREDIT);
+        printf("E.g. %s=ict1101\n", MKEY);
+        return true;
     }
 
-    printf("\nThere is no record with %s (key) = %s found in the database.\n", PRINTKEY, data);
-    // printf("\nModule code \"%s\" is not found in database.\n", data);
-    // free(data);
-
+    if (count == 0)
+    {
+        printf("\nThere is no record with %s=%s found in the database.\n", attribute, value);
+    }
     return true;
 }
 
