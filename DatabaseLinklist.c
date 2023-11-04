@@ -63,10 +63,7 @@ struct node *openFile(char *filename)
         // You can use strtok() to split the line into tokens
         // You can use strcpy() to copy the tokens into the newModule structure
         // ignore the first line
-        
         if (strcmp(line, "Module Code//Module Name//Module Credit\n") == 0)
-        // use the define instead 
-        
         {
             printf("Ignoring the first line\n");
             continue;
@@ -107,9 +104,8 @@ void PrintReverse(struct node *head)
     // print the header once only
     if (head->next == NULL)
     {
-        printf("%-15s\t%-40s\t%-3s\n", MKEY, MNAME, MCREDIT);
+        printf("%-15s\t%-40s\t%-3s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
     }
-
     PrintReverse(head->next); // Recursively print the rest of the list
     printf("%-15s\t%-40s\t%-3d\n", head->module.key, head->module.name, head->module.credit);
 }
@@ -126,7 +122,6 @@ void PrintReverse_save(struct node *head, FILE *file)
     {
         fprintf(file, "%s//%s//%s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
     }
-    
     PrintReverse_save(head->next, file);
     fprintf(file, "%s//%s//%d\n", head->module.key, head->module.name, head->module.credit); // Print the current node, the first one will run last!
 }
@@ -277,19 +272,19 @@ bool query(struct node *head, char *data)
     }
     else
     {
-        attribute = MKEY;
+        attribute = PRINTKEY;
         value = data;
     }
 
     struct node *current = head; // Initialize current
 
-    if (strcasecmp(attribute, MKEY) == 0)
+    if (strcasecmp(attribute, PRINTKEY) == 0)
     {
         while (current != NULL)
         {
             if (strcasecmp(current->module.key, value) == 0)
             {
-                printf("\nA record for %s(key) = %s is found in the database. Below are the details:\n", MKEY, value);
+                printf("\nA record for %s(key) = %s is found in the database. Below are the details:\n", PRINTKEY, value);
                 printf("%s: %s\n", PRINTKEY, current->module.key);
                 printf("%s: %s\n", PRINTNAME, current->module.name);
                 printf("%s: %d\n", PRINTCREDIT, current->module.credit);
@@ -299,13 +294,13 @@ bool query(struct node *head, char *data)
             current = current->next;
         }
     }
-    else if (strcasecmp(attribute, MNAME) == 0)
+    else if (strcasecmp(attribute, PRINTNAME) == 0)
     {
         while (current != NULL)
         {
             if (strcasecmp(current->module.name, value) == 0)
             {
-                printf("\nA record for %s(value) = %s is found in the database. Below are the details:\n", MNAME, value);
+                printf("\nA record for %s(value) = %s is found in the database. Below are the details:\n", PRINTNAME, value);
                 printf("%s: %s\n", PRINTKEY, current->module.key);
                 printf("%s: %s\n", PRINTNAME, current->module.name);
                 printf("%s: %d\n", PRINTCREDIT, current->module.credit);
@@ -315,13 +310,13 @@ bool query(struct node *head, char *data)
             current = current->next;
         }
     }
-    else if (strcasecmp(attribute, MCREDIT) == 0)
+    else if (strcasecmp(attribute, PRINTCREDIT) == 0)
     {
         while (current != NULL)
         {
             if (current->module.credit == atoi(value))
             {
-                printf("\nA record for %s(value) = %s is found in the database. Below are the details:\n", MCREDIT, value);
+                printf("\nA record for %s(value) = %s is found in the database. Below are the details:\n", PRINTCREDIT, value);
                 printf("%s: %s\n", PRINTKEY, current->module.key);
                 printf("%s: %s\n", PRINTNAME, current->module.name);
                 printf("%s: %d\n", PRINTCREDIT, current->module.credit);
@@ -334,8 +329,8 @@ bool query(struct node *head, char *data)
     else
     {
         printf("Attribute name %s not found.\n", attribute);
-        printf("Available attributes: %s , %s , %s\n", MKEY, MNAME, MCREDIT);
-        printf("E.g. %s=ict1101\n", MKEY);
+        printf("Available attributes: %s , %s , %s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
+        printf("E.g. %s=ict1101\n", PRINTKEY);
         return true;
     }
 
