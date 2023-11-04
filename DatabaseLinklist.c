@@ -282,6 +282,30 @@ bool query(struct node *head, char *data)
 
 void save(struct node *head, char *filename)
 {
+    int check = 1;
+    while (check)
+    {
+        if (strlen(filename) >= 5) //check if filename has at least 5chars
+        {
+            char filetype[4]; // Include space for the null terminator
+            strcpy(filetype, filename + strlen(filename) - 3);
+
+            if (strncmp(filetype, "txt", 3) == 0) //check if last 3 chars matches txt
+            {
+                check = 0; //break out of loop and continue to save into file
+            }
+
+        }
+        
+        if (check)
+        {
+            printf("Invalid File. Please save to a txt file!\n");
+            printf("Enter filename again: ");
+            scanf("%s", filename);
+        }
+
+    }
+        
     FILE *file = fopen(filename, "w"); // Open the file for writing
 
     printf("Saving File...\n");
