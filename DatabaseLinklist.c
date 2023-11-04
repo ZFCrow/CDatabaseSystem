@@ -102,6 +102,21 @@ void PrintReverse(struct node *head)
     printf("%-15s\t%-40s\t%-3d\n", head->module.key, head->module.name, head->module.credit);
 }
 
+void PrintReverse_save(struct node *head, FILE *file)
+{
+
+    if (head == NULL)
+    {
+        return;
+    }
+    // print the header once only
+    if (head->next == NULL)
+    {
+        fprintf(file,"%s//%s//%s\n", "ModuleCode", "ModuleName", "Credit");
+    }
+    PrintReverse_save(head->next, file); 
+    fprintf(file, "%s//%s//%d\n", head->module.key, head->module.name, head->module.credit); // Print the current node, the first one will run last!
+}
 
 struct node *addModule(struct node *head, char *data)
 {
@@ -265,6 +280,17 @@ bool query(struct node *head, char *data)
     return true;
 }
 
+void save(struct node *head, char *filename)
+{
+    FILE *file = fopen(filename, "w"); // Open the file for writing
+    printf("Saving File...\n");
+    PrintReverse_save(head, file);
+    fclose(file);
+    printf("File Saved!\n");
+    return;
+}
+
+
 char *inputString(FILE *fp, size_t size)
 {
     // The size is extended by the input with the value of the provisional
@@ -356,6 +382,7 @@ int main()
         printf("4. UPDATE - change a specific module\n\tCommand: UPDATE <key> <values...> or\n\t\t 4 <key> <values...>\n\n");
         printf("5. DELETE - delete a module\n\tCommand: DELETE <key> or\n\t\t 5 <key>\n\n");
         printf("6. EXIT - close the application\n\tCommand: EXIT or\n\t\t 6\n\n");
+        printf("7. SAVE - to save all the latest records in memory into the database file\n\tCommand: SAVE <filename> or\n\t\t7 <filename>\n\n");
         printf("Enter here: ");
         // scanf("%d", &choice);
         // getchar(); // to get rid of the \n character
@@ -365,7 +392,7 @@ int main()
         // printf("Length: %d\n", strlen(input));
 
         // Get command from input
-        int i = 0;
+        int i;
         char command[strlen(input)];
         for (i = 0; input[i] != '\0'; i++)
         {
@@ -377,9 +404,9 @@ int main()
         // printf("i = %d\n", i);
 
         // Get data from input
-        int j = 0;
+        int j;
         char data[strlen(input)];
-        for (j; input[j + i + 1] != '\0'; j++)
+        for (j = 0; input[j + i + 1] != '\0'; j++)
         {
             data[j] = input[i + j + 1];
         }
@@ -387,7 +414,7 @@ int main()
         data[j] = '\0';
 
         // printf("Command: %s\n", command);
-        // printf("Data: %s\n", data);
+        printf("Data: %s\n", data);
 
         if (strcasecmp(command, "show_all") == 0 || strcasecmp(command, "1") == 0)
         {
@@ -422,6 +449,11 @@ int main()
             // EXIT: close the application
             // exit the while loop
             choice = 0;
+        }
+        else if (strcasecmp(command, "save") == 0 || strcasecmp(command, "7") == 0)
+        {
+            // SAVE: SAVE into File
+            save(head, data);
         }
         else
         {
