@@ -19,6 +19,20 @@ struct node
     struct node *next;
 };
 
+
+
+//validation functions
+int containsSpace(const char *str) {
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (isspace(str[i])) {
+            return 1; // String contains a space
+        }
+    }
+    return 0; // String does not contain a space
+}
+
+
+
 // instead of reading all these modules from the file in main, create a openfile function and create a linkedlist from there,
 // then return the head of the linked list to main
 struct node *openFile(char *filename)
@@ -94,45 +108,88 @@ void PrintReverse(struct node *head)
 struct node *addModule(struct node *head, char *data)
 {
     struct Module newModule;
-    // only prompt the next 2 if the data is not empty
-    printf("Enter the module code: ");
-    scanf("%s", newModule.key);
-    //remove the \n character from the buffer
-    getchar();
+    // only prompt the next 2 if the data is not empty, if the last data is not a int, we remove the data part 
+    // and prompt the user to enter again
+    printf("Data: %s\n", data);
+    // see if the data has 3 parts, if it does, then we can add the module
 
-    //check if the module code already exists 
-    struct node *current = head; // Initialize current
-    while (current != NULL)
+    int result = sscanf(data, "%7[^,],%54[^,],%d", newModule.key, newModule.name, &newModule.credit);
+    // theres a chacne that modulename contains a number, so we need to check if the last part is a number
+    printf("result: %d\n", result);
+    
+    if (result != 3)
     {
-        if (strcasecmp(current->module.key, newModule.key) == 0)
+
+        printf("Invalid input. will be prompting you to add values manually now.\n");
+        do{
+        printf("Enter the module code: ");
+
+        fgets(newModule.key, sizeof(newModule.key), stdin);
+        newModule.key[strlen(newModule.key) - 1] = '\0'; // get rid of the \n character at the end of the string
+        } while (strlen(newModule.key) > 8 || containsSpace(newModule.key) == 1 ); // if the length of the module code is more than 8 or contains spacing, then we need to prompt the user again
+
+
+        //check if the module code already exists 
+        struct node *current = head; // Initialize current
+        while (current != NULL)
         {
-            printf("\nModule code \"%s\" already exists in database. Please try again.\n", newModule.key);
-            return head;
+            if (strcasecmp(current->module.key, newModule.key) == 0)
+            {
+                printf("\nModule code \"%s\" already exists in database. Please try again.\n", newModule.key);
+                return head;
+            }
+            current = current->next;
         }
-        current = current->next;
+
+        printf("Enter the module name: ");
+        fgets(newModule.name, sizeof(newModule.name), stdin);
+        newModule.name[strlen(newModule.name) - 1] = '\0'; // get rid of the \n character at the end of the string
+        printf("Enter the module credit: ");
+        scanf("%d", &newModule.credit);
+        getchar(); //remove the \n character from the buffer
+
+
+        struct node *newNode = (struct node *)malloc(sizeof(struct node));
+        if (newNode == NULL)
+        {
+            perror("Memory allocation failed");
+            exit(1);
+        }
+
+        newNode->module = newModule;
+        newNode->next = head; // connect the new node to the current head of the list
+        head = newNode;
+
+        return head;
+
+    } else{
+
+        //check if the module code already exists 
+        struct node *current = head; // Initialize current
+        while (current != NULL)
+        {
+            if (strcasecmp(current->module.key, newModule.key) == 0)
+            {
+                printf("\nModule code \"%s\" already exists in database. Please try again.\n", newModule.key);
+                return head;
+            }
+            current = current->next;
+        }
+
+        struct node *newNode = (struct node *)malloc(sizeof(struct node));
+        if (newNode == NULL)
+        {
+            perror("Memory allocation failed");
+            exit(1);
+        }
+
+        newNode->module = newModule;
+        newNode->next = head; // connect the new node to the current head of the list
+        head = newNode;
+
+        return head;
     }
-
-    printf("Enter the module name: ");
-    fgets(newModule.name, sizeof(newModule.name), stdin);
-    newModule.name[strlen(newModule.name) - 1] = '\0'; // get rid of the \n character at the end of the string
-    printf("Enter the module credit: ");
-    scanf("%d", &newModule.credit);
-    //fgets(newModule.credit, sizeof(newModule.credit), stdin);
-    //newModule.credit[strlen(newModule.credit) - 1] = '\0'; // get rid of the \n character at the end of the string
-
-
-    struct node *newNode = (struct node *)malloc(sizeof(struct node));
-    if (newNode == NULL)
-    {
-        perror("Memory allocation failed");
-        exit(1);
-    }
-
-    newNode->module = newModule;
-    newNode->next = head; // connect the new node to the current head of the list
-    head = newNode;
-
-    return head;
+    
 }
 
 /* Checks whether the value x is present in linked list */
