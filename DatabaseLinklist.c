@@ -9,7 +9,8 @@ struct Module
 {
     char key[20];  // module code
     char name[55]; // module name
-    char lead[40]; // module lead
+    // char credit[40]; // module credit
+    int credit; // module credit
 };
 
 struct node
@@ -46,7 +47,7 @@ struct node *openFile(char *filename)
         token = strtok(NULL, "//"); // NULL as the first argument tells strtok() to continue splitting the same string
         strcpy(newModule.name, token);
         token = strtok(NULL, "//");
-        strcpy(newModule.lead, token);
+        strcpy(newModule.credit, token);
 
         // Create a new node
         struct node *newNode = (struct node *)malloc(sizeof(struct node)); // Allocate memory for the new node
@@ -75,14 +76,15 @@ void PrintReverse(struct node *head)
     }
 
     PrintReverse(head->next);  // Recursively print the rest of the list
-    printf("%-15s\t%-40s\t%-30s\n", head->module.key, head->module.name, head->module.lead);
+    printf("%-15s\t%-40s\t%-30s\n", head->module.key, head->module.name, head->module.credit);
 
 }
 
 //todo except 1 line of arguments
-struct node *addModule(struct node *head)
+struct node *addModule(struct node *head, char *data)
 {
     struct Module newModule;
+    // only prompt the next 2 if the data is not empty
     printf("Enter the module code: ");
     scanf("%s", newModule.key);
     //remove the \n character from the buffer
@@ -103,9 +105,9 @@ struct node *addModule(struct node *head)
     printf("Enter the module name: ");
     fgets(newModule.name, sizeof(newModule.name), stdin);
     newModule.name[strlen(newModule.name) - 1] = '\0'; // get rid of the \n character at the end of the string
-    printf("Enter the module lead: ");
-    fgets(newModule.lead, sizeof(newModule.lead), stdin);
-    newModule.lead[strlen(newModule.lead) - 1] = '\0'; // get rid of the \n character at the end of the string
+    printf("Enter the module credit: ");
+    fgets(newModule.credit, sizeof(newModule.credit), stdin);
+    newModule.credit[strlen(newModule.credit) - 1] = '\0'; // get rid of the \n character at the end of the string
 
 
     struct node *newNode = (struct node *)malloc(sizeof(struct node));
@@ -130,7 +132,7 @@ bool query(struct node *head, char *data)
     // scanf("%ms", &value);
 
     //printf("Hi %s\n", value);
-    // printf("What's head: %s\t%s\t%s\n", head->module.key, head->module.name, head->module.lead);
+    // printf("What's head: %s\t%s\t%s\n", head->module.key, head->module.name, head->module.credit);
     struct node *current = head; // Initialize current
     while (current != NULL)
     {
@@ -139,7 +141,7 @@ bool query(struct node *head, char *data)
             printf("\nModule code \"%s\" is found in database. Below are the details:\n\n", data);
             printf("Module Code: %s\n", current->module.key);
             printf("Module Name: %s\n", current->module.name);
-            printf("Module Lead: %s\n", current->module.lead);
+            printf("Module credit: %s\n", current->module.credit);
 
             return true;
         }
@@ -183,6 +185,7 @@ int main()
     printf("Available files: \n");
     printf("1. ModuleCode.txt\n");
     printf("Enter here: ");
+
     // scan the choice, user can enter either 'OPEN 1' or 'open ModuleCode.txt' or just '1'
     char filename[25];
     // scanf("%s", filename);
@@ -288,7 +291,7 @@ int main()
             //todo, pass in the data as a string, then split it into tokens, if the data contains anything
             // INSERT: add a new module
             printf("Data: %s\n", data);
-            head = addModule(head);
+            head = addModule(head, data);
         }
         else if (strcasecmp(command, "query") == 0 || strcasecmp(command, "3") == 0)
         {

@@ -1,102 +1,101 @@
-ModuleCode//ModuleName//ModuleLead
-ict1101//computer architecture and organization//steven
-ict1102//data structures and algorithms//jennifer
-ict1103//software engineering//david
-ict1104//database management systems//susan
-ict1105//networking fundamentals//robert
-ict1106//operating systems//emily
-ict1107//web development//james
-ict1108//cybersecurity//sarah
-ict1109//machine learning//michael
-ict1110//artificial intelligence//laura
-ict1111//computer graphics//william
-ict1112//digital logic design//mary
-ict1113//human-computer interaction//george
-ict1114//mobile app development//jessica
-ict1115//cloud computing//daniel
-ict1116//data mining//elizabeth
-ict1117//software testing//christopher
-ict1118//embedded systems//jessica
-ict1119//computer networks//benjamin
-ict1120//algorithm design//amanda
-ict1121//programming languages//matthew
-ict1122//big data analytics//victoria
-ict1123//robotics//richard
-ict1124//computer ethics//patricia
-ict1125//quantum computing//edward
-ict1126//data visualization//olivia
-ict1127//game development//joseph
-ict1128//cloud security//caroline
-ict1129//blockchain technology//timothy
-ict1130//parallel computing//katherine
-ict1131//computer vision//nathan
-ict1132//biocomputing//melissa
-ict1133//virtual reality//gregory
-ict1134//augmented reality//angela
-ict1135//distributed systems//samuel
-ict1136//data compression//natalie
-ict1137//bioinformatics//jeffrey
-ict1138//e-commerce//catherine
-ict1139//cloud storage//derek
-ict1140//nanotechnology//veronica
-ict1141//wearable technology//jonathan
-ict1142//fog computing//theresa
-ict1143//internet of things//roger
-ict1144//high-performance computing//lillian
-ict1145//semantic web//douglas
-ict1146//green computing//wendy
-ict1147//quantum cryptography//randy
-ict1148//neuromorphic computing//karen
-ict1149//edge computing//peter
-ict1150//pervasive computing//elaine
-ict1151//grid computing//miles
-ict1152//cognitive computing//grace
-ict1153//autonomous systems//martin
-ict1154//bio-inspired computing//joanne
-ict1155//cryptography//vivian
-ict1156//fuzzy logic//frank
-ict1157//genetic algorithms//amelia
-ict1158//evolutionary computing//harry
-ict1159//swarm intelligence//tina
-ict1160//computer vision//jacob
-ict1161//network security//rachel
-ict1162//natural language processing//leon
-ict1163//computational biology//lucy
-ict1164//wireless networks//barry
-ict1165//internet protocols//judith
-ict1166//software development methodologies//phillip
-ict1167//digital signal processing//martha
-ict1168//data ethics//brandon
-ict1169//computer forensics//diana
-ict1170//cloud architecture//victor
-ict1171//algorithmic trading//lydia
-ict1172//cloud security//kevin
-ict1173//computer graphics//irene
-ict1174//augmented reality//jeremy
-ict1175//blockchain technology//denise
-ict1176//cyber-physical systems//rodney
-ict1177//computational linguistics//alice
-ict1178//image processing//leonard
-ict1179//database design//theresa
-ict1180//computer animation//frederick
-ict1181//quantum computing//cynthia
-ict1182//intelligent systems//roger
-ict1183//software quality assurance//maria
-ict1184//virtual reality//bruce
-ict1185//computer-assisted design//carolyn
-ict1186//data science//kevin
-ict1187//software maintenance//irene
-ict1188//network protocols//mitchell
-ict1189//human-robot interaction//marjorie
-ict1190//distributed computing//gerald
-ict1191//computational neuroscience//irene
-ict1192//cloud computing security//nancy
-ict1193//natural language understanding//gordon
-ict1194//computer vision//edward
-ict1195//programming paradigms//olivia
-ict1196//bioinformatics//arthur
-ict1197//simulation and modeling//julia
-ict1198//parallel computing//felix
-ict1199//network management//sylvia
-ict1200//software deployment//mitchell
-ict1201//computer forensics//allan
+ModuleCode//ModuleName//Credit
+ict1101//computer architecture and organization//6
+ict1102//data structures and algorithms//4
+ict1103//software engineering//5
+ict1104//database management systems//3
+ict1105//network security//4
+ict1106//artificial intelligence//5
+ict1107//web development//4
+ict1108//mobile app development//3
+ict1109//cloud computing//5
+ict1110//software testing//4
+ict1111//computer networks//6
+ict1112//computer graphics//3
+ict1113//machine learning//5
+ict1114//data science//4
+ict1115//human-computer interaction//5
+ict1116//quantum computing//3
+ict1117//cybersecurity//4
+ict1118//data analytics//5
+ict1119//networking fundamentals//3
+ict1120//database design//4
+ict1121//cloud security//5
+ict1122//computer ethics//3
+ict1123//blockchain technology//4
+ict1124//software development methodologies//5
+ict1125//data management//3
+ict1126//robotics//4
+ict1127//algorithm design//5
+ict1128//computer vision//3
+ict1129//bioinformatics//4
+ict1130//digital logic design//5
+ict1131//e-commerce//3
+ict1132//internet of things//4
+ict1133//parallel computing//5
+ict1134//artificial neural networks//4
+ict1135//computational linguistics//3
+ict1136//evolutionary algorithms//4
+ict1137//fuzzy logic//5
+ict1138//intelligent systems//4
+ict1139//natural language processing//3
+ict1140//distributed computing//4
+ict1141//swarm intelligence//5
+ict1142//computational biology//4
+ict1143//neural network models//3
+ict1144//quantum cryptography//4
+ict1145//artificial life//5
+ict1146//data mining//4
+ict1147//cognitive computing//3
+ict1148//computational neuroscience//4
+ict1149//high-performance computing//5
+ict1150//virtual reality//4
+ict1151//augmented reality//3
+ict1152//autonomous systems//4
+ict1153//bio-inspired computing//5
+ict1154//computational chemistry//4
+ict1155//computational physics//3
+ict1156//computational mathematics//4
+ict1157//numerical analysis//5
+ict1158//operations research//4
+ict1159//scientific computing//3
+ict1160//symbolic computing//4
+ict1161//simulation and modeling//5
+ict1162//quantum algorithms//4
+ict1163//computational economics//3
+ict1164//computational sociology//4
+ict1165//computational musicology//5
+ict1166//computational social science//4
+ict1167//computational anthropology//3
+ict1168//computational archaeology//4
+ict1169//computational geoscience//5
+ict1170//computational geography//4
+ict1171//computational meteorology//3
+ict1172//computational physics//4
+ict1173//computational chemistry//5
+ict1174//computational biology//4
+ict1175//computational neuroscience//3
+ict1176//computational linguistics//4
+ict1177//computational cognitive science//5
+ict1178//computational psychology//4
+ict1179//computational psychiatry//3
+ict1180//computational medicine//4
+ict1181//computational pharmacology//5
+ict1182//computational toxicology//4
+ict1183//computational chemistry//3
+ict1184//computational biology//4
+ict1185//computational neuroscience//5
+ict1186//computational linguistics//4
+ict1187//computational cognitive science//3
+ict1188//computational psychology//4
+ict1189//computational psychiatry//5
+ict1190//computational medicine//4
+ict1191//computational pharmacology//3
+ict1192//computational toxicology//4
+ict1193//computational chemistry//5
+ict1194//computational biology//4
+ict1195//computational neuroscience//3
+ict1196//computational linguistics//4
+ict1197//computational cognitive science//5
+ict1198//computational psychology//4
+ict1199//computational psychiatry//3
+ict1200//computational medicine//4

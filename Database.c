@@ -70,7 +70,7 @@ int main()
         module.name[strcspn(module.name, "\n")] = 0; // remove the \n character
 
         printf("Enter the module lead: ");
-        scanf("%s", module.lead);
+        scanf("%d", module.lead);
 
         FILE *fp;
         fp = fopen("ModuleCode.txt", "a"); // append to the file
