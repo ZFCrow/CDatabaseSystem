@@ -283,8 +283,11 @@ bool query(struct node *head, char *data)
 void save(struct node *head, char *filename)
 {
     FILE *file = fopen(filename, "w"); // Open the file for writing
+
     printf("Saving File...\n");
     PrintReverse_save(head, file);
+
+    printf("Closing File...\n");
     fclose(file);
     printf("File Saved!\n");
     return;
