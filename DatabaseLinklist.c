@@ -55,7 +55,7 @@ struct node *openFile(char *filename)
         // Parse the line and populate newModule with data from the file
         // You can use strtok() to split the line into tokens
         // You can use strcpy() to copy the tokens into the newModule structure
-        //ignore the first line 
+        // ignore the first line
         if (strcmp(line, "ModuleCode//ModuleName//Credit\n") == 0)
         {
             printf("Ignoring the first line\n");
@@ -67,7 +67,7 @@ struct node *openFile(char *filename)
         strcpy(newModule.name, token);
         token = strtok(NULL, "//");
         newModule.credit = atoi(token);
-        //strcpy(newModule.credit, token);
+        // strcpy(newModule.credit, token);
 
         // Create a new node
         struct node *newNode = (struct node *)malloc(sizeof(struct node)); // Allocate memory for the new node
@@ -94,17 +94,16 @@ void PrintReverse(struct node *head)
     {
         return;
     }
-    //print the header once only
+    // print the header once only
     if (head->next == NULL)
     {
         printf("%-15s\t%-40s\t%-3s\n", "Module Code", "Module Name", "Credit");
     }
-    PrintReverse(head->next);  // Recursively print the rest of the list
+    PrintReverse(head->next); // Recursively print the rest of the list
     printf("%-15s\t%-40s\t%-3d\n", head->module.key, head->module.name, head->module.credit);
-
 }
 
-//todo except 1 line of arguments
+// todo except 1 line of arguments
 struct node *addModule(struct node *head, char *data)
 {
     struct Module newModule;
@@ -199,27 +198,30 @@ bool query(struct node *head, char *data)
     // printf("Enter the module code: ");
     // scanf("%ms", &value);
 
-    //printf("Hi %s\n", value);
-    // printf("What's head: %s\t%s\t%s\n", head->module.key, head->module.name, head->module.credit);
+    // printf("Hi %s\n", value);
+    //  printf("What's head: %s\t%s\t%s\n", head->module.key, head->module.name, head->module.credit);
     struct node *current = head; // Initialize current
     while (current != NULL)
     {
         if (strcasecmp(current->module.key, data) == 0)
         {
-            printf("\nModule code \"%s\" is found in database. Below are the details:\n\n", data);
-            printf("Module Code: %s\n", current->module.key);
-            printf("Module Name: %s\n", current->module.name);
-            printf("Module credit: %d\n", current->module.credit);
+            printf("\nA record of Module Code (key) = %s, Module Name (value) = %s, Module Credit (value) = %d\n1is found in the database.\n", current->module.key, current->module.name, current->module.credit);
+
+            // printf("\nModule code \"%s\" is found in database. Below are the details:\n\n", data);
+            // printf("Module Code: %s\n", current->module.key);
+            // printf("Module Name: %s\n", current->module.name);
+            // printf("Module Credit: %d\n", current->module.credit);
 
             return true;
         }
         current = current->next;
     }
 
-    printf("\nModule code \"%s\" is not found in database.\n", data);
-    free(data);
+    printf("\nThere is no record with Module Code (key) = %s found in the database.\n", data);
+    // printf("\nModule code \"%s\" is not found in database.\n", data);
+    // free(data);
 
-    return false;
+    return true;
 }
 
 char *inputString(FILE *fp, size_t size)
@@ -249,9 +251,9 @@ char *inputString(FILE *fp, size_t size)
 int main()
 {
     //! ask user to open a file first to set them to memory with linkedlist
-    printf("What file do you want to open?\n");
+    printf("What file do you want to open?\n\n");
     printf("Available files: \n");
-    printf("1. ModuleCode.txt\n");
+    printf("1. ModuleCode.txt\n\n");
     printf("Enter here: ");
 
     // scan the choice, user can enter either 'OPEN 1' or 'open ModuleCode.txt' or just '1'
@@ -356,8 +358,8 @@ int main()
         }
         else if (strcasecmp(command, "insert") == 0 || strcasecmp(command, "2") == 0)
         {
-            //todo, pass in the data as a string, then split it into tokens, if the data contains anything
-            // INSERT: add a new module
+            // todo, pass in the data as a string, then split it into tokens, if the data contains anything
+            //  INSERT: add a new module
             printf("Data: %s\n", data);
             head = addModule(head, data);
         }
@@ -384,8 +386,8 @@ int main()
         {
             // If command not found
             printf("Command not found. Please try again.\n");
-            sleep(1);
         }
+        sleep(2);
     }
 
     // exit the application
