@@ -5,6 +5,14 @@
 #include <unistd.h>
 #include <stdbool.h>
 
+#define MKEY "ModuleCode"
+#define MNAME "ModuleName"
+#define MCREDIT "Credit"
+
+#define PRINTKEY "Module Code"
+#define PRINTNAME "Module Name"
+#define PRINTCREDIT "Module Credit"
+
 struct Module
 {
     char key[20];  // module code
@@ -96,7 +104,7 @@ void PrintReverse(struct node *head)
     // print the header once only
     if (head->next == NULL)
     {
-        printf("%-15s\t%-40s\t%-3s\n", "Module Code", "Module Name", "Credit");
+        printf("%-15s\t%-40s\t%-3s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
     }
     PrintReverse(head->next); // Recursively print the rest of the list
     printf("%-15s\t%-40s\t%-3d\n", head->module.key, head->module.name, head->module.credit);
@@ -112,7 +120,7 @@ void PrintReverse_save(struct node *head, FILE *file)
     // print the header once only
     if (head->next == NULL)
     {
-        fprintf(file, "%s//%s//%s\n", "ModuleCode", "ModuleName", "Credit");
+        fprintf(file, "%s//%s//%s\n", MKEY, MNAME, MCREDIT);
     }
     PrintReverse_save(head->next, file);
     fprintf(file, "%s//%s//%d\n", head->module.key, head->module.name, head->module.credit); // Print the current node, the first one will run last!
@@ -139,7 +147,7 @@ struct node *addModule(struct node *head, char *data)
 
         do
         {
-            printf("Enter the module code: ");
+            printf("Enter the %s: ", PRINTKEY);
 
             fgets(newModule.key, sizeof(newModule.key), stdin);
             newModule.key[strlen(newModule.key) - 1] = '\0';                      // get rid of the \n character at the end of the string
@@ -151,19 +159,19 @@ struct node *addModule(struct node *head, char *data)
         {
             if (strcasecmp(current->module.key, newModule.key) == 0)
             {
-                printf("\nModule code \"%s\" already exists in database. Please try again.\n", newModule.key);
+                printf("\n%s \"%s\" already exists in database. Please try again.\n", PRINTKEY, newModule.key);
                 return head;
             }
             current = current->next;
         }
 
-        printf("Enter the module name: ");
+        printf("Enter the %s: ", PRINTKEY);
         fgets(newModule.name, sizeof(newModule.name), stdin);
         newModule.name[strlen(newModule.name) - 1] = '\0'; // get rid of the \n character at the end of the string
 
         while (1)
         {
-            printf("Enter the module credit: ");
+            printf("Enter the %s: ", PRINTCREDIT);
             if (scanf("%d", &newModule.credit) == 1)
             {
                 // check if user enter extra input
@@ -198,6 +206,11 @@ struct node *addModule(struct node *head, char *data)
         newNode->next = head; // connect the new node to the current head of the list
         head = newNode;
 
+        printf("\nData is inserted into the database.\n");
+        printf("%s: %s\n", PRINTKEY, head->module.key);
+        printf("%s: %s\n", PRINTNAME, head->module.name);
+        printf("%s: %d\n", PRINTCREDIT, head->module.credit);
+
         return head;
     }
     else
@@ -209,7 +222,7 @@ struct node *addModule(struct node *head, char *data)
         {
             if (strcasecmp(current->module.key, newModule.key) == 0)
             {
-                printf("\nModule code \"%s\" already exists in database. Please try again.\n", newModule.key);
+                printf("\n%s \"%s\" already exists in database. Please try again.\n", PRINTKEY, newModule.key);
                 return head;
             }
             current = current->next;
@@ -227,9 +240,9 @@ struct node *addModule(struct node *head, char *data)
         head = newNode;
 
         printf("\nData is inserted into the database.\n");
-        printf("Module Code: %s\n", head->module.key);
-        printf("Module Name: %s\n", head->module.name);
-        printf("Module Credit: %d\n", head->module.credit);
+        printf("%s: %s\n", PRINTKEY, head->module.key);
+        printf("%s: %s\n", PRINTNAME, head->module.name);
+        printf("%s: %d\n", PRINTCREDIT, head->module.credit);
 
         return head;
     }
@@ -243,10 +256,21 @@ bool query(struct node *head, char *data)
     // scanf("%ms", &value);
 
     // printf("Hi %s\n", value);
-    //  printf("What's head: %s\t%s\t%s\n", head->module.key, head->module.name, head->module.credit);
+    printf("What's head: %s\t%s\t%d\n", head->module.key, head->module.name, head->module.credit);
     printf("Data: %s\n", data);
 
-    // char *attribute = strtok(data,"=");
+    int attrNo = 0;
+    if (strchr(data, '=') != NULL)
+    {
+        char *attribute = strtok(data, "=");
+        printf("Attribute: %s\n", attribute);
+        char *value = strtok(NULL, "=");
+        printf("Value: %s", value);
+    }
+    else
+    {
+        attrNo = 0;
+    }
 
     struct node *current = head; // Initialize current
     while (current != NULL)
@@ -255,17 +279,17 @@ bool query(struct node *head, char *data)
         {
             // printf("\nA record of Module Code (key) = %s, Module Name (value) = %s, Module Credit (value) = %d\n1is found in the database.\n", current->module.key, current->module.name, current->module.credit);
 
-            printf("\nA record for Module code (key) = %s is found in the database. Below are the details:\n", data);
-            printf("Module Code: %s\n", current->module.key);
-            printf("Module Name: %s\n", current->module.name);
-            printf("Module Credit: %d\n", current->module.credit);
+            printf("\nA record for %s (key) = %s is found in the database. Below are the details:\n", PRINTKEY, data);
+            printf("%s: %s\n", PRINTKEY, current->module.key);
+            printf("%s: %s\n", PRINTNAME, current->module.name);
+            printf("%s: %d\n", PRINTCREDIT, current->module.credit);
 
             return true;
         }
         current = current->next;
     }
 
-    printf("\nThere is no record with Module Code (key) = %s found in the database.\n", data);
+    printf("\nThere is no record with %s (key) = %s found in the database.\n", PRINTKEY, data);
     // printf("\nModule code \"%s\" is not found in database.\n", data);
     // free(data);
 
