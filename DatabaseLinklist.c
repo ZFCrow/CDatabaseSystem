@@ -75,22 +75,11 @@ void PrintReverse(struct node *head)
     }
 
     PrintReverse(head->next);  // Recursively print the rest of the list
-    // check if module.name contains a \n character, if it does not,add 1 behind
-    char *space = strchr(head->module.name, ' ');
-    // if (space == NULL)
-    // {
-    //     printf("%s \t%s\t\t%s\n", head->module.key, head->module.name, head->module.lead); // Print the current node, the first one will run last!
-    // }
-    // else
-    // {
-    //     printf("%s \t%s \t%s\n", head->module.key, head->module.name, head->module.lead); // Print the current node, the first one will run last!
-    // }
-    printf("%-15s\t%-25s\t%-30s\n", head->module.key, head->module.name, head->module.lead);
+    printf("%-15s\t%-40s\t%-30s\n", head->module.key, head->module.name, head->module.lead);
 
 }
 
-// TODO change scanf to fgets as scanf will stop reading when it encounters a space
-// todo add a check to see if the module code already exists
+//todo except 1 line of arguments
 struct node *addModule(struct node *head)
 {
     struct Module newModule;
@@ -98,14 +87,23 @@ struct node *addModule(struct node *head)
     scanf("%s", newModule.key);
     //remove the \n character from the buffer
     getchar();
+
+    //check if the module code already exists 
+    struct node *current = head; // Initialize current
+    while (current != NULL)
+    {
+        if (strcasecmp(current->module.key, newModule.key) == 0)
+        {
+            printf("\nModule code \"%s\" already exists in database. Please try again.\n", newModule.key);
+            return head;
+        }
+        current = current->next;
+    }
+
     printf("Enter the module name: ");
-    // scanf("%s", newModule.name);
-    //use fgets instead 
     fgets(newModule.name, sizeof(newModule.name), stdin);
     newModule.name[strlen(newModule.name) - 1] = '\0'; // get rid of the \n character at the end of the string
     printf("Enter the module lead: ");
-    // scanf("%s", newModule.lead);
-    //use fgets instead
     fgets(newModule.lead, sizeof(newModule.lead), stdin);
     newModule.lead[strlen(newModule.lead) - 1] = '\0'; // get rid of the \n character at the end of the string
 
@@ -131,7 +129,7 @@ bool query(struct node *head, char *data)
     // printf("Enter the module code: ");
     // scanf("%ms", &value);
 
-    printf("Hi %s\n", value);
+    //printf("Hi %s\n", value);
     // printf("What's head: %s\t%s\t%s\n", head->module.key, head->module.name, head->module.lead);
     struct node *current = head; // Initialize current
     while (current != NULL)
@@ -287,6 +285,7 @@ int main()
         }
         else if (strcasecmp(command, "insert") == 0 || strcasecmp(command, "2") == 0)
         {
+            //todo, pass in the data as a string, then split it into tokens, if the data contains anything
             // INSERT: add a new module
             printf("Data: %s\n", data);
             head = addModule(head);

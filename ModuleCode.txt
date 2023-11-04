@@ -1,9 +1,102 @@
 ModuleCode//ModuleName//ModuleLead
-ict1101//com alibaba//steven
-ict1102//com sfddsfsdf//ewrewewrw show me
-ict1103//com stuff//ewrewf xd 
-ict1104//com dsfsdffsddfs//darren afefe
-ict1105//com sdfdsfsd//steven
-ict1161//com sdfsdfsdfd//steven 
-ict11321//co sdfsdfdsfsdfdsfsdsd//steven
-ict11321//march//steven
+ict1101//computer architecture and organization//steven
+ict1102//data structures and algorithms//jennifer
+ict1103//software engineering//david
+ict1104//database management systems//susan
+ict1105//networking fundamentals//robert
+ict1106//operating systems//emily
+ict1107//web development//james
+ict1108//cybersecurity//sarah
+ict1109//machine learning//michael
+ict1110//artificial intelligence//laura
+ict1111//computer graphics//william
+ict1112//digital logic design//mary
+ict1113//human-computer interaction//george
+ict1114//mobile app development//jessica
+ict1115//cloud computing//daniel
+ict1116//data mining//elizabeth
+ict1117//software testing//christopher
+ict1118//embedded systems//jessica
+ict1119//computer networks//benjamin
+ict1120//algorithm design//amanda
+ict1121//programming languages//matthew
+ict1122//big data analytics//victoria
+ict1123//robotics//richard
+ict1124//computer ethics//patricia
+ict1125//quantum computing//edward
+ict1126//data visualization//olivia
+ict1127//game development//joseph
+ict1128//cloud security//caroline
+ict1129//blockchain technology//timothy
+ict1130//parallel computing//katherine
+ict1131//computer vision//nathan
+ict1132//biocomputing//melissa
+ict1133//virtual reality//gregory
+ict1134//augmented reality//angela
+ict1135//distributed systems//samuel
+ict1136//data compression//natalie
+ict1137//bioinformatics//jeffrey
+ict1138//e-commerce//catherine
+ict1139//cloud storage//derek
+ict1140//nanotechnology//veronica
+ict1141//wearable technology//jonathan
+ict1142//fog computing//theresa
+ict1143//internet of things//roger
+ict1144//high-performance computing//lillian
+ict1145//semantic web//douglas
+ict1146//green computing//wendy
+ict1147//quantum cryptography//randy
+ict1148//neuromorphic computing//karen
+ict1149//edge computing//peter
+ict1150//pervasive computing//elaine
+ict1151//grid computing//miles
+ict1152//cognitive computing//grace
+ict1153//autonomous systems//martin
+ict1154//bio-inspired computing//joanne
+ict1155//cryptography//vivian
+ict1156//fuzzy logic//frank
+ict1157//genetic algorithms//amelia
+ict1158//evolutionary computing//harry
+ict1159//swarm intelligence//tina
+ict1160//computer vision//jacob
+ict1161//network security//rachel
+ict1162//natural language processing//leon
+ict1163//computational biology//lucy
+ict1164//wireless networks//barry
+ict1165//internet protocols//judith
+ict1166//software development methodologies//phillip
+ict1167//digital signal processing//martha
+ict1168//data ethics//brandon
+ict1169//computer forensics//diana
+ict1170//cloud architecture//victor
+ict1171//algorithmic trading//lydia
+ict1172//cloud security//kevin
+ict1173//computer graphics//irene
+ict1174//augmented reality//jeremy
+ict1175//blockchain technology//denise
+ict1176//cyber-physical systems//rodney
+ict1177//computational linguistics//alice
+ict1178//image processing//leonard
+ict1179//database design//theresa
+ict1180//computer animation//frederick
+ict1181//quantum computing//cynthia
+ict1182//intelligent systems//roger
+ict1183//software quality assurance//maria
+ict1184//virtual reality//bruce
+ict1185//computer-assisted design//carolyn
+ict1186//data science//kevin
+ict1187//software maintenance//irene
+ict1188//network protocols//mitchell
+ict1189//human-robot interaction//marjorie
+ict1190//distributed computing//gerald
+ict1191//computational neuroscience//irene
+ict1192//cloud computing security//nancy
+ict1193//natural language understanding//gordon
+ict1194//computer vision//edward
+ict1195//programming paradigms//olivia
+ict1196//bioinformatics//arthur
+ict1197//simulation and modeling//julia
+ict1198//parallel computing//felix
+ict1199//network management//sylvia
+ict1200//software deployment//mitchell
+ict1201//computer forensics//allan
