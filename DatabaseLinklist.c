@@ -147,7 +147,7 @@ bool query(struct node *head, char *data)
     {
         if (strcasecmp(current->module.key, data) == 0)
         {
-            printf("\nA record of\nModule Code (key) = %s,\nModule Name (value) = %s,\nModule Credit (value) = %d\nis found in the database.\n", current->module.key, current->module.name, current->module.credit);
+            printf("\nA record of Module Code (key) = %s, Module Name (value) = %s, Module Credit (value) = %d\n1is found in the database.\n", current->module.key, current->module.name, current->module.credit);
 
             // printf("\nModule code \"%s\" is found in database. Below are the details:\n\n", data);
             // printf("Module Code: %s\n", current->module.key);
