@@ -112,11 +112,11 @@ struct node *addModule(struct node *head, char *data)
     printf("Data: %s\n", data);
     // see if the data has 3 parts, if it does, then we can add the module
 
-    int result = sscanf(data, "%7[^,],%54[^,],%d", newModule.key, newModule.name, &newModule.credit);
+    int result = sscanf(data, "%8[^,],%54[^,],%d", newModule.key, newModule.name, &newModule.credit);
     // theres a chacne that modulename contains a number, so we need to check if the last part is a number
     printf("result: %d\n", result);
     
-    if (result != 3)
+    if (result != 3 || containsSpace(newModule.key)) // if the result is not 3 or modulecode contain spaces, then we need to prompt the user to enter again
     {
 
         printf("Invalid input. will be prompting you to add values manually now.\n");
