@@ -423,7 +423,7 @@ int main()
 {
     printf("Opening Directory...\n");
     char *currentdir = ".";
-    char *filelist[255]; //list of pointers to store strings
+    char *filelist[255]; //array of pointers to store filename
     int numoffiles = 0; //number of files in filelist
     DIR *directory = opendir(currentdir);
 
