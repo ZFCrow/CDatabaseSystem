@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include <unistd.h>
 #include <stdbool.h>
+#include <dirent.h>
 
 // #define MKEY "ModuleCode"
 // #define MNAME "ModuleName"
@@ -402,27 +403,76 @@ char *inputString(FILE *fp, size_t size)
     return realloc(str, sizeof(*str) * len);
 }
 
+void addfile(char *filelist[], int *numoffiles, char *filename)
+{
+    char *newtxtfilename = strdup(filename);
+    if (newtxtfilename != NULL)
+    {
+        filelist[*numoffiles] = newtxtfilename;
+        *numoffiles += 1;
+    }
+
+    else 
+    {
+        perror("Memory allocation error");
+        exit(1);
+    }
+}
+
 int main()
 {
+    printf("Opening Directory...\n");
+    char *currentdir = ".";
+    char *filelist[255]; //list of pointers to store strings
+    int numoffiles = 0; //number of files in filelist
+    DIR *directory = opendir(currentdir);
+
+    if (directory == NULL)
+    {
+        perror("Error opening Directory"); //if there is nothing in dir
+    }
+
     //! ask user to open a file first to set them to memory with linkedlist
     printf("What file do you want to open?\n\n");
     printf("Available files: \n");
-    printf("1. ModuleCode.txt\n\n");
-    printf("Enter here: ");
 
-    // scan the choice, user can enter either 'OPEN 1' or 'open ModuleCode.txt' or just '1'
+    struct dirent *file;
+
+    while ((file = readdir(directory)) != NULL) //read file in directory 
+    {
+        char *txtfilename = file->d_name; //get name of file
+        char *file_extension = strchr(txtfilename, '.'); //get file extension
+
+        if (file_extension != NULL && strcmp(file_extension, ".txt") == 0) //check if file is text file
+        {
+            addfile(filelist, &numoffiles, txtfilename);
+        }
+    }
+    
+    for (int i = 0; i < numoffiles; i++) {
+        printf("%d. %s\n", i + 1, filelist[i]);
+    }
+
+    closedir(directory); //closed directory
+
+    printf("\nEnter here: ");
+
+    // scan the choice, user can enter either 'OPEN #N' or 'open <filename>' or just '#N'
     char filename[25];
-    // scanf("%s", filename);
     fgets(filename, sizeof(filename), stdin);
     filename[strlen(filename) - 1] = '\0'; // get rid of the \n character at the end of the string
+
     printf("filename: %s\n", filename);
-    // check if the first 4 words are 'open' or 'OPEN'
-    for (int i = 0; i < 4; i++)
-    {
-        filename[i] = toupper(filename[i]);
+
+    char check[5]; //store first 4 chars in check
+    for (int i = 0; i < 4; i++) {
+        check[i] = filename[i];
     }
+
+    check[4] = '\0';  // Null-terminate the result string
+    int isnotnum = 1;
     // check the first 4 letters of the filename to see if it is 'OPEN'
-    if (strncmp(filename, "OPEN", 4) == 0)
+    if (strcasecmp(check, "open") == 0)
     {
         // if it is, then we need to get rid of the first 5 letters of the filename
         printf("removing open\n");
@@ -432,22 +482,42 @@ int main()
             filename[i] = filename[i + 5];
         }
         printf("filename after removing open: %s\n", filename);
+        isnotnum = 0;
     }
 
-    // check if user enters a integer or a string
-    int fileNumber;
-    if (sscanf(filename, "%d", &fileNumber) == 1)
+    if (isnotnum) // check if user enters a integer or a string
     {
-        // if it is a integer, then we need to convert it to a string
-        if (fileNumber == 1)
+        int fileNumber;
+        sscanf(filename, "%d", &fileNumber);
+        if (fileNumber <= numoffiles)
         {
-            strcpy(filename, "ModuleCode.txt");
+            strcpy(filename, filelist[fileNumber-1]);
+            printf("%s\n", filename);
         }
+
         else
         {
             printf("Invalid file number\n");
             return 1;
         }
+    }
+    
+    int isnotinlist = 1;
+
+    for (int i = 0; i < numoffiles; i++)
+    {
+        if (strcmp(filename, filelist[i]) == 0) //check if filename to open exists
+        {   
+            isnotinlist = 0;
+            break;
+        }
+
+    }
+
+    if (isnotinlist) //break if not in list
+    {
+        printf("Invalid File name\n");
+        return 1;
     }
 
     printf("opening file: %s\n", filename);
