@@ -99,4 +99,5 @@ ict1197//computational cognitive science//5
 ict1198//computational psychology//4
 ict1199//computational psychiatry//3
 ict1200//computational medicine//4
-ict2456//software technicioan//6
+ict1011//comsci adn theort//35
+ict20354//math35//2
