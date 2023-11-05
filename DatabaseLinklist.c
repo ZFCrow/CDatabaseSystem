@@ -46,6 +46,10 @@ int containsSpace(const char *str)
 struct node *openFile(char *filename)
 {
     printf("Reading from the file...\n");
+    printf("Filename: %s\n", filename);
+    //replace the filename with moduletime.txt
+   // strcpy(filename, "a.txt");
+
     FILE *file = fopen(filename, "r"); 
 
     if (file == NULL)
@@ -563,6 +567,7 @@ int main()
     char *filelist[255]; //array of pointers to store filename
     int numoffiles = 0; //number of files in filelist
     int *pnumoffiles = &numoffiles; //pointer to numoffiles
+    
     //! print the openfile menu and get the command from user 
     char *filename = filemenu(filelist, pnumoffiles); 
     printf("filename: %s\n", filename);
@@ -570,6 +575,12 @@ int main()
     //validate the command/filename entered by user 
     filename = filenamevalidations(filename , numoffiles, filelist);
     printf("filename after validations: %s\n", filename);
+
+    //free the memory of filelist
+    for (int i = 0; i < numoffiles; i++)
+    {
+        free(filelist[i]);
+    }
 
     //open the file
     struct node *head = openFile(filename);
