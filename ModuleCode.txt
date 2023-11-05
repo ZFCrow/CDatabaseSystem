@@ -99,5 +99,3 @@ ict1197//computational cognitive science//5
 ict1198//computational psychology//4
 ict1199//computational psychiatry//3
 ict1200//computational medicine//4
-ict1011//computerscience and architecture//12
-ICT2356//HELLOMAMA//12

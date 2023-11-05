@@ -672,6 +672,7 @@ int main()
                 // EXIT: close the application
                 // exit the while loop
                 choice = 0;
+                break;
             }
             else if (strcasecmp(command, "save") == 0 || strcasecmp(command, "7") == 0)
             {
@@ -691,7 +692,10 @@ int main()
                 printf("Command not found. Please try again.\n");
             }
 
-            sleep(2);
+            //sleep(2);
+            //wait for user to press enter to continue
+            printf("Press Enter to continue...");
+            getchar();
         }
 
         if (choice == 0)
@@ -709,6 +713,8 @@ int main()
                 current = next;
             }
         }
+
+        
 
         // the loop for do while 
         }   while(choice == 8); // means user wants to open another file 
