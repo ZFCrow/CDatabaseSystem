@@ -46,9 +46,7 @@ int containsSpace(const char *str)
 struct node *openFile(char *filename)
 {
     printf("Reading from the file...\n");
-    //open the file 
-    //FILE *file = fopen("hello.txt", "r");
-    FILE *file = fopen(filename, "r"); 
+    FILE *file = fopen(filename, "r"); // Open the file for reading
 
     if (file == NULL)
     {
@@ -93,7 +91,7 @@ struct node *openFile(char *filename)
     }
 
     fclose(file); // Close the file when you're done reading from it
-    printf("linked list created!\n");
+
     return head; // return the head of the linked list
 }
 
@@ -135,9 +133,7 @@ struct node *addModule(struct node *head, char *data)
 
     // only prompt the next 2 if the data is not empty, if the last data is not a int, we remove the data part
     // and prompt the user to enter again
-    printf("Data: %s\n", data); //print the pointer 
-   // printf("Data deref: %s\n", *data); // wrong way to deref, it will print the first char of the string
-
+    printf("Data: %s\n", data);
     // see if the data has 3 parts, if it does, then we can add the module
 
     int result = sscanf(data, "%8[^,],%54[^,],%d", newModule.key, newModule.name, &newModule.credit);
@@ -170,7 +166,7 @@ struct node *addModule(struct node *head, char *data)
             current = current->next;
         }
 
-        printf("Enter the %s: ", PRINTNAME);
+        printf("Enter the %s: ", PRINTKEY);
         fgets(newModule.name, sizeof(newModule.name), stdin);
         newModule.name[strlen(newModule.name) - 1] = '\0'; // get rid of the \n character at the end of the string
 
@@ -423,11 +419,12 @@ void addfile(char *filelist[], int *numoffiles, char *filename)
     }
 }
 
-char *filemenu(char *filelist[], int *numoffiles) 
+int main()
 {
-    char *currentdir = ".";
-    //get the filename from user
     printf("Opening Directory...\n");
+    char *currentdir = ".";
+    char *filelist[255]; //array of pointers to store filename
+    int numoffiles = 0; //number of files in filelist
     DIR *directory = opendir(currentdir);
 
     if (directory == NULL)
@@ -448,11 +445,11 @@ char *filemenu(char *filelist[], int *numoffiles)
 
         if (file_extension != NULL && strcmp(file_extension, ".txt") == 0) //check if file is text file
         {
-            addfile(filelist, numoffiles, txtfilename);
+            addfile(filelist, &numoffiles, txtfilename);
         }
     }
     
-    for (int i = 0; i < *numoffiles; i++) {
+    for (int i = 0; i < numoffiles; i++) {
         printf("%d. %s\n", i + 1, filelist[i]);
     }
 
@@ -466,45 +463,32 @@ char *filemenu(char *filelist[], int *numoffiles)
     filename[strlen(filename) - 1] = '\0'; // get rid of the \n character at the end of the string
 
     printf("filename: %s\n", filename);
-    return strdup(filename);
-}
-char *filenamevalidations(char *filename, int numoffiles, char *filelist[]){
 
-    int isnotnum = 1;
     char check[5]; //store first 4 chars in check
-    if (strlen(filename) > 4) //check if filename has at least 4 chars
-    {
-    
-
-        for (int i = 0; i < 4; i++) {
-            //printf("filename[%d]: %c\n", i, filename[i]);
-            check[i] = filename[i];
-        }
-
-        check[4] = '\0';  // Null-terminate the result string
-        // check the first 4 letters of the filename to see if it is 'OPEN'
-        if (strcasecmp(check, "open") == 0)
-        {
-            // if it is, then we need to get rid of the first 5 letters of the filename
-            printf("removing open\n");
-
-            for (int i = 0; i < strlen(filename); i++)
-            {
-                filename[i] = filename[i + 5];
-            }
-            printf("filename after removing open: %s\n", filename);
-            isnotnum = 0;
-        }
-
+    for (int i = 0; i < 4; i++) {
+        check[i] = filename[i];
     }
 
-    
-    
+    check[4] = '\0';  // Null-terminate the result string
+    int isnotnum = 1;
+    // check the first 4 letters of the filename to see if it is 'OPEN'
+    if (strcasecmp(check, "open") == 0)
+    {
+        // if it is, then we need to get rid of the first 5 letters of the filename
+        printf("removing open\n");
+
+        for (int i = 0; i < strlen(filename); i++)
+        {
+            filename[i] = filename[i + 5];
+        }
+        printf("filename after removing open: %s\n", filename);
+        isnotnum = 0;
+    }
+
     if (isnotnum) // check if user enters a integer or a string
     {
         int fileNumber;
-        printf("filename when checking for int: %s\n", filename);
-        sscanf(filename, "%d", &fileNumber); //convert string to int and store in fileNumber
+        sscanf(filename, "%d", &fileNumber);
         if (fileNumber <= numoffiles)
         {
             strcpy(filename, filelist[fileNumber-1]);
@@ -514,8 +498,7 @@ char *filenamevalidations(char *filename, int numoffiles, char *filelist[]){
         else
         {
             printf("Invalid file number\n");
-            //return 1;
-            exit(1);
+            return 1;
         }
     }
     
@@ -534,30 +517,10 @@ char *filenamevalidations(char *filename, int numoffiles, char *filelist[]){
     if (isnotinlist) //break if not in list
     {
         printf("Invalid File name\n");
-        //return 1;
-        exit(1);
+        return 1;
     }
 
-    //printf("filename after validations(from function): %s\n", filename);
-
-    return filename;
-
-
-}
-int main()
-{
-    char *filelist[255]; //array of pointers to store filename
-    int numoffiles = 0; //number of files in filelist
-    int *pnumoffiles = &numoffiles; //pointer to numoffiles
-    //! print the openfile menu and get the command from user 
-    char *filename = filemenu(filelist, pnumoffiles); 
-    printf("filename: %s\n", filename);
-
-    //validate the command/filename entered by user 
-    filename = filenamevalidations(filename , numoffiles, filelist);
-    printf("filename after validations: %s\n", filename);
-
-    //open the file
+    printf("opening file: %s\n", filename);
     struct node *head = openFile(filename);
 
     struct node *current = head;
