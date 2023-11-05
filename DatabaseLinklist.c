@@ -6,8 +6,8 @@
 #include <stdbool.h>
 #include <dirent.h>
 
-
-#include "testing.h"
+//!testing compiling multiple files
+//#include "testing.h"
 
 // #define MKEY "ModuleCode"
 // #define MNAME "ModuleName"
@@ -689,7 +689,7 @@ return choice;
 int main()
 {
 
-    addingtime(1, 2);
+//    addingtime(1, 2);
 
     int choice = 1;
 
