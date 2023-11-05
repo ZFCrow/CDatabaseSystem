@@ -46,14 +46,14 @@ int containsSpace(const char *str)
 struct node *openFile(char *filename)
 {
     printf("Reading from the file...\n");
-    //open the file 
-    //FILE *file = fopen("hello.txt", "r");
     FILE *file = fopen(filename, "r"); 
 
     if (file == NULL)
     {
         perror("Error opening the file");
         exit(1);
+    }else{
+        printf("%s opened successfully!\n", filename);
     }
 
     struct node *head = NULL; // Create an empty linked list
@@ -470,12 +470,12 @@ char *filemenu(char *filelist[], int *numoffiles)
 }
 char *filenamevalidations(char *filename, int numoffiles, char *filelist[]){
 
-    int isnotnum = 1;
+    int isnum = 1;
     char check[5]; //store first 4 chars in check
-    if (strlen(filename) > 4) //check if filename has at least 4 chars
+
+    if (strlen(filename) > 4) //use check to check if first 4 chars are 'open' if filename is longer than 4 characters
     {
     
-
         for (int i = 0; i < 4; i++) {
             //printf("filename[%d]: %c\n", i, filename[i]);
             check[i] = filename[i];
@@ -493,14 +493,25 @@ char *filenamevalidations(char *filename, int numoffiles, char *filelist[]){
                 filename[i] = filename[i + 5];
             }
             printf("filename after removing open: %s\n", filename);
-            isnotnum = 0;
+            
         }
 
-    }
+    } 
 
+    //after removing open, check if filename is a number
+    for (int i = 0; i < strlen(filename); i++)
+        {
+            if (!isdigit(filename[i]))
+            {
+                isnum = 0;
+                break;
+            }
+        }
     
+
+ 
     
-    if (isnotnum) // check if user enters a integer or a string
+    if (isnum) // change filename to the actual filename if it is a number
     {
         int fileNumber;
         printf("filename when checking for int: %s\n", filename);
@@ -513,12 +524,15 @@ char *filenamevalidations(char *filename, int numoffiles, char *filelist[]){
 
         else
         {
-            printf("Invalid file number\n");
+            printf("Invalid file mentioned\n");
             //return 1;
             exit(1);
         }
     }
     
+     //! =======================================================
+    //! this part is to check if the validated filename is in the list of files
+ //! =======================================================
     int isnotinlist = 1;
 
     for (int i = 0; i < numoffiles; i++)
@@ -537,8 +551,8 @@ char *filenamevalidations(char *filename, int numoffiles, char *filelist[]){
         //return 1;
         exit(1);
     }
-
-    //printf("filename after validations(from function): %s\n", filename);
+ //! =======================================================
+    //! =======================================================
 
     return filename;
 
