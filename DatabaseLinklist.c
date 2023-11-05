@@ -564,140 +564,156 @@ char *filenamevalidations(char *filename, int numoffiles, char *filelist[]){
 }
 int main()
 {
-    char *filelist[255]; //array of pointers to store filename
-    int numoffiles = 0; //number of files in filelist
-    int *pnumoffiles = &numoffiles; //pointer to numoffiles
-    
-    //! print the openfile menu and get the command from user 
-    char *filename = filemenu(filelist, pnumoffiles); 
-    printf("filename: %s\n", filename);
 
-    //validate the command/filename entered by user 
-    filename = filenamevalidations(filename , numoffiles, filelist);
-    printf("filename after validations: %s\n", filename);
-
-    //free the memory of filelist
-    for (int i = 0; i < numoffiles; i++)
-    {
-        free(filelist[i]);
-    }
-
-    //open the file
-    struct node *head = openFile(filename);
-
-    struct node *current = head;
     int choice = 1;
 
-    char *input;
+    do{
+        char *filelist[255]; //array of pointers to store filename
+        int numoffiles = 0; //number of files in filelist
+        int *pnumoffiles = &numoffiles; //pointer to numoffiles
+        //! print the openfile menu and get the command from user 
+        char *filename = filemenu(filelist, pnumoffiles); 
+        printf("filename: %s\n", filename);
 
-    while (choice)
-    {
+        //validate the command/filename entered by user 
+        filename = filenamevalidations(filename , numoffiles, filelist);
+        printf("filename after validations: %s\n", filename);
 
-        //! ask user what they want to do?
-        printf("\nWhat do you want to do with %s?\n", filename);
-        printf("1. SHOW_ALL - display all the modules\n\tCommand: SHOW_ALL or\n\t\t 1\n\n");
-        printf("2. INSERT - add a new module\n\tCommand: INSERT <key>,<value 1>,<value 2>,...,<value n> or\n\t\t 2 <key>,<value 1>,<value 2>,...,<value n>\n\n");
-        printf("3. QUERY - display a module\n\tCommand: QUERY <key> or\n\t\t 3 <key>\n\n");
-        printf("4. UPDATE - change a specific module\n\tCommand: UPDATE <key> <values...> or\n\t\t 4 <key> <values...>\n\n");
-        printf("5. DELETE - delete a module\n\tCommand: DELETE <key> or\n\t\t 5 <key>\n\n");
-        printf("6. EXIT - close the application\n\tCommand: EXIT or\n\t\t 6\n\n");
-        printf("7. SAVE - save all the latest records in memory into the database file\n\tCommand: SAVE <filename> or\n\t\t 7 <filename>\n\n");
-        printf("Enter here: ");
-        // scanf("%d", &choice);
-        // getchar(); // to get rid of the \n character
-
-        input = inputString(stdin, 10);
-        // printf("Input: %s\n", input);
-        // printf("Length: %d\n", strlen(input));
-
-        // Get command from input
-        int i;
-        char command[strlen(input)];
-        for (i = 0; input[i] != '\0'; i++)
+        //free the memory of filelist
+        for (int i = 0; i < numoffiles; i++)
         {
-            if (input[i] == ' ')
-                break;
-            command[i] = input[i];
+            free(filelist[i]);
         }
-        command[i] = '\0';
-        // printf("i = %d\n", i);
 
-        // Get data from input
-        int j;
-        char data[strlen(input)];
-        for (j = 0; input[j + i + 1] != '\0'; j++)
-        {
-            data[j] = input[i + j + 1];
-        }
-        // printf("j = %d\n", j);
-        data[j] = '\0';
+        //open the file
+        struct node *head = openFile(filename);
 
-        // printf("Command: %s\n", command);
-        // printf("Data: %s\n", data);
+        struct node *current = head;
+        
 
-        if (strcasecmp(command, "show_all") == 0 || strcasecmp(command, "1") == 0)
+        char *input;
+
+        while (choice)
         {
-            // SHOW_ALL: display all the modules
-            printf("\n");
-            //! print in reverse, so the header will be printed out first!
-            PrintReverse(head);
-            printf("\n");
-        }
-        else if (strcasecmp(command, "insert") == 0 || strcasecmp(command, "2") == 0)
-        {
-            // todo, pass in the data as a string, then split it into tokens, if the data contains anything
-            //  INSERT: add a new module
+
+            //! ask user what they want to do?
+            printf("\nWhat do you want to do with %s?\n", filename);
+            printf("1. SHOW_ALL - display all the modules\n\tCommand: SHOW_ALL or\n\t\t 1\n\n");
+            printf("2. INSERT - add a new module\n\tCommand: INSERT <key>,<value 1>,<value 2>,...,<value n> or\n\t\t 2 <key>,<value 1>,<value 2>,...,<value n>\n\n");
+            printf("3. QUERY - display a module\n\tCommand: QUERY <key> or\n\t\t 3 <key>\n\n");
+            printf("4. UPDATE - change a specific module\n\tCommand: UPDATE <key> <values...> or\n\t\t 4 <key> <values...>\n\n");
+            printf("5. DELETE - delete a module\n\tCommand: DELETE <key> or\n\t\t 5 <key>\n\n");
+            printf("6. EXIT - close the application\n\tCommand: EXIT or\n\t\t 6\n\n");
+            printf("7. SAVE - save all the latest records in memory into the database file\n\tCommand: SAVE <filename> or\n\t\t 7 <filename>\n\n");
+            printf("8. OPEN - open another file\n\tCommand: OPEN or\n\t\t 8 \n\n");
+            printf("Enter here: ");
+            // scanf("%d", &choice);
+            // getchar(); // to get rid of the \n character
+
+            input = inputString(stdin, 10);
+            // printf("Input: %s\n", input);
+            // printf("Length: %d\n", strlen(input));
+
+            // Get command from input
+            int i;
+            char command[strlen(input)];
+            for (i = 0; input[i] != '\0'; i++)
+            {
+                if (input[i] == ' ')
+                    break;
+                command[i] = input[i];
+            }
+            command[i] = '\0';
+            // printf("i = %d\n", i);
+
+            // Get data from input
+            int j;
+            char data[strlen(input)];
+            for (j = 0; input[j + i + 1] != '\0'; j++)
+            {
+                data[j] = input[i + j + 1];
+            }
+            // printf("j = %d\n", j);
+            data[j] = '\0';
+
+            // printf("Command: %s\n", command);
             // printf("Data: %s\n", data);
-            head = addModule(head, data);
-        }
-        else if (strcasecmp(command, "query") == 0 || strcasecmp(command, "3") == 0)
-        {
-            // QUERY: display a module
-            query(head, data);
-        }
-        else if (strcasecmp(command, "update") == 0 || strcasecmp(command, "4") == 0)
-        {
-            // UPDATE: change a specific module
-        }
-        else if (strcasecmp(command, "delete") == 0 || strcasecmp(command, "5") == 0)
-        {
-            // DELETE: delete a module
-        }
-        else if (strcasecmp(command, "exit") == 0 || strcasecmp(command, "6") == 0)
-        {
-            // EXIT: close the application
-            // exit the while loop
-            choice = 0;
-        }
-        else if (strcasecmp(command, "save") == 0 || strcasecmp(command, "7") == 0)
-        {
-            // SAVE: SAVE into File
-            save(head, data);
-        }
-        else
-        {
-            // If command not found
-            printf("Command not found. Please try again.\n");
+
+            if (strcasecmp(command, "show_all") == 0 || strcasecmp(command, "1") == 0)
+            {
+                // SHOW_ALL: display all the modules
+                printf("\n");
+                //! print in reverse, so the header will be printed out first!
+                PrintReverse(head);
+                printf("\n");
+            }
+            else if (strcasecmp(command, "insert") == 0 || strcasecmp(command, "2") == 0)
+            {
+                // todo, pass in the data as a string, then split it into tokens, if the data contains anything
+                //  INSERT: add a new module
+                // printf("Data: %s\n", data);
+                head = addModule(head, data);
+            }
+            else if (strcasecmp(command, "query") == 0 || strcasecmp(command, "3") == 0)
+            {
+                // QUERY: display a module
+                query(head, data);
+            }
+            else if (strcasecmp(command, "update") == 0 || strcasecmp(command, "4") == 0)
+            {
+                // UPDATE: change a specific module
+            }
+            else if (strcasecmp(command, "delete") == 0 || strcasecmp(command, "5") == 0)
+            {
+                // DELETE: delete a module
+            }
+            else if (strcasecmp(command, "exit") == 0 || strcasecmp(command, "6") == 0)
+            {
+                // EXIT: close the application
+                // exit the while loop
+                choice = 0;
+            }
+            else if (strcasecmp(command, "save") == 0 || strcasecmp(command, "7") == 0)
+            {
+                // SAVE: SAVE into File
+                save(head, data);
+            }
+            else if (strcasecmp(command, "open") == 0 || strcasecmp(command, "8") == 0)
+            {
+                // OPEN: open another file
+                // exit the while loop
+                choice = 8;
+                break;
+            }
+            else
+            {
+                // If command not found
+                printf("Command not found. Please try again.\n");
+            }
+
+            sleep(2);
         }
 
-        sleep(2);
-    }
+        if (choice == 0)
+        {
+            // exit the application
+            printf("Exiting the application\n");
 
-    // exit the application
-    printf("Exiting the application\n");
+            //* free the memory and exit
+            //* go through the linked list and free the memory
+            current = head;
+            while (current != NULL)
+            {
+                struct node *next = current->next;
+                free(current);
+                current = next;
+            }
+        }
 
-    //* free the memory and exit
-    //* go through the linked list and free the memory
-    current = head;
-    while (current != NULL)
-    {
-        struct node *next = current->next;
-        free(current);
-        current = next;
-    }
+        // the loop for do while 
+        }   while(choice == 8); // means user wants to open another file 
+        // sleep for 5 seconds
+        sleep(5);
 
-    // sleep for 5 seconds
-    sleep(5);
-
-    return 0;
+        return 0;
 }
