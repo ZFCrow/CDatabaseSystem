@@ -303,6 +303,7 @@ bool query(struct node *head, char *data)
     char *attribute;
     char *value;
 
+    // check if data is empty
     if (strcmp(data, "") == 0)
     {
         printf("\nData was not found.\n");
@@ -316,9 +317,12 @@ bool query(struct node *head, char *data)
         // printf("Attribute: %s\n", attribute);
         value = strtok(NULL, "=");
         // printf("Value: %s\n", value);
+
+        // check if got extra space: "module code "
         if (isspace(attribute[strlen(attribute) - 1]))
             attribute[strlen(attribute) - 1] = '\0';
 
+        // check if value null
         if (value == NULL)
         {
             printf("\nQuery data for \"%s\" attribute was not found.\n", attribute);
@@ -326,6 +330,7 @@ bool query(struct node *head, char *data)
             printf("Example of a query: query %s=ict1101\n", PRINTKEY);
             return true;
         }
+        // check if got extra space: " inf1001"
         else if (isspace(value[0]))
         {
             for (int i = 0; value[i] != '\0'; i++)
@@ -334,12 +339,14 @@ bool query(struct node *head, char *data)
     }
     else
     {
+        // if no attribute, set as default module code
         attribute = PRINTKEY;
         value = data;
     }
 
     struct node *current = head; // Initialize current
 
+    // check if attribute == module code
     if (strcasecmp(attribute, PRINTKEY) == 0)
     {
         while (current != NULL)
@@ -356,6 +363,7 @@ bool query(struct node *head, char *data)
             current = current->next;
         }
     }
+    // check if attribute == module name
     else if (strcasecmp(attribute, PRINTNAME) == 0)
     {
         while (current != NULL)
@@ -372,6 +380,7 @@ bool query(struct node *head, char *data)
             current = current->next;
         }
     }
+    // check if attribute == module credit
     else if (strcasecmp(attribute, PRINTCREDIT) == 0)
     {
         while (current != NULL)
@@ -429,7 +438,7 @@ void save(struct node *head, char *filename)
     FILE *file = fopen(filename, "w"); // Open the file for writing
 
     printf("Saving File...\n");
-    //PrintReverse_save(head, file);
+    // PrintReverse_save(head, file);
     Print_save(head, file);
 
     printf("Closing File...\n");
