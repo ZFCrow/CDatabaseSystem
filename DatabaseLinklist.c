@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <stdbool.h>
 #include <dirent.h>
-// #include <conio.h>   // for kbhit()
+#include <conio.h>   // for kbhit()
 // #include <pthread.h> // for multithreading
 
 
@@ -187,25 +187,25 @@ void Print_save(struct node *head, FILE *file)
         head = head->next;
     }
 }
-void* trackInput(void* arg) {
-    printf("Tracking input\n");
-    while (1) {
-        //printf("Waiting for input in trackinput\n");
-        if (kbhit()) {
-            // char ch = getchar();
-            // // Perform processing for each character received from the user
-            // if (ch == '\b') {
-            //     // Handle backspace
-            //     printf("Backspace detected\n");
-            // } else {
-            //     // Process the character in other ways if needed
-            //     printf("Character: %c\n", ch);
-            // }
-            printf("something was detected\n");
-        }
-    }
-    return NULL;
-}
+// void* trackInput(void* arg) {
+//     printf("Tracking input\n");
+//     while (1) {
+//         //printf("Waiting for input in trackinput\n");
+//         if (kbhit()) {
+//             // char ch = getchar();
+//             // // Perform processing for each character received from the user
+//             // if (ch == '\b') {
+//             //     // Handle backspace
+//             //     printf("Backspace detected\n");
+//             // } else {
+//             //     // Process the character in other ways if needed
+//             //     printf("Character: %c\n", ch);
+//             // }
+//             printf("something was detected\n");
+//         }
+//     }
+//     return NULL;
+// }
 
 struct node *addModule(struct node *head, char *data)
 {
@@ -226,7 +226,9 @@ struct node *addModule(struct node *head, char *data)
     {
 
         printf("Invalid input. please choose to either cancel the operation or we will be prompting you to add values manually now.(enter esc to cancel)\n");
-
+        if (cancel()){
+            return head;
+        }
         char buffer[100]; // this is to check for extra input key in by user
 
         //! allow user to return back by pressing enter thread
@@ -301,7 +303,7 @@ struct node *addModule(struct node *head, char *data)
         printf("%s: %s\n", PRINTNAME, head->module.name);
         printf("%s: %d\n", PRINTCREDIT, head->module.credit);
 
-        pthread_cancel(tid); //!thread
+      //  pthread_cancel(tid); //!thread
         return head;
     }
 
