@@ -667,21 +667,17 @@ void save(struct node *head, char *filename)
         }
     }
 
-    if (!check)
-    {
-        return;
-    }
-
     FILE *file = fopen(filename, "w"); // Open the file for writing
     if (file == NULL)
     {
         perror("Error opening file");
         return;
     }
+
     printf("Saving File...\n");
     // PrintReverse_save(head, file);
+    
     Print_save(head, file);
-
     printf("Closing File...\n");
     fclose(file);
     printf("File Saved!\n");
