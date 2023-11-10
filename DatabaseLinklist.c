@@ -627,7 +627,7 @@ char *filenamevalidations(char *filename, int numoffiles, char *filelist[])
 }
 
 // sorting nodes base on module code
-struct node *sort(struct node *head)
+struct node *sort(struct node *head, int sortchoice)
 {
     struct node *current = head;
     struct node *index = NULL;
@@ -645,12 +645,38 @@ struct node *sort(struct node *head)
 
             while (index != NULL)
             {
-                if (strcasecmp(current->module.key, index->module.key) > 0)
+                // if 1 then sort by module code
+                if (sortchoice == 1)
                 {
-                    // if the current module code is greater than the index module code, then we need to swap the modules
-                    temp = current->module;
-                    current->module = index->module;
-                    index->module = temp;
+                    if (strcasecmp(current->module.key, index->module.key) > 0)
+                    {
+                        // if the current module code is greater than the index module code, then we need to swap the modules
+                        temp = current->module;
+                        current->module = index->module;
+                        index->module = temp;
+                    }
+                }
+                // if 2 then sort by module name
+                else if (sortchoice == 2)
+                {
+                    if (strcasecmp(current->module.name, index->module.name) > 0)
+                    {
+                        // if the current module name is greater than the index module name, then we need to swap the modules
+                        temp = current->module;
+                        current->module = index->module;
+                        index->module = temp;
+                    }
+                }
+                // if 3 then sort by module credit
+                else if (sortchoice == 3)
+                {
+                    if (current->module.credit > index->module.credit)
+                    {
+                        // if the current module credit is greater than the index module credit, then we need to swap the modules
+                        temp = current->module;
+                        current->module = index->module;
+                        index->module = temp;
+                    }
                 }
                 index = index->next;
             }
@@ -716,8 +742,18 @@ int menu2(struct node **head, struct node **current)
     {
         // SHOW_ALL: display all the modules
         printf("\n");
+        // ask user which one they want to sort by
+        printf("How do you want to sort the modules?\n");
+        printf("1. %s\n", PRINTKEY);
+        printf("2. %s\n", PRINTNAME);
+        printf("3. %s\n", PRINTCREDIT);
+        printf("Enter here: ");
+        int sortchoice;
+        scanf("%d", &sortchoice);
+        getchar(); // to get rid of the \n character
+
         //! sort the linked list first
-        *head = sort(*head);
+        *head = sort(*head, sortchoice);
 
         // //! print in reverse, so the header will be printed out first!
         // PrintReverse(*head);
