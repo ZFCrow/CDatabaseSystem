@@ -44,6 +44,29 @@ int containsSpace(const char *str)
     return 0; // String does not contain a space
 }
 
+char *inputString(FILE *fp, size_t size)
+{
+    // The size is extended by the input with the value of the provisional
+    char *str;
+    int ch;
+    size_t len = 0;
+    str = realloc(NULL, sizeof(*str) * size); // size is start size
+    if (!str)
+        return str;
+    while (EOF != (ch = fgetc(fp)) && ch != '\n')
+    {
+        str[len++] = ch;
+        if (len == size)
+        {
+            str = realloc(str, sizeof(*str) * (size += 16));
+            if (!str)
+                return str;
+        }
+    }
+    str[len++] = '\0';
+    return realloc(str, sizeof(*str) * len);
+}
+
 // instead of reading all these modules from the file in main, create a openfile function and create a linkedlist from there,
 // then return the head of the linked list to main
 struct node *openFile(char *filename)
@@ -293,120 +316,160 @@ struct node *addModule(struct node *head, char *data)
     }
 }
 
-void print_query(struct node *current, char *value, char *attribute)
-{
-    printf("\nA record for %s(key) = %s is found in the database. Below are the details:\n", attribute, value);
-    printf("%s: %s\n", PRINTKEY, current->module.key);
-    printf("%s: %s\n", PRINTNAME, current->module.name);
-    printf("%s: %d\n", PRINTCREDIT, current->module.credit);
-}
-
 void print_query_error()
 {
     printf("Available attributes: %s , %s , %s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
-    printf("Example of a query: query %s=ict1101\n", PRINTKEY);
-    printf("Please try again.\n");
+    printf("Example of a query: %s=ict1101\n", PRINTKEY);
+}
+
+char *ask_query()
+{
+    char *value;
+    printf("\nPlease enter query again: ");
+    value = inputString(stdin, 10);
+    return value;
 }
 
 /* Checks whether the value x is present in linked list */
-bool query(struct node *head, char *data)
+bool query(struct node *head, char *inputData)
 {
     // printf("What's head: %s\t%s\t%d\n", head->module.key, head->module.name, head->module.credit);
     // printf("Data: %s\n", data);
 
+    int works = 0;
     int count = 0;
+    char *data = inputData;
     char *attribute;
     char *value;
 
-    // check if data is empty
-    if (strcmp(data, "") == 0)
+    do
     {
-        printf("\nQuery data was not found.\n");
-        print_query_error();
-        return true;
-    }
-    else if (strchr(data, '=') != NULL)
-    {
-        attribute = strtok(data, "=");
-        // printf("Attribute: %s\n", attribute);
-        value = strtok(NULL, "=");
-        // printf("Value: %s\n", value);
-
-        // check if got extra space: "module code "
-        if (isspace(attribute[strlen(attribute) - 1]))
-            attribute[strlen(attribute) - 1] = '\0';
-
-        // check if value null
-        if (value == NULL)
+        if (works == 1)
         {
-            printf("\nQuery data for \"%s\" attribute was not found.\n", attribute);
+            data = ask_query();
+        }
+        // check if data is empty
+        if (strcmp(data, "") == 0)
+        {
+            printf("\nQuery data was not found.\n");
             print_query_error();
-            return true;
+            // return true;
+            works = 1;
         }
-        // check if got extra space: " inf1001"
-        else if (isspace(value[0]))
+        else if (strchr(data, '=') != NULL)
         {
-            for (int i = 0; value[i] != '\0'; i++)
-                value[i] = value[i + 1];
-        }
-    }
-    else
-    {
-        // if no attribute, set as default module code
-        attribute = PRINTKEY;
-        value = data;
-    }
+            attribute = strtok(data, "=");
+            // printf("Attribute: %s\n", attribute);
+            value = strtok(NULL, "=");
+            // printf("Value: %s\n", value);
 
-    struct node *current = head; // Initialize current
+            // check if got extra space: "module code "
+            if (isspace(attribute[strlen(attribute) - 1]))
+                attribute[strlen(attribute) - 1] = '\0';
 
-    // check if attribute == module code
-    if (strcasecmp(attribute, PRINTKEY) == 0)
-    {
-        while (current != NULL)
-        {
-            if (strcasecmp(current->module.key, value) == 0)
+            // check if value null
+            if (value == NULL)
             {
-                print_query(current, value, PRINTKEY);
-                count++;
+                printf("\nQuery data for \"%s\" attribute was not found.\n", attribute);
+                print_query_error();
+                works = 1;
+                // return true;
             }
-            current = current->next;
-        }
-    }
-    // check if attribute == module name
-    else if (strcasecmp(attribute, PRINTNAME) == 0)
-    {
-        while (current != NULL)
-        {
-            if (strcasecmp(current->module.name, value) == 0)
+            // check if got extra space: " inf1001"
+            else if (isspace(value[0]))
             {
-                print_query(current, value, PRINTNAME);
-                count++;
+                for (int i = 0; value[i] != '\0'; i++)
+                    value[i] = value[i + 1];
+                works = 0;
             }
-            current = current->next;
+            else
+                works = 0;
         }
-    }
-    // check if attribute == module credit
-    else if (strcasecmp(attribute, PRINTCREDIT) == 0)
-    {
-        while (current != NULL)
+        else
         {
-            if (current->module.credit == atoi(value))
-            {
-                print_query(current, value, PRINTCREDIT);
-                count++;
-            }
-            current = current->next;
+            // if no attribute, set as default module code
+            attribute = PRINTKEY;
+            value = data;
+            works = 0;
         }
-    }
-    else
-    {
-        printf("\nAttribute name \"%s\" not found.\n", attribute);
-        print_query_error();
-        return true;
-    }
+
+        struct node *current = head; // Initialize current
+        if (!works)
+        {
+            // check if attribute == module code
+            if (strcasecmp(attribute, PRINTKEY) == 0)
+            {
+                while (current != NULL)
+                {
+                    if (strcasecmp(current->module.key, value) == 0)
+                    {
+                        if (count == 0)
+                        {
+                            printf("\nRecord for %s = %s is found in the database. Below are the details:\n\n", PRINTKEY, value);
+                            printf("%-15s\t%-40s\t%-3s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
+                        }
+                        printf("%-15s\t%-40s\t%-3d\n", current->module.key, current->module.name, current->module.credit);
+                        // printf("%s: %s\n", PRINTKEY, current->module.key);
+                        // printf("%s: %s\n", PRINTNAME, current->module.name);
+                        // printf("%s: %d\n", PRINTCREDIT, current->module.credit);
+                        // print_query(current, value, PRINTKEY);
+                        count++;
+                    }
+                    current = current->next;
+                }
+            }
+            // check if attribute == module name
+            else if (strcasecmp(attribute, PRINTNAME) == 0)
+            {
+                while (current != NULL)
+                {
+                    if (strcasecmp(current->module.name, value) == 0)
+                    {
+                        if (count == 0)
+                        {
+                            printf("\nRecord for %s = %s is found in the database. Below are the details:\n", PRINTNAME, value);
+                            printf("%-15s\t%-40s\t%-3s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
+                        }
+                        printf("%-15s\t%-40s\t%-3d\n", current->module.key, current->module.name, current->module.credit);
+                        // print_query(current, value, PRINTNAME);
+                        count++;
+                    }
+                    current = current->next;
+                }
+            }
+            // check if attribute == module credit
+            else if (strcasecmp(attribute, PRINTCREDIT) == 0)
+            {
+                while (current != NULL)
+                {
+                    if (current->module.credit == atoi(value))
+                    {
+                        if (count == 0)
+                        {
+                            printf("\nRecord for %s = %s is found in the database. Below are the details:\n", PRINTCREDIT, value);
+                            printf("%-15s\t%-40s\t%-3s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
+                        }
+                        printf("%-15s\t%-40s\t%-3d\n", current->module.key, current->module.name, current->module.credit);
+                        // print_query(current, value, PRINTCREDIT);
+                        count++;
+                    }
+                    current = current->next;
+                }
+            }
+            else
+            {
+                printf("\nAttribute name \"%s\" not found.\n", attribute);
+                print_query_error();
+                works = 1;
+                // return true;
+            }
+        }
+    } while (works);
 
     if (count == 0)
         printf("\nThere is no record with %s = %s found in the database.\n", attribute, value);
+
+    printf("\n");
     return true;
 }
 
@@ -446,29 +509,6 @@ void save(struct node *head, char *filename)
     printf("File Saved!\n");
 
     return;
-}
-
-char *inputString(FILE *fp, size_t size)
-{
-    // The size is extended by the input with the value of the provisional
-    char *str;
-    int ch;
-    size_t len = 0;
-    str = realloc(NULL, sizeof(*str) * size); // size is start size
-    if (!str)
-        return str;
-    while (EOF != (ch = fgetc(fp)) && ch != '\n')
-    {
-        str[len++] = ch;
-        if (len == size)
-        {
-            str = realloc(str, sizeof(*str) * (size += 16));
-            if (!str)
-                return str;
-        }
-    }
-    str[len++] = '\0';
-    return realloc(str, sizeof(*str) * len);
 }
 
 void addfile(char *filelist[], int *numoffiles, char *filename)
