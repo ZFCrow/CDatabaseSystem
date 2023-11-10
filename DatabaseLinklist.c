@@ -157,6 +157,17 @@ void PrintReverse_save(struct node *head, FILE *file)
     fprintf(file, "%s//%s//%d\n", head->module.key, head->module.name, head->module.credit); // Print the current node, the first one will run last!
 }
 
+void Print_save(struct node *head, FILE *file)
+{
+    fprintf(file, "%s//%s//%s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
+
+    while (head != NULL)
+    {
+        fprintf(file, "%s//%s//%d\n", head->module.key, head->module.name, head->module.credit); // Print the current node, the first one will run last!
+        head = head->next;
+    }
+}
+
 struct node *addModule(struct node *head, char *data)
 {
     struct Module newModule;
@@ -418,7 +429,8 @@ void save(struct node *head, char *filename)
     FILE *file = fopen(filename, "w"); // Open the file for writing
 
     printf("Saving File...\n");
-    PrintReverse_save(head, file);
+    //PrintReverse_save(head, file);
+    Print_save(head, file);
 
     printf("Closing File...\n");
     fclose(file);
