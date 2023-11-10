@@ -44,7 +44,6 @@ bool cancel()
         printf("Exiting Function... \n");
         return true;
     }
-
     else
     {
         return false;
