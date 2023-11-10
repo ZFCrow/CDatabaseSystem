@@ -6,8 +6,8 @@
 #include <stdbool.h>
 #include <dirent.h>
 
-//!testing compiling multiple files
-//#include "testing.h"
+//! testing compiling multiple files
+// #include "testing.h"
 
 // #define MKEY "ModuleCode"
 // #define MNAME "ModuleName"
@@ -50,16 +50,18 @@ struct node *openFile(char *filename)
 {
     printf("Reading from the file...\n");
     printf("Filename: %s\n", filename);
-    //replace the filename with moduletime.txt
-   // strcpy(filename, "a.txt");
+    // replace the filename with moduletime.txt
+    // strcpy(filename, "a.txt");
 
-    FILE *file = fopen(filename, "r"); 
+    FILE *file = fopen(filename, "r");
 
     if (file == NULL)
     {
         perror("Error opening the file");
         exit(1);
-    }else{
+    }
+    else
+    {
         printf("%s opened successfully!\n", filename);
     }
 
@@ -142,8 +144,8 @@ struct node *addModule(struct node *head, char *data)
 
     // only prompt the next 2 if the data is not empty, if the last data is not a int, we remove the data part
     // and prompt the user to enter again
-    printf("Data: %s\n", data); //print the pointer 
-   // printf("Data deref: %s\n", *data); // wrong way to deref, it will print the first char of the string
+    printf("Data: %s\n", data); // print the pointer
+    // printf("Data deref: %s\n", *data); // wrong way to deref, it will print the first char of the string
 
     // see if the data has 3 parts, if it does, then we can add the module
 
@@ -263,11 +265,6 @@ struct node *addModule(struct node *head, char *data)
 /* Checks whether the value x is present in linked list */
 bool query(struct node *head, char *data)
 {
-    // char *value;
-    // printf("Enter the module code: ");
-    // scanf("%ms", &value);
-
-    // printf("Hi %s\n", value);
     // printf("What's head: %s\t%s\t%d\n", head->module.key, head->module.name, head->module.credit);
     // printf("Data: %s\n", data);
 
@@ -275,12 +272,34 @@ bool query(struct node *head, char *data)
     char *attribute;
     char *value;
 
-    if (strchr(data, '=') != NULL)
+    if (strcmp(data, "") == 0)
+    {
+        printf("\nData was not found.\n");
+        printf("Available attributes: %s , %s , %s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
+        printf("Example of a query: query %s=ict1101\n", PRINTKEY);
+        return true;
+    }
+    else if (strchr(data, '=') != NULL)
     {
         attribute = strtok(data, "=");
         // printf("Attribute: %s\n", attribute);
         value = strtok(NULL, "=");
         // printf("Value: %s\n", value);
+        if (isspace(attribute[strlen(attribute) - 1]))
+            attribute[strlen(attribute) - 1] = '\0';
+
+        if (value == NULL)
+        {
+            printf("\nQuery data for \"%s\" attribute was not found.\n", attribute);
+            printf("Available attributes: %s , %s , %s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
+            printf("Example of a query: query %s=ict1101\n", PRINTKEY);
+            return true;
+        }
+        else if (isspace(value[0]))
+        {
+            for (int i = 0; value[i] != '\0'; i++)
+                value[i] = value[i + 1];
+        }
     }
     else
     {
@@ -340,16 +359,14 @@ bool query(struct node *head, char *data)
     }
     else
     {
-        printf("Attribute name %s not found.\n", attribute);
+        printf("\nAttribute name \"%s\" not found.\n", attribute);
         printf("Available attributes: %s , %s , %s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
-        printf("E.g. %s=ict1101\n", PRINTKEY);
+        printf("Example of a query: query %s=ict1101\n", PRINTKEY);
         return true;
     }
 
     if (count == 0)
-    {
-        printf("\nThere is no record with %s=%s found in the database.\n", attribute, value);
-    }
+        printf("\nThere is no record with %s = %s found in the database.\n", attribute, value);
     return true;
 }
 
@@ -410,7 +427,6 @@ char *inputString(FILE *fp, size_t size)
         }
     }
     str[len++] = '\0';
-
     return realloc(str, sizeof(*str) * len);
 }
 
@@ -423,23 +439,23 @@ void addfile(char *filelist[], int *numoffiles, char *filename)
         *numoffiles += 1;
     }
 
-    else 
+    else
     {
         perror("Memory allocation error");
         exit(1);
     }
 }
 
-char *filemenu(char *filelist[], int *numoffiles) 
+char *filemenu(char *filelist[], int *numoffiles)
 {
     char *currentdir = ".";
-    //get the filename from user
+    // get the filename from user
     printf("Opening Directory...\n");
     DIR *directory = opendir(currentdir);
 
     if (directory == NULL)
     {
-        perror("Error opening Directory"); //if there is nothing in dir
+        perror("Error opening Directory"); // if there is nothing in dir
     }
 
     //! ask user to open a file first to set them to memory with linkedlist
@@ -448,22 +464,23 @@ char *filemenu(char *filelist[], int *numoffiles)
 
     struct dirent *file;
 
-    while ((file = readdir(directory)) != NULL) //read file in directory 
+    while ((file = readdir(directory)) != NULL) // read file in directory
     {
-        char *txtfilename = file->d_name; //get name of file
-        char *file_extension = strchr(txtfilename, '.'); //get file extension
+        char *txtfilename = file->d_name;                // get name of file
+        char *file_extension = strchr(txtfilename, '.'); // get file extension
 
-        if (file_extension != NULL && strcmp(file_extension, ".txt") == 0) //check if file is text file
+        if (file_extension != NULL && strcmp(file_extension, ".txt") == 0) // check if file is text file
         {
             addfile(filelist, numoffiles, txtfilename);
         }
     }
-    
-    for (int i = 0; i < *numoffiles; i++) {
+
+    for (int i = 0; i < *numoffiles; i++)
+    {
         printf("%d. %s\n", i + 1, filelist[i]);
     }
 
-    closedir(directory); //closed directory
+    closedir(directory); // closed directory
 
     printf("\nEnter here: ");
 
@@ -475,20 +492,22 @@ char *filemenu(char *filelist[], int *numoffiles)
     printf("filename: %s\n", filename);
     return strdup(filename);
 }
-char *filenamevalidations(char *filename, int numoffiles, char *filelist[]){
+char *filenamevalidations(char *filename, int numoffiles, char *filelist[])
+{
 
     int isnum = 1;
-    char check[5]; //store first 4 chars in check
+    char check[5]; // store first 4 chars in check
 
-    if (strlen(filename) > 4) //use check to check if first 4 chars are 'open' if filename is longer than 4 characters
+    if (strlen(filename) > 4) // use check to check if first 4 chars are 'open' if filename is longer than 4 characters
     {
-    
-        for (int i = 0; i < 4; i++) {
-            //printf("filename[%d]: %c\n", i, filename[i]);
+
+        for (int i = 0; i < 4; i++)
+        {
+            // printf("filename[%d]: %c\n", i, filename[i]);
             check[i] = filename[i];
         }
 
-        check[4] = '\0';  // Null-terminate the result string
+        check[4] = '\0'; // Null-terminate the result string
         // check the first 4 letters of the filename to see if it is 'OPEN'
         if (strcasecmp(check, "open") == 0)
         {
@@ -500,83 +519,75 @@ char *filenamevalidations(char *filename, int numoffiles, char *filelist[]){
                 filename[i] = filename[i + 5];
             }
             printf("filename after removing open: %s\n", filename);
-            
         }
+    }
 
-    } 
-
-    //after removing open, check if filename is a number
+    // after removing open, check if filename is a number
     for (int i = 0; i < strlen(filename); i++)
+    {
+        if (!isdigit(filename[i]))
         {
-            if (!isdigit(filename[i]))
-            {
-                isnum = 0;
-                break;
-            }
+            isnum = 0;
+            break;
         }
-    
+    }
 
- 
-    
     if (isnum) // change filename to the actual filename if it is a number
     {
         int fileNumber;
         printf("filename when checking for int: %s\n", filename);
-        sscanf(filename, "%d", &fileNumber); //convert string to int and store in fileNumber
+        sscanf(filename, "%d", &fileNumber); // convert string to int and store in fileNumber
         if (fileNumber <= numoffiles)
         {
-            strcpy(filename, filelist[fileNumber-1]);
+            strcpy(filename, filelist[fileNumber - 1]);
             printf("%s\n", filename);
         }
 
         else
         {
             printf("Invalid file mentioned\n");
-            //return 1;
+            // return 1;
             exit(1);
         }
     }
-    
-     //! =======================================================
+
+    //! =======================================================
     //! this part is to check if the validated filename is in the list of files
- //! =======================================================
+    //! =======================================================
     int isnotinlist = 1;
 
     for (int i = 0; i < numoffiles; i++)
     {
-        if (strcmp(filename, filelist[i]) == 0) //check if filename to open exists
-        {   
+        if (strcmp(filename, filelist[i]) == 0) // check if filename to open exists
+        {
             isnotinlist = 0;
             break;
         }
-
     }
 
-    if (isnotinlist) //break if not in list
+    if (isnotinlist) // break if not in list
     {
         printf("Invalid File name\n");
-        //return 1;
+        // return 1;
         exit(1);
     }
- //! =======================================================
+    //! =======================================================
     //! =======================================================
 
     return filename;
-
-
 }
 
-
-int menu2(struct node **head, struct node **current){
+int menu2(struct node **head, struct node **current)
+{
     char *input;
     printf("1. SHOW_ALL - display all the modules\n\tCommand: SHOW_ALL or\n\t\t 1\n\n");
     printf("2. INSERT - add a new module\n\tCommand: INSERT <key>,<value 1>,<value 2>,...,<value n> or\n\t\t 2 <key>,<value 1>,<value 2>,...,<value n>\n\n");
     printf("3. QUERY - display a module\n\tCommand: QUERY <key> or\n\t\t 3 <key>\n\n");
     printf("4. UPDATE - change a specific module\n\tCommand: UPDATE <key> <values...> or\n\t\t 4 <key> <values...>\n\n");
     printf("5. DELETE - delete a module\n\tCommand: DELETE <key> or\n\t\t 5 <key>\n\n");
-    printf("6. EXIT - close the application\n\tCommand: EXIT or\n\t\t 6\n\n");
-    printf("7. SAVE - save all the latest records in memory into the database file\n\tCommand: SAVE <filename> or\n\t\t 7 <filename>\n\n");
-    printf("8. OPEN - open another file\n\tCommand: OPEN or\n\t\t 8 \n\n");
+    printf("6. SAVE - save all the latest records in memory into the database file\n\tCommand: SAVE <filename> or\n\t\t 6 <filename>\n\n");
+    printf("7. OPEN - open another file\n\tCommand: OPEN or\n\t\t 7\n\n");
+    printf("8. EXIT - close the application\n\tCommand: EXIT or\n\t\t 8\n\n");
     printf("Enter here: ");
     // scanf("%d", &choice);
     // getchar(); // to get rid of the \n character
@@ -598,14 +609,22 @@ int menu2(struct node **head, struct node **current){
     // printf("i = %d\n", i);
 
     // Get data from input
-    int j;
     char data[strlen(input)];
-    for (j = 0; input[j + i + 1] != '\0'; j++)
+    if (i == strlen(input))
     {
-        data[j] = input[i + j + 1];
+        data[0] = '\0';
     }
-    // printf("j = %d\n", j);
-    data[j] = '\0';
+    else
+    {
+        int j;
+        for (j = 0; input[j + i + 1] != '\0'; j++)
+        {
+            data[j] = input[i + j + 1];
+        }
+        // printf("j = %d\n", j);
+        data[j] = '\0';
+    }
+
     int choice = 1;
     // printf("Command: %s\n", command);
     // printf("Data: %s\n", data);
@@ -628,6 +647,7 @@ int menu2(struct node **head, struct node **current){
     else if (strcasecmp(command, "query") == 0 || strcasecmp(command, "3") == 0)
     {
         // QUERY: display a module
+        // printf("data: %s", data);
         query(*head, data);
     }
     else if (strcasecmp(command, "update") == 0 || strcasecmp(command, "4") == 0)
@@ -638,7 +658,19 @@ int menu2(struct node **head, struct node **current){
     {
         // DELETE: delete a module
     }
-    else if (strcasecmp(command, "exit") == 0 || strcasecmp(command, "6") == 0)
+    else if (strcasecmp(command, "save") == 0 || strcasecmp(command, "6") == 0)
+    {
+        // SAVE: SAVE into File
+        save(*head, data);
+    }
+    else if (strcasecmp(command, "open") == 0 || strcasecmp(command, "7") == 0)
+    {
+        // OPEN: open another file
+        // exit the while loop
+        choice = 8;
+        return choice;
+    }
+    else if (strcasecmp(command, "exit") == 0 || strcasecmp(command, "8") == 0)
     {
         // EXIT: close the application
         // exit the while loop
@@ -659,63 +691,50 @@ int menu2(struct node **head, struct node **current){
         }
         return choice;
     }
-    else if (strcasecmp(command, "save") == 0 || strcasecmp(command, "7") == 0)
-    {
-        // SAVE: SAVE into File
-        save(*head, data);
-    }
-    else if (strcasecmp(command, "open") == 0 || strcasecmp(command, "8") == 0)
-    {
-        // OPEN: open another file
-        // exit the while loop
-        choice = 8;
-        return choice;
-    }
     else
     {
         // If command not found
         printf("Command not found. Please try again.\n");
     }
 
-    //sleep(2);
-    //wait for user to press enter to continue
+    // sleep(2);
+    // wait for user to press enter to continue
     printf("Press Enter to continue...");
     getchar();
 
-
-return choice;
+    return choice;
 }
 
 int main()
 {
 
-//    addingtime(1, 2);
+    //    addingtime(1, 2);
 
     int choice = 1;
 
-    do{
-        char *filelist[255]; //array of pointers to store filename
-        int numoffiles = 0; //number of files in filelist
-        int *pnumoffiles = &numoffiles; //pointer to numoffiles
-        //! print the openfile menu and get the command from user 
-        char *filename = filemenu(filelist, pnumoffiles); 
+    do
+    {
+        char *filelist[255];            // array of pointers to store filename
+        int numoffiles = 0;             // number of files in filelist
+        int *pnumoffiles = &numoffiles; // pointer to numoffiles
+        //! print the openfile menu and get the command from user
+        char *filename = filemenu(filelist, pnumoffiles);
         printf("filename: %s\n", filename);
 
-        //validate the command/filename entered by user 
-        filename = filenamevalidations(filename , numoffiles, filelist);
+        // validate the command/filename entered by user
+        filename = filenamevalidations(filename, numoffiles, filelist);
         printf("filename after validations: %s\n", filename);
 
-        //free the memory of filelist
+        // free the memory of filelist
         for (int i = 0; i < numoffiles; i++)
         {
             free(filelist[i]);
         }
 
-        //open the file
+        // open the file
         struct node *head = openFile(filename);
 
         struct node *current = head;
-        
 
         while (choice)
         {
@@ -723,11 +742,12 @@ int main()
             //! ask user what they want to do?
             printf("\nWhat do you want to do with %s?\n", filename);
 
-            //!menu2 
-            choice = menu2(&head,&current); //this is pointer to pointer, so we can change the head pointer in the function
-            //UPDATE MY HEAD
-            if (choice == 8){
-                //free the memory
+            //! menu2
+            choice = menu2(&head, &current); // this is pointer to pointer, so we can change the head pointer in the function
+            // UPDATE MY HEAD
+            if (choice == 8)
+            {
+                // free the memory
                 current = head;
                 while (current != NULL)
                 {
@@ -738,13 +758,11 @@ int main()
                 break;
             }
         }
-        
 
-        // the loop for do while 
-        }   while(choice == 8); // means user wants to open another file 
-        // sleep for 5 seconds
-        sleep(5);
+        // the loop for do while
+    } while (choice == 8); // means user wants to open another file
+    // sleep for 5 seconds
+    sleep(5);
 
-        return 0;
-
+    return 0;
 }
