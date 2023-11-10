@@ -523,6 +523,117 @@ bool query(struct node *head, char *inputData)
     return true;
 }
 
+void update(struct node *head, char *data)
+{
+    struct node *current = head;
+    char *key = (char*)malloc(sizeof(key));
+
+    if (strlen(data) == 0)
+    {
+        // Get module code if 
+        printf("Please type in the module code of the module you want to update:\n");
+        scanf("%s", key);
+
+        key = strtok(key, " ");
+    }
+    else
+    {
+        key = strtok(data, " ");
+    }
+
+    while (current != NULL)
+    {
+        // printf("value: %s\n", current->module.key);
+        
+        if(strcasecmp(current->module.key,key) == 0)
+        {
+            printf("Key found.\n\n");
+
+            printf("%s: %s\n", PRINTKEY, current->module.key);
+            printf("%s: %s\n", PRINTNAME, current->module.name);
+            printf("%s: %d\n\n", PRINTCREDIT, current->module.credit);
+            
+            printf("Which attribute do you want to update?\n");
+            printf("1. Module Code\n");
+            printf("2. Module Name\n");
+            printf("3. Module Credit\n\n");
+            
+            int *choice = 0;
+
+            while(choice < (int*)1 || choice > (int*)3)
+            {
+                printf("Enter the number here:\n");
+                scanf("%d", &choice);
+                printf("%d", choice);
+
+                if(choice < (int*)1 || choice > (int*)3)
+                {
+                    printf("Invalid choice, please try again.\n\n");
+                }
+            }
+
+            if(choice == (int*)1)
+            {
+                struct node *counter = head;
+                char newkey[20];
+
+                while (counter != NULL)
+                {
+                    printf("Please enter the new module code you want to change to:\n");
+                    scanf("%s", newkey);
+
+                    // check if module code exists
+                    while (counter != NULL)
+                    {
+                        if(strcasecmp(counter->module.key,newkey) == 0)
+                        {
+                            printf("Module code already exist.\n");
+                            counter = head;
+
+                            break;
+                        }
+                        else
+                        {
+                            counter = counter->next;
+                        }
+                    }
+                }
+
+                strcpy(current->module.key,newkey);
+                printf("The value for the module code is successfully updated.\n");
+            }
+            else if(choice == (int*)2)
+            {
+                char newname[55];
+                printf("Please enter the new module name you want to change to:\n");
+                scanf("%s", newname);
+
+                strcpy(current->module.name,newname);
+                printf("The value for the module name is successfully updated.\n");
+            }
+            else if(choice == (int*)3)
+            {
+                int newcredit;
+                printf("Please enter the new module credit you want to change to:\n");
+                scanf("%d", &newcredit);
+
+                current->module.credit = newcredit;
+                printf("The value for the module credit is successfully updated.\n");
+            }
+
+            getchar();
+            return;
+        }
+
+        current = current->next;
+    }
+    
+    printf("There is no record with %s found in the database.\n", key);
+
+    free(key);
+}
+
+
 void save(struct node *head, char *filename)
 {
     int check = 1;
@@ -885,6 +996,7 @@ int menu2(struct node **head, struct node **current)
     else if (strcasecmp(command, "update") == 0 || strcasecmp(command, "4") == 0)
     {
         // UPDATE: change a specific module
+        update(*head, data);
     }
     else if (strcasecmp(command, "delete") == 0 || strcasecmp(command, "5") == 0)
     {
