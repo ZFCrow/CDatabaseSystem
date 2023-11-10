@@ -52,7 +52,14 @@ struct node *openFile(char *filename)
     printf("Filename: %s\n", filename);
     // replace the filename with moduletime.txt
     // strcpy(filename, "a.txt");
-
+    // check if i got space to open file
+    int availableFileHandles = _getmaxstdio();
+    if (availableFileHandles == -1)
+    {
+        perror("_getmaxstdio");
+        exit(1);
+    }
+    printf("Maximum number of open file handles: %d\n", availableFileHandles);
     FILE *file = fopen(filename, "r");
 
     if (file == NULL)
@@ -104,6 +111,18 @@ struct node *openFile(char *filename)
     fclose(file); // Close the file when you're done reading from it
     printf("linked list created!\n");
     return head; // return the head of the linked list
+}
+
+void printall(struct node *head)
+{
+    struct node *current = head; // Initialize current
+    // print name of columns
+    printf("%-15s\t%-40s\t%-3s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
+    while (current != NULL)
+    {
+        printf("%-15s\t%-40s\t%-3d\n", current->module.key, current->module.name, current->module.credit);
+        current = current->next;
+    }
 }
 
 void PrintReverse(struct node *head)
@@ -167,7 +186,7 @@ struct node *addModule(struct node *head, char *data)
             newModule.key[strlen(newModule.key) - 1] = '\0';                      // get rid of the \n character at the end of the string
         } while (strlen(newModule.key) > 8 || containsSpace(newModule.key) == 1); // if the length of the module code is more than 8 or contains spacing, then we need to prompt the user again
 
-        // check if the module code already exists
+        //* check if the module code already exists
         struct node *current = head; // Initialize current
         while (current != NULL)
         {
@@ -227,7 +246,8 @@ struct node *addModule(struct node *head, char *data)
 
         return head;
     }
-    else
+
+    else // if the result is 3, means my module has been created successfully and we can create the node to store the module and link it to the list
     {
 
         // check if the module code already exists
@@ -432,10 +452,10 @@ char *inputString(FILE *fp, size_t size)
 
 void addfile(char *filelist[], int *numoffiles, char *filename)
 {
-    char *newtxtfilename = strdup(filename);
+    char *newtxtfilename = strdup(filename); //
     if (newtxtfilename != NULL)
     {
-        filelist[*numoffiles] = newtxtfilename;
+        filelist[*numoffiles] = newtxtfilename; //
         *numoffiles += 1;
     }
 
@@ -489,92 +509,135 @@ char *filemenu(char *filelist[], int *numoffiles)
     fgets(filename, sizeof(filename), stdin);
     filename[strlen(filename) - 1] = '\0'; // get rid of the \n character at the end of the string
 
-    printf("filename: %s\n", filename);
+    // printf("filename: %s\n", filename);
     return strdup(filename);
 }
 char *filenamevalidations(char *filename, int numoffiles, char *filelist[])
 {
-
-    int isnum = 1;
-    char check[5]; // store first 4 chars in check
-
-    if (strlen(filename) > 4) // use check to check if first 4 chars are 'open' if filename is longer than 4 characters
+    bool flag = true;
+    while (flag)
     {
+        flag = false;
 
-        for (int i = 0; i < 4; i++)
+        int isnum = 1;
+        char check[5]; // store first 4 chars in check
+
+        if (strlen(filename) > 4) // use check to check if first 4 chars are 'open' if filename is longer than 4 characters
         {
-            // printf("filename[%d]: %c\n", i, filename[i]);
-            check[i] = filename[i];
-        }
 
-        check[4] = '\0'; // Null-terminate the result string
-        // check the first 4 letters of the filename to see if it is 'OPEN'
-        if (strcasecmp(check, "open") == 0)
-        {
-            // if it is, then we need to get rid of the first 5 letters of the filename
-            printf("removing open\n");
-
-            for (int i = 0; i < strlen(filename); i++)
+            for (int i = 0; i < 4; i++)
             {
-                filename[i] = filename[i + 5];
+                // printf("filename[%d]: %c\n", i, filename[i]);
+                check[i] = filename[i];
             }
-            printf("filename after removing open: %s\n", filename);
-        }
-    }
 
-    // after removing open, check if filename is a number
-    for (int i = 0; i < strlen(filename); i++)
-    {
-        if (!isdigit(filename[i]))
-        {
-            isnum = 0;
-            break;
-        }
-    }
+            check[4] = '\0'; // Null-terminate the result string
+            // check the first 4 letters of the filename to see if it is 'OPEN'
+            if (strcasecmp(check, "open") == 0)
+            {
+                // if it is, then we need to get rid of the first 5 letters of the filename
+                printf("removing open\n");
 
-    if (isnum) // change filename to the actual filename if it is a number
-    {
-        int fileNumber;
-        printf("filename when checking for int: %s\n", filename);
-        sscanf(filename, "%d", &fileNumber); // convert string to int and store in fileNumber
-        if (fileNumber <= numoffiles)
-        {
-            strcpy(filename, filelist[fileNumber - 1]);
-            printf("%s\n", filename);
+                for (size_t i = 0; i < strlen(filename); i++)
+                {
+                    filename[i] = filename[i + 5];
+                }
+                printf("filename after removing open: %s\n", filename);
+            }
         }
 
-        else
+        // after removing open, check if filename is a number
+        for (size_t i = 0; i < strlen(filename); i++)
         {
-            printf("Invalid file mentioned\n");
+            if (!isdigit(filename[i]))
+            {
+                isnum = 0;
+                break;
+            }
+        }
+
+        if (isnum) // change filename to the actual filename if it is a number
+        {
+            int fileNumber;
+            printf("filename when checking for int: %s\n", filename);
+            sscanf(filename, "%d", &fileNumber); // convert string to int and store in fileNumber
+            if (fileNumber <= numoffiles)
+            {
+                strcpy(filename, filelist[fileNumber - 1]);
+                printf("%s\n", filename);
+            }
+
+            else
+            {
+                printf("Invalid file mentioned\n");
+                // return 1;
+                exit(1);
+            }
+        }
+
+        //! =======================================================
+        //! this part is to check if the validated filename is in the list of files
+        //! =======================================================
+        int isnotinlist = 1;
+
+        for (int i = 0; i < numoffiles; i++)
+        {
+            if (strcmp(filename, filelist[i]) == 0) // check if filename to open exists
+            {
+                isnotinlist = 0;
+                break;
+            }
+        }
+
+        if (isnotinlist) // break if not in list
+        {
+            printf("Invalid File name\n");
             // return 1;
-            exit(1);
+            printf("Please enter the File name again: ");
+            fgets(filename, sizeof(char[15]), stdin);
+            filename[strlen(filename) - 1] = '\0'; // get rid of the \n character at the end of the string
+            flag = true;
         }
     }
 
-    //! =======================================================
-    //! this part is to check if the validated filename is in the list of files
-    //! =======================================================
-    int isnotinlist = 1;
-
-    for (int i = 0; i < numoffiles; i++)
-    {
-        if (strcmp(filename, filelist[i]) == 0) // check if filename to open exists
-        {
-            isnotinlist = 0;
-            break;
-        }
-    }
-
-    if (isnotinlist) // break if not in list
-    {
-        printf("Invalid File name\n");
-        // return 1;
-        exit(1);
-    }
     //! =======================================================
     //! =======================================================
 
     return filename;
+}
+
+// sorting nodes base on module code
+struct node *sort(struct node *head)
+{
+    struct node *current = head;
+    struct node *index = NULL;
+    struct Module temp; // temporary variable to store the module
+
+    if (head == NULL)
+    {
+        return head;
+    }
+    else
+    {
+        while (current != NULL)
+        {
+            index = current->next;
+
+            while (index != NULL)
+            {
+                if (strcasecmp(current->module.key, index->module.key) > 0)
+                {
+                    // if the current module code is greater than the index module code, then we need to swap the modules
+                    temp = current->module;
+                    current->module = index->module;
+                    index->module = temp;
+                }
+                index = index->next;
+            }
+            current = current->next;
+        }
+    }
+    return head;
 }
 
 int menu2(struct node **head, struct node **current)
@@ -633,8 +696,14 @@ int menu2(struct node **head, struct node **current)
     {
         // SHOW_ALL: display all the modules
         printf("\n");
-        //! print in reverse, so the header will be printed out first!
-        PrintReverse(*head);
+        //! sort the linked list first
+        *head = sort(*head);
+
+        // //! print in reverse, so the header will be printed out first!
+        // PrintReverse(*head);
+
+        // print normally
+        printall(*head);
         printf("\n");
     }
     else if (strcasecmp(command, "insert") == 0 || strcasecmp(command, "2") == 0)
@@ -725,11 +794,13 @@ int main()
         filename = filenamevalidations(filename, numoffiles, filelist);
         printf("filename after validations: %s\n", filename);
 
-        // free the memory of filelist
+        // free everything before opening a new file
         for (int i = 0; i < numoffiles; i++)
         {
             free(filelist[i]);
         }
+
+        // free(pnumoffiles);
 
         // open the file
         struct node *head = openFile(filename);
