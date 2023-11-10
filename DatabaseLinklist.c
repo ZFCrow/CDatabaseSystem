@@ -5,17 +5,16 @@
 #include <unistd.h>
 #include <stdbool.h>
 #include <dirent.h>
-#include <conio.h>   // for kbhit()
+#include <conio.h> // for kbhit()
 // #include <pthread.h> // for multithreading
-
 
 //! testing compiling multiple files
 // #include "testing.h"
 
 // #define MKEY "ModuleCode"
 // #define MNAME "ModuleName"
-// #define MCREDIT "Credit"   
-// #define MKEY "ModuleCode"                 
+// #define MCREDIT "Credit"
+// #define MKEY "ModuleCode"
 
 #define PRINTKEY "Module Code"
 #define PRINTNAME "Module Name"
@@ -37,7 +36,7 @@ struct node
 
 bool cancel()
 {
-    printf("Press 'ESC' to exit or any key to continue\n");
+    printf("\nPress 'ESC' to exit or any key to continue\n");
     char escape = _getch();
 
     if (escape == 27)
@@ -249,24 +248,24 @@ struct node *addModule(struct node *head, char *data)
     {
 
         printf("Invalid input. please choose to either cancel the operation or we will be prompting you to add values manually now.(enter esc to cancel)\n");
-        if (cancel()){
+        if (cancel())
+        {
             return head;
         }
         char buffer[100]; // this is to check for extra input key in by user
 
         //! allow user to return back by pressing enter thread
-        //pthread_t tid;
-        //pthread_create(&tid, NULL, trackInput, NULL);
+        // pthread_t tid;
+        // pthread_create(&tid, NULL, trackInput, NULL);
 
         do
         {
             printf("Enter the %s: ", PRINTKEY);
 
             fgets(newModule.key, sizeof(newModule.key), stdin);
-            newModule.key[strlen(newModule.key) - 1] = '\0';// get rid of the \n character at the end of the string
+            newModule.key[strlen(newModule.key) - 1] = '\0'; // get rid of the \n character at the end of the string
             // if user backspace with no characters in buffer , escape the loop
         } while (strlen(newModule.key) > 8 || containsSpace(newModule.key) == 1); // if the length of the module code is more than 8 or contains spacing, then we need to prompt the user again
-
 
         //* check if the module code already exists
         struct node *current = head; // Initialize current
@@ -326,7 +325,7 @@ struct node *addModule(struct node *head, char *data)
         printf("%s: %s\n", PRINTNAME, head->module.name);
         printf("%s: %d\n", PRINTCREDIT, head->module.credit);
 
-      //  pthread_cancel(tid); //!thread
+        //  pthread_cancel(tid); //!thread
         return head;
     }
 
@@ -393,9 +392,12 @@ bool query(struct node *head, char *inputData)
 
     do
     {
-        if (works == 1)
+        if (works)
         {
-            data = ask_query();
+            if (cancel())
+                return true;
+            else
+                data = ask_query();
         }
         // check if data is empty
         if (strcmp(data, "") == 0)
@@ -554,14 +556,14 @@ void save(struct node *head, char *filename)
             }
         }
     }
-    
+
     if (!check)
     {
         return;
     }
 
     FILE *file = fopen(filename, "w"); // Open the file for writing
-    if (file == NULL) 
+    if (file == NULL)
     {
         perror("Error opening file");
         return;
