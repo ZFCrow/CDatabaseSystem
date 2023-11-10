@@ -35,6 +35,22 @@ struct node
     struct node *next;
 };
 
+bool cancel()
+{
+    printf("Press 'ESC' to exit or any key to continue\n");
+    char escape = _getch();
+
+    if (escape == 27)
+    {
+        printf("Exiting Function... \n");
+        return true;
+    }
+
+    else
+    {
+        return false;
+    }
+}
 // validation functions
 int containsSpace(const char *str)
 {
@@ -324,6 +340,21 @@ struct node *addModule(struct node *head, char *data)
     }
 }
 
+void print_query(struct node *current, char *value, char *attribute)
+{
+    printf("\nA record for %s(key) = %s is found in the database. Below are the details:\n", attribute, value);
+    printf("%s: %s\n", PRINTKEY, current->module.key);
+    printf("%s: %s\n", PRINTNAME, current->module.name);
+    printf("%s: %d\n", PRINTCREDIT, current->module.credit);
+}
+
+void print_query_error()
+{
+    printf("Available attributes: %s , %s , %s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
+    printf("Example of a query: query %s=ict1101\n", PRINTKEY);
+    printf("Please try again.\n");
+}
+
 /* Checks whether the value x is present in linked list */
 bool query(struct node *head, char *data)
 {
@@ -337,9 +368,8 @@ bool query(struct node *head, char *data)
     // check if data is empty
     if (strcmp(data, "") == 0)
     {
-        printf("\nData was not found.\n");
-        printf("Available attributes: %s , %s , %s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
-        printf("Example of a query: query %s=ict1101\n", PRINTKEY);
+        printf("\nQuery data was not found.\n");
+        print_query_error();
         return true;
     }
     else if (strchr(data, '=') != NULL)
@@ -357,8 +387,7 @@ bool query(struct node *head, char *data)
         if (value == NULL)
         {
             printf("\nQuery data for \"%s\" attribute was not found.\n", attribute);
-            printf("Available attributes: %s , %s , %s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
-            printf("Example of a query: query %s=ict1101\n", PRINTKEY);
+            print_query_error();
             return true;
         }
         // check if got extra space: " inf1001"
@@ -384,11 +413,7 @@ bool query(struct node *head, char *data)
         {
             if (strcasecmp(current->module.key, value) == 0)
             {
-                printf("\nA record for %s(key) = %s is found in the database. Below are the details:\n", PRINTKEY, value);
-                printf("%s: %s\n", PRINTKEY, current->module.key);
-                printf("%s: %s\n", PRINTNAME, current->module.name);
-                printf("%s: %d\n", PRINTCREDIT, current->module.credit);
-
+                print_query(current, value, PRINTKEY);
                 count++;
             }
             current = current->next;
@@ -401,11 +426,7 @@ bool query(struct node *head, char *data)
         {
             if (strcasecmp(current->module.name, value) == 0)
             {
-                printf("\nA record for %s(value) = %s is found in the database. Below are the details:\n", PRINTNAME, value);
-                printf("%s: %s\n", PRINTKEY, current->module.key);
-                printf("%s: %s\n", PRINTNAME, current->module.name);
-                printf("%s: %d\n", PRINTCREDIT, current->module.credit);
-
+                print_query(current, value, PRINTNAME);
                 count++;
             }
             current = current->next;
@@ -418,11 +439,7 @@ bool query(struct node *head, char *data)
         {
             if (current->module.credit == atoi(value))
             {
-                printf("\nA record for %s(value) = %s is found in the database. Below are the details:\n", PRINTCREDIT, value);
-                printf("%s: %s\n", PRINTKEY, current->module.key);
-                printf("%s: %s\n", PRINTNAME, current->module.name);
-                printf("%s: %d\n", PRINTCREDIT, current->module.credit);
-
+                print_query(current, value, PRINTCREDIT);
                 count++;
             }
             current = current->next;
@@ -431,8 +448,7 @@ bool query(struct node *head, char *data)
     else
     {
         printf("\nAttribute name \"%s\" not found.\n", attribute);
-        printf("Available attributes: %s , %s , %s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
-        printf("Example of a query: query %s=ict1101\n", PRINTKEY);
+        print_query_error();
         return true;
     }
 
@@ -460,14 +476,31 @@ void save(struct node *head, char *filename)
         if (check)
         {
             printf("Invalid File. Please save to a .txt file!\n");
-            printf("Please enter filename again: ");
-            fgets(filename, 25, stdin);
-            filename[strcspn(filename, "\n")] = '\0'; // Remove the newline character from fgets
+            if (cancel())
+            {
+                return;
+            }
+
+            else
+            {
+                printf("Please enter filename again: ");
+                fgets(filename, 25, stdin);
+                filename[strcspn(filename, "\n")] = '\0'; // Remove the newline character from fgets
+            }
         }
+    }
+    
+    if (!check)
+    {
+        return;
     }
 
     FILE *file = fopen(filename, "w"); // Open the file for writing
-
+    if (file == NULL) 
+    {
+        perror("Error opening file");
+        return;
+    }
     printf("Saving File...\n");
     // PrintReverse_save(head, file);
     Print_save(head, file);
@@ -722,7 +755,7 @@ int menu2(struct node **head, struct node **current)
     char *input;
     printf("1. SHOW_ALL - display all the modules\n\tCommand: SHOW_ALL or\n\t\t 1\n\n");
     printf("2. INSERT - add a new module\n\tCommand: INSERT <key>,<value 1>,<value 2>,...,<value n> or\n\t\t 2 <key>,<value 1>,<value 2>,...,<value n>\n\n");
-    printf("3. QUERY - display a module\n\tCommand: QUERY <key> or\n\t\t 3 <key>\n\n");
+    printf("3. QUERY - display a module\n\tCommand: QUERY <key> or\n\t\t QUERY <key/value name>=<key/value>\n\t\t 3 <key>\n\t\t 3 <key/value name>=<key/value>\n\n");
     printf("4. UPDATE - change a specific module\n\tCommand: UPDATE <key> <values...> or\n\t\t 4 <key> <values...>\n\n");
     printf("5. DELETE - delete a module\n\tCommand: DELETE <key> or\n\t\t 5 <key>\n\n");
     printf("6. SAVE - save all the latest records in memory into the database file\n\tCommand: SAVE <filename> or\n\t\t 6 <filename>\n\n");
@@ -817,6 +850,7 @@ int menu2(struct node **head, struct node **current)
     else if (strcasecmp(command, "save") == 0 || strcasecmp(command, "6") == 0)
     {
         // SAVE: SAVE into File
+        sort(*head, 1);
         save(*head, data);
     }
     else if (strcasecmp(command, "open") == 0 || strcasecmp(command, "7") == 0)
