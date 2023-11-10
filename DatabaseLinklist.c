@@ -756,7 +756,7 @@ int menu2(struct node **head, struct node **current)
     {
         // OPEN: open another file
         // exit the while loop
-        choice = 8;
+        choice = 7;
         return choice;
     }
     else if (strcasecmp(command, "exit") == 0 || strcasecmp(command, "8") == 0)
