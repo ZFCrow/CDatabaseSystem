@@ -786,6 +786,7 @@ int menu2(struct node **head, struct node **current)
     else if (strcasecmp(command, "save") == 0 || strcasecmp(command, "6") == 0)
     {
         // SAVE: SAVE into File
+        sort(*head, 1);
         save(*head, data);
     }
     else if (strcasecmp(command, "open") == 0 || strcasecmp(command, "7") == 0)
