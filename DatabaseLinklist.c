@@ -472,92 +472,102 @@ char *filemenu(char *filelist[], int *numoffiles)
     fgets(filename, sizeof(filename), stdin);
     filename[strlen(filename) - 1] = '\0'; // get rid of the \n character at the end of the string
 
-    printf("filename: %s\n", filename);
+    //printf("filename: %s\n", filename);
     return strdup(filename);
 }
-char *filenamevalidations(char *filename, int numoffiles, char *filelist[]){
-
-    int isnum = 1;
-    char check[5]; //store first 4 chars in check
-
-    if (strlen(filename) > 4) //use check to check if first 4 chars are 'open' if filename is longer than 4 characters
+char *filenamevalidations(char *filename, int numoffiles, char *filelist[])
+{
+    bool flag = true;
+    while (flag)
     {
+        flag = false;
+
+        int isnum = 1;
+        char check[5]; //store first 4 chars in check
+
+        if (strlen(filename) > 4) //use check to check if first 4 chars are 'open' if filename is longer than 4 characters
+        {
     
-        for (int i = 0; i < 4; i++) {
-            //printf("filename[%d]: %c\n", i, filename[i]);
-            check[i] = filename[i];
-        }
-
-        check[4] = '\0';  // Null-terminate the result string
-        // check the first 4 letters of the filename to see if it is 'OPEN'
-        if (strcasecmp(check, "open") == 0)
-        {
-            // if it is, then we need to get rid of the first 5 letters of the filename
-            printf("removing open\n");
-
-            for (int i = 0; i < strlen(filename); i++)
-            {
-                filename[i] = filename[i + 5];
+            for (int i = 0; i < 4; i++) {
+                //printf("filename[%d]: %c\n", i, filename[i]);
+                check[i] = filename[i];
             }
-            printf("filename after removing open: %s\n", filename);
+
+            check[4] = '\0';  // Null-terminate the result string
+            // check the first 4 letters of the filename to see if it is 'OPEN'
+            if (strcasecmp(check, "open") == 0)
+            {
+                // if it is, then we need to get rid of the first 5 letters of the filename
+                printf("removing open\n");
+
+                for (size_t i = 0; i < strlen(filename); i++)
+                {
+                    filename[i] = filename[i + 5];
+                }
+                printf("filename after removing open: %s\n", filename);
             
-        }
-
-    } 
-
-    //after removing open, check if filename is a number
-    for (int i = 0; i < strlen(filename); i++)
-        {
-            if (!isdigit(filename[i]))
-            {
-                isnum = 0;
-                break;
             }
-        }
+
+        } 
+
+        //after removing open, check if filename is a number
+        for (size_t i = 0; i < strlen(filename); i++)
+            {
+                if (!isdigit(filename[i]))
+                {
+                    isnum = 0;
+                    break;
+                }
+            }
     
 
  
     
-    if (isnum) // change filename to the actual filename if it is a number
-    {
-        int fileNumber;
-        printf("filename when checking for int: %s\n", filename);
-        sscanf(filename, "%d", &fileNumber); //convert string to int and store in fileNumber
-        if (fileNumber <= numoffiles)
+        if (isnum) // change filename to the actual filename if it is a number
         {
-            strcpy(filename, filelist[fileNumber-1]);
-            printf("%s\n", filename);
+            int fileNumber;
+            printf("filename when checking for int: %s\n", filename);
+            sscanf(filename, "%d", &fileNumber); //convert string to int and store in fileNumber
+            if (fileNumber <= numoffiles)
+            {
+                strcpy(filename, filelist[fileNumber-1]);
+                printf("%s\n", filename);
+            }
+
+            else
+            {
+                printf("Invalid file mentioned\n");
+                //return 1;
+                exit(1);
+            }   
+        }
+    
+        //! =======================================================
+        //! this part is to check if the validated filename is in the list of files
+    //! =======================================================
+        int isnotinlist = 1;
+
+        for (int i = 0; i < numoffiles; i++)
+        {
+           if (strcmp(filename, filelist[i]) == 0) //check if filename to open exists
+            {   
+                isnotinlist = 0;
+                break;
+            }
+
         }
 
-        else
+        if (isnotinlist) //break if not in list
         {
-            printf("Invalid file mentioned\n");
+            printf("Invalid File name\n");
             //return 1;
-            exit(1);
+            printf("Please enter the File name again: ");
+            fgets(filename, sizeof(char[15]), stdin);
+            filename[strlen(filename) - 1] = '\0'; // get rid of the \n character at the end of the string
+            flag = true;
         }
     }
     
-     //! =======================================================
-    //! this part is to check if the validated filename is in the list of files
- //! =======================================================
-    int isnotinlist = 1;
-
-    for (int i = 0; i < numoffiles; i++)
-    {
-        if (strcmp(filename, filelist[i]) == 0) //check if filename to open exists
-        {   
-            isnotinlist = 0;
-            break;
-        }
-
-    }
-
-    if (isnotinlist) //break if not in list
-    {
-        printf("Invalid File name\n");
-        //return 1;
-        exit(1);
-    }
  //! =======================================================
     //! =======================================================
 
