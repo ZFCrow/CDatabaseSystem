@@ -815,7 +815,7 @@ int main()
             //! menu2
             choice = menu2(&head, &current); // this is pointer to pointer, so we can change the head pointer in the function
             // UPDATE MY HEAD
-            if (choice == 8)
+            if (choice == 7)
             {
                 // free the memory
                 current = head;
@@ -830,7 +830,7 @@ int main()
         }
 
         // the loop for do while
-    } while (choice == 8); // means user wants to open another file
+    } while (choice == 7); // means user wants to open another file
     // sleep for 5 seconds
     sleep(5);
 
