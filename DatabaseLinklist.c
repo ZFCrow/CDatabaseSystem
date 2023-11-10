@@ -559,7 +559,6 @@ char *filenamevalidations(char *filename, int numoffiles, char *filelist[])
             {
                 printf("Invalid file mentioned\n");
                 //return 1;
-                exit(1);
             }   
         }
     
