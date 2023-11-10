@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <stdbool.h>
 #include <dirent.h>
+#include <conio.h>
 
 //! testing compiling multiple files
 // #include "testing.h"
@@ -31,6 +32,22 @@ struct node
     struct node *next;
 };
 
+bool cancel()
+{
+    printf("Press 'ESC' to exit or any key to continue\n");
+    char escape = _getch();
+
+    if (escape == 27)
+    {
+        printf("Exiting Function... \n");
+        return true;
+    }
+
+    else
+    {
+        return false;
+    }
+}
 // validation functions
 int containsSpace(const char *str)
 {
@@ -429,14 +446,31 @@ void save(struct node *head, char *filename)
         if (check)
         {
             printf("Invalid File. Please save to a .txt file!\n");
-            printf("Please enter filename again: ");
-            fgets(filename, 25, stdin);
-            filename[strcspn(filename, "\n")] = '\0'; // Remove the newline character from fgets
+            if (cancel())
+            {
+                return;
+            }
+
+            else
+            {
+                printf("Please enter filename again: ");
+                fgets(filename, 25, stdin);
+                filename[strcspn(filename, "\n")] = '\0'; // Remove the newline character from fgets
+            }
         }
+    }
+    
+    if (!check)
+    {
+        return;
     }
 
     FILE *file = fopen(filename, "w"); // Open the file for writing
-
+    if (file == NULL) 
+    {
+        perror("Error opening file");
+        return;
+    }
     printf("Saving File...\n");
     // PrintReverse_save(head, file);
     Print_save(head, file);
