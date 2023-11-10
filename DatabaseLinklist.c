@@ -5,13 +5,17 @@
 #include <unistd.h>
 #include <stdbool.h>
 #include <dirent.h>
+#include <conio.h>   // for kbhit()
+// #include <pthread.h> // for multithreading
+
 
 //! testing compiling multiple files
 // #include "testing.h"
 
 // #define MKEY "ModuleCode"
 // #define MNAME "ModuleName"
-// #define MCREDIT "Credit"
+// #define MCREDIT "Credit"   
+// #define MKEY "ModuleCode"                 
 
 #define PRINTKEY "Module Code"
 #define PRINTNAME "Module Name"
@@ -31,6 +35,22 @@ struct node
     struct node *next;
 };
 
+bool cancel()
+{
+    printf("Press 'ESC' to exit or any key to continue\n");
+    char escape = _getch();
+
+    if (escape == 27)
+    {
+        printf("Exiting Function... \n");
+        return true;
+    }
+
+    else
+    {
+        return false;
+    }
+}
 // validation functions
 int containsSpace(const char *str)
 {
@@ -190,6 +210,25 @@ void Print_save(struct node *head, FILE *file)
         head = head->next;
     }
 }
+// void* trackInput(void* arg) {
+//     printf("Tracking input\n");
+//     while (1) {
+//         //printf("Waiting for input in trackinput\n");
+//         if (kbhit()) {
+//             // char ch = getchar();
+//             // // Perform processing for each character received from the user
+//             // if (ch == '\b') {
+//             //     // Handle backspace
+//             //     printf("Backspace detected\n");
+//             // } else {
+//             //     // Process the character in other ways if needed
+//             //     printf("Character: %c\n", ch);
+//             // }
+//             printf("something was detected\n");
+//         }
+//     }
+//     return NULL;
+// }
 
 struct node *addModule(struct node *head, char *data)
 {
@@ -209,16 +248,25 @@ struct node *addModule(struct node *head, char *data)
     if (result != 3 || containsSpace(newModule.key)) // if the result is not 3 or modulecode contain spaces, then we need to prompt the user to enter again
     {
 
-        printf("Invalid input. will be prompting you to add values manually now.\n");
+        printf("Invalid input. please choose to either cancel the operation or we will be prompting you to add values manually now.(enter esc to cancel)\n");
+        if (cancel()){
+            return head;
+        }
         char buffer[100]; // this is to check for extra input key in by user
+
+        //! allow user to return back by pressing enter thread
+        //pthread_t tid;
+        //pthread_create(&tid, NULL, trackInput, NULL);
 
         do
         {
             printf("Enter the %s: ", PRINTKEY);
 
             fgets(newModule.key, sizeof(newModule.key), stdin);
-            newModule.key[strlen(newModule.key) - 1] = '\0';                      // get rid of the \n character at the end of the string
+            newModule.key[strlen(newModule.key) - 1] = '\0';// get rid of the \n character at the end of the string
+            // if user backspace with no characters in buffer , escape the loop
         } while (strlen(newModule.key) > 8 || containsSpace(newModule.key) == 1); // if the length of the module code is more than 8 or contains spacing, then we need to prompt the user again
+
 
         //* check if the module code already exists
         struct node *current = head; // Initialize current
@@ -278,6 +326,7 @@ struct node *addModule(struct node *head, char *data)
         printf("%s: %s\n", PRINTNAME, head->module.name);
         printf("%s: %d\n", PRINTCREDIT, head->module.credit);
 
+      //  pthread_cancel(tid); //!thread
         return head;
     }
 
@@ -492,14 +541,31 @@ void save(struct node *head, char *filename)
         if (check)
         {
             printf("Invalid File. Please save to a .txt file!\n");
-            printf("Please enter filename again: ");
-            fgets(filename, 25, stdin);
-            filename[strcspn(filename, "\n")] = '\0'; // Remove the newline character from fgets
+            if (cancel())
+            {
+                return;
+            }
+
+            else
+            {
+                printf("Please enter filename again: ");
+                fgets(filename, 25, stdin);
+                filename[strcspn(filename, "\n")] = '\0'; // Remove the newline character from fgets
+            }
         }
+    }
+    
+    if (!check)
+    {
+        return;
     }
 
     FILE *file = fopen(filename, "w"); // Open the file for writing
-
+    if (file == NULL) 
+    {
+        perror("Error opening file");
+        return;
+    }
     printf("Saving File...\n");
     // PrintReverse_save(head, file);
     Print_save(head, file);
@@ -826,6 +892,7 @@ int menu2(struct node **head, struct node **current)
     else if (strcasecmp(command, "save") == 0 || strcasecmp(command, "6") == 0)
     {
         // SAVE: SAVE into File
+        sort(*head, 1);
         save(*head, data);
     }
     else if (strcasecmp(command, "open") == 0 || strcasecmp(command, "7") == 0)
