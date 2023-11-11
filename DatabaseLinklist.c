@@ -581,7 +581,7 @@ void update(struct node *head, char *data)
                 {
                     printf("Please enter the new module code you want to change to:\n");
                     scanf("%s", newkey);
-
+                    getchar(); // to get rid of the \n character
                     // check if module code exists
                     while (counter != NULL)
                     {
@@ -606,8 +606,15 @@ void update(struct node *head, char *data)
             {
                 char newname[55];
                 printf("Please enter the new module name you want to change to:\n");
-                scanf("%s", newname);
+                //scanf("%s", newname);
 
+                //CLEAR buffer
+                for (int c; (c = getchar()) != '\n' && c != EOF;)
+                {
+                }
+
+                fgets(newname, sizeof(newname), stdin);
+                newname[strlen(newname) - 1] = '\0'; // get rid of the \n character at the end of the string
                 strcpy(current->module.name,newname);
                 printf("The value for the module name is successfully updated.\n");
             }
@@ -616,12 +623,13 @@ void update(struct node *head, char *data)
                 int newcredit;
                 printf("Please enter the new module credit you want to change to:\n");
                 scanf("%d", &newcredit);
-
+                getchar(); // to get rid of the \n character`
                 current->module.credit = newcredit;
                 printf("The value for the module credit is successfully updated.\n");
             }
 
-            getchar();
+            //getchar until buffer is empty, DONT RUN IF GETF IS USED'
+
             return;
         }
 
@@ -666,14 +674,6 @@ void save(struct node *head, char *filename)
             }
         }
     }
-<<<<<<< HEAD
-    
-    // if (!check)
-    // {
-    //     return;
-    // }
-=======
->>>>>>> 882d498d5bbf33e9880897bdf8bbb4a8c186025f
 
     FILE *file = fopen(filename, "w"); // Open the file for writing
     if (file == NULL)
