@@ -492,10 +492,10 @@ void save(struct node *head, char *filename)
         }
     }
     
-    if (!check)
-    {
-        return;
-    }
+    // if (!check)
+    // {
+    //     return;
+    // }
 
     FILE *file = fopen(filename, "w"); // Open the file for writing
     if (file == NULL) 
@@ -707,6 +707,7 @@ struct node *sort(struct node *head, int sortchoice)
     {
         while (current != NULL)
         {
+            //printf ("looking at next key %s \n", current->module.key);
             index = current->next;
 
             while (index != NULL)
@@ -716,10 +717,14 @@ struct node *sort(struct node *head, int sortchoice)
                 {
                     if (strcasecmp(current->module.key, index->module.key) > 0)
                     {
+                        //printf("looking at current key %s \n", current->module.key);
                         // if the current module code is greater than the index module code, then we need to swap the modules
+                        //once swap, the next iteration will compare the newly swapped module with the next module
+                       // printf("swapping %s and %s\n", current->module.key, index->module.key);
                         temp = current->module;
                         current->module = index->module;
                         index->module = temp;
+                         
                     }
                 }
                 // if 2 then sort by module name
@@ -853,6 +858,7 @@ int menu2(struct node **head, struct node **current)
     {
         // SAVE: SAVE into File
         sort(*head, 1);
+
         save(*head, data);
     }
     else if (strcasecmp(command, "open") == 0 || strcasecmp(command, "7") == 0)

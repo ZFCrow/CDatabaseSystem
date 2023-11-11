@@ -1,4 +1,6 @@
 Module Code//Module Name//Module Credit
+ict1011//comsci adn theort//35
+ICT1069//MATH IS NOT FUN//3
 ict1101//computer architecture and organization//6
 ict1102//data structures and algorithms//4
 ict1103//software engineering//5
@@ -99,6 +101,5 @@ ict1197//computational cognitive science//5
 ict1198//computational psychology//4
 ict1199//computational psychiatry//3
 ict1200//computational medicine//4
-ict1011//comsci adn theort//35
 ict20354//math35//2
-ICT1069//MATH IS NOT FUN//3
+ICT9099//MATH//3
