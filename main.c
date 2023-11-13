@@ -7,6 +7,7 @@
 #include <dirent.h>
 #include <conio.h>
 
+#define INITIAL_CAPACITY 10
 
 //! testing compiling multiple files
 // #include "testing.h"
@@ -18,15 +19,16 @@
 bool checkCode(char key[])
 {
     // use isalpha to check for first 3 characters of module code to see if its alpha 
-    // 4th character will not be checked as it can be a letter or number
+    // 4th character will be checked if it is a alpha or digit
     // the remaining characters should be in numeric 
     // if not return false
     printf("key: %s\n", key);
     int numofchar = strlen(key);
-    // if more than 8 return false 
-    if (numofchar > 8)
+
+    // if more than 8 or empty return false 
+    if (numofchar > 8 | numofchar == 0)
     {
-        printf("DETECTED: more than 8 characters\n");
+        printf("DETECTED: more than 8 characters or empty\n");
         return false;
     }
     // if contains space return false 
@@ -40,15 +42,25 @@ bool checkCode(char key[])
     {
         if (i < 3)
         {
-            if (!isalpha(key[i]))
+            if (!isalpha(key[i])) //check if first 3 char is alpha
             {
                 printf("DETECTED: character %c is not alpha\n", key[i]);
                 return false;
             }
         }
+
+        else if (i == 3)
+        {
+            if (!isalnum(key[i])) //check if 4th char is alpha or digit
+            {
+                printf("DETECTED: character %c is not alpha or digit\n", key[i]);
+                return false;
+            }
+
+        }
         else if (i >= 4)
         {
-            if (!isdigit(key[i]))
+            if (!isdigit(key[i])) //check if last 4 char is digit
             {
                 printf("DETECTED: character %c is not digit\n", key[i]);
                 return false;
@@ -180,13 +192,6 @@ struct node *openFile(char *filename)
     return head; // return the head of the linked list
 }
 
-
-
-
-
-
-
-
 void print_query_error()
 {
     printf("Available attributes: %s , %s , %s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
@@ -201,16 +206,27 @@ char *ask_query()
     return value;
 }
 
-
-
-
-
 void addfile(char *filelist[], int *numoffiles, char *filename)
 {
+    if (*numoffiles >= INITIAL_CAPACITY)
+    {
+        printf("Filellist is full, increasing size\n");
+        // If the array is full, reallocate with increased capacity
+        int new_capacity = *numoffiles * 2;  // Double the capacity
+        *filelist = realloc(*filelist, new_capacity * sizeof(char *));
+
+        if (filelist == NULL)
+        {
+            perror("Memory reallocation error");
+            exit(1);
+        }
+    }
+
     char *newtxtfilename = strdup(filename); //
     if (newtxtfilename != NULL)
     {
         filelist[*numoffiles] = newtxtfilename; //
+        printf("filename added: %s\n", filelist[*numoffiles]);
         *numoffiles += 1;
     }
 
@@ -380,8 +396,6 @@ struct node *sort(struct node *head, int sortchoice)
     return head;
 }
 
-
-
 int main()
 {
 
@@ -391,7 +405,7 @@ int main()
 
     do
     {
-        char *filelist[255];            // array of pointers to store filename
+        char *filelist[INITIAL_CAPACITY];            // array of pointers to store filename
         int numoffiles = 0;             // number of files in filelist
         int *pnumoffiles = &numoffiles; // pointer to numoffiles
         //! print the openfile menu and get the command from user
