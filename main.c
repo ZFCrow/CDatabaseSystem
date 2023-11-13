@@ -319,7 +319,7 @@ char *filenamevalidations(char *filename, int numoffiles, char *filelist[])
             printf("Invalid File name\n");
             // return 1;
             printf("Please enter the File name again: ");
-            fgets(filename, sizeof(char[15]), stdin);
+            fgets(filename, 15, stdin);
             filename[strlen(filename) - 1] = '\0'; // get rid of the \n character at the end of the string
             flag = true;
         }
