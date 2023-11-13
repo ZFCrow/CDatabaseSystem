@@ -1,11 +1,12 @@
-#ifndef MAINFUNCTIONS_H
-#define MAINFUNCTIONS_H
+// #ifndef MAINFUNCTIONS_H
+// #define MAINFUNCTIONS_H
+#ifndef FUNCTIONS_H
+#define FUNCTIONS_H
 
 
 #define PRINTKEY "Module Code"
 #define PRINTNAME "Module Name"
 #define PRINTCREDIT "Module Credit"
-
 
 
 
@@ -23,6 +24,7 @@ struct node
     struct node *next;
 };
 
+
 // functions in main.c
 bool cancel();
 int containsSpace(const char *str);
@@ -33,7 +35,7 @@ char *ask_query();
 void addfile(char *filelist[], int *numoffiles, char *filename);
 char *filenamevalidations(char *filename, int numoffiles, char *filelist[]);
 struct node *sort(struct node *head, int sortchoice);
-
+bool checkCode(char key[]);
 
 
 // functions in filemenu.c

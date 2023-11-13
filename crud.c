@@ -53,10 +53,18 @@ struct node *addModule(struct node *head, char *data)
     // see if the data has 3 parts, if it does, then we can add the module
 
     int result = sscanf(data, "%8[^,],%54[^,],%d", newModule.key, newModule.name, &newModule.credit);
+
     // theres a chacne that modulename contains a number, so we need to check if the last part is a number
     printf("result: %d\n", result);
 
-    if (result != 3 || containsSpace(newModule.key)) // if the result is not 3 or modulecode contain spaces, then we need to prompt the user to enter again
+    //check if the module code is valid
+    if(checkCode(newModule.key) == 0)
+    {
+        printf("Invalid module code.\nModule Code only contains a total of not more than 8 characters.\nEnsure that your module code has the first 3-4 characters as alpha and the remaining characters as digits.\nPlease try again.\n");
+        result = 0;
+    }
+
+    if (result != 3 || containsSpace(newModule.key)) //* if the result is not 3 or modulecode contain spaces, then we need to prompt the user to enter again
     {
 
         printf("Invalid input. please choose to either cancel the operation or we will be prompting you to add values manually now.(enter esc to cancel)\n");
@@ -66,18 +74,17 @@ struct node *addModule(struct node *head, char *data)
         }
         char buffer[100]; // this is to check for extra input key in by user
 
-        //! allow user to return back by pressing enter thread
-        // pthread_t tid;
-        // pthread_create(&tid, NULL, trackInput, NULL);
-
         do
         {
             printf("Enter the %s: ", PRINTKEY);
 
             fgets(newModule.key, sizeof(newModule.key), stdin);
             newModule.key[strlen(newModule.key) - 1] = '\0'; // get rid of the \n character at the end of the string
-            // if user backspace with no characters in buffer , escape the loop
-        } while (strlen(newModule.key) > 8 || containsSpace(newModule.key) == 1); // if the length of the module code is more than 8 or contains spacing, then we need to prompt the user again
+
+            
+
+         // if the length of the module code is more than 8 or contains spacing OR IT does not contain a verified code, then we need to prompt the user again
+        } while (checkCode(newModule.key) == 0 ); 
 
         //* check if the module code already exists
         struct node *current = head; // Initialize current

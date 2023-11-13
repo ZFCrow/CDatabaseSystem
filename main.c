@@ -15,6 +15,51 @@
 #include "functions.h" 
 
 
+bool checkCode(char key[])
+{
+    // use isalpha to check for first 3 characters of module code to see if its alpha 
+    // 4th character will not be checked as it can be a letter or number
+    // the remaining characters should be in numeric 
+    // if not return false
+    printf("key: %s\n", key);
+    int numofchar = strlen(key);
+    // if more than 8 return false 
+    if (numofchar > 8)
+    {
+        printf("DETECTED: more than 8 characters\n");
+        return false;
+    }
+    // if contains space return false 
+    if (containsSpace(key))
+    {
+        printf("DETECTED: contains space\n");
+        return false;
+    }
+    printf("numofchar: %d\n", numofchar);
+    for (int i = 0; i < numofchar; i++)
+    {
+        if (i < 3)
+        {
+            if (!isalpha(key[i]))
+            {
+                printf("DETECTED: character %c is not alpha\n", key[i]);
+                return false;
+            }
+        }
+        else if (i >= 4)
+        {
+            if (!isdigit(key[i]))
+            {
+                printf("DETECTED: character %c is not digit\n", key[i]);
+                return false;
+            }
+        }
+    }
+
+    
+    return true;
+
+}
 bool cancel()
 {
     printf("\nPress 'ESC' to exit or any key to continue\n");
