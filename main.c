@@ -302,7 +302,7 @@ char *filenamevalidations(char *filename, int numoffiles, char *filelist[])
             int fileNumber;
             printf("filename when checking for int: %s\n", filename);
             sscanf(filename, "%d", &fileNumber); // convert string to int and store in fileNumber
-            if (fileNumber <= numoffiles)
+            if (fileNumber <= numoffiles && fileNumber != 0)
             {
                 strcpy(filename, filelist[fileNumber - 1]);
                 printf("%s\n", filename);
