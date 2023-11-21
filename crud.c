@@ -448,15 +448,25 @@ void delete(struct node **head, char *deleteData)
 {
     struct node *current = *head;
     struct node *prev = NULL;
-    char *data = deleteData;
 
-    if (strlen(data) == 0)
-    {
-        printf("Please type in the module code that you want to delete:\n");
-        scanf("%s", data);
+    if (strlen(deleteData) == 0)
+    {   
+        if (cancel())
+        {
+            return;
+        }
+
+        else
+        {
+            printf("Please type in the module code that you want to delete:\n");
+            fgets(deleteData, sizeof(deleteData), stdin);
+            // Remove the newline character at the end of the string
+            deleteData[strcspn(deleteData, "\n")] = '\0';
+        }
+
     }
 
-    while (current != NULL && strcmp(current->module.key, data) != 0)
+    while (current != NULL && strcmp(current->module.key, deleteData) != 0)
     {
         prev = current;
         current = current->next;
@@ -476,13 +486,16 @@ void delete(struct node **head, char *deleteData)
 
         // Free the memory of the node
         free(current);
-        getchar(); // to get rid of the \n character
-        printf("The record of key %s is successfully deleted.\n", data);
+
+        printf("The record of key %s is successfully deleted.\n", deleteData);
     }
+
     else
     {
-        printf("There is no record with key %s found in the database.\n", data);
+        printf("There is no record with key %s found in the database.\n", deleteData);
     }
+
+    return;
 }
 
 //!!! SAVING SECTION
