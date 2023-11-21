@@ -3,12 +3,9 @@
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
 
-
 #define PRINTKEY "Module Code"
 #define PRINTNAME "Module Name"
 #define PRINTCREDIT "Module Credit"
-
-
 
 struct Module
 {
@@ -24,14 +21,11 @@ struct node
     struct node *next;
 };
 
-
 // functions in main.c
 bool cancel();
 int containsSpace(const char *str);
 char *inputString(FILE *fp, size_t size);
 struct node *openFile(char *filename); //! trigger by main function after filemenu function  and filenamevalidations to determine if file is valid
-void print_query_error();
-char *ask_query();
 void addfile(char *filelist[], int *numoffiles, char *filename, int *max_capacity);
 char *filenamevalidations(char *filename, int numoffiles, char *filelist[]);
 struct node *sort(struct node *head, int sortchoice);
@@ -42,14 +36,13 @@ bool checkExistingModuleCode(struct node *head, char key[]);
 char *filemenu(char *filelist[], int *numoffiles, int *max_capacity);
 int menu2(struct node **head, struct node **current);
 
-
-
-
 // functions in crud.c
 void printall(struct node *head);
 void PrintReverse(struct node *head);
 struct node *addModule(struct node *head, char *data);
 struct node *addNode(struct node *head, struct Module newModule);
+void print_query_error();
+char *ask_query();
 bool query(struct node *head, char *inputData);
 void update(struct node *head, char *data);
 void delete(struct node **head, char *data);
