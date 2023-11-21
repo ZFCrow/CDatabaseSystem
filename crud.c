@@ -374,14 +374,23 @@ void update(struct node *head, char *data)
 
     if (strlen(data) == 0)
     {
-        // Get module code 
-        printf("Please type in the module code of the module you want to update:\n");
+        if (cancel())
+        {
+            return;
+        }
+        
+        else
+        {
+            // Get module code 
+            printf("Please type in the module code of the module you want to update:\n");
 
-        fgets(key, 9, stdin);
-        key[strlen(key) - 1] = '\0'; // get rid of the \n character at the end of the string
+            fgets(key, 9, stdin);
+            key[strlen(key) - 1] = '\0'; // get rid of the \n character at the end of the string
 
-        printf("%s\n", key);
+            printf("%s\n", key);
+        }
     }
+    
     else
     {
         key = strtok(data, " ");
@@ -421,32 +430,47 @@ void update(struct node *head, char *data)
             {
                 struct node *counter = head;
                 char newkey[20];
+                
+                bool flag = true;
 
-                while (counter != NULL)
-                {
+                while (flag)
+                {   
                     printf("Please enter the new module code you want to change to:\n");
-                    scanf("%s", newkey);
-                    getchar(); // to get rid of the \n character
-
+                    fgets(newkey, sizeof(newkey), stdin);
+                    newkey[strlen(newkey) - 1] = '\0'; // get rid of the \n character at the end of the string
                     // check if module code exists
+                    bool codeExists = false;
+
                     while (counter != NULL)
                     {
                         if(strcasecmp(counter->module.key,newkey) == 0)
                         {
                             printf("Module code already exist.\n");
                             counter = head;
-
+                            codeExists = true;
                             break;
                         }
+
                         else
                         {
                             counter = counter->next;
                         }
+
+                    }
+
+                    if (!codeExists && checkCode(newkey))
+                    {
+                        strcpy(current->module.key,newkey);
+                        printf("The value for the module code is successfully updated.\n");
+                        flag = false;
+                    }
+
+                    else
+                    {
+                        printf("Invalid module code.\nModule Code only contains a total of not more than 8 characters.\nEnsure that your module code has the first 3-4 characters as alpha and the remaining characters as digits.\nPlease try again.\n");
                     }
                 }
-
-                strcpy(current->module.key,newkey);
-                printf("The value for the module code is successfully updated.\n");
+                
             }
             else if(atoi(choice) == 2)
             {
