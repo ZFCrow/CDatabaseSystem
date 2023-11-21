@@ -103,4 +103,3 @@ ict1198//computational psychology//4
 ict1199//computational psychiatry//3
 ict1200//computational medicine//4
 ict20354//math35//2
-ICT9099//MATH//3

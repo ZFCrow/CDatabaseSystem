@@ -462,6 +462,11 @@ void delete(struct node **head, char *deleteData)
             fgets(deleteData, sizeof(deleteData), stdin);
             // Remove the newline character at the end of the string
             deleteData[strcspn(deleteData, "\n")] = '\0';
+
+            //clear the stdinput 
+            for (int c; (c = getchar()) != '\n' && c != EOF;)
+            {
+            }
         }
 
     }

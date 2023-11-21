@@ -173,6 +173,9 @@ int menu2(struct node **head, struct node **current)
     {
         // DELETE: delete a module
         delete(head, data);
+        //check if the the std is empty
+        
+
     }
     else if (strcasecmp(command, "save") == 0 || strcasecmp(command, "6") == 0)
     {
