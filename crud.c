@@ -97,16 +97,17 @@ struct node *addModule(struct node *head, char *data)
         printf("Enter the %s: ", PRINTNAME);
         fgets(newModule.name, sizeof(newModule.name), stdin);
         newModule.name[strlen(newModule.name) - 1] = '\0'; // get rid of the \n character at the end of the string
-        if(strlen(newModule.name) == 0){
+        if (strlen(newModule.name) == 0)
+        {
             strcpy(newModule.name, "NA");
         }
-        //!credits part
+        //! credits part
         bool valid = false;
         while (1)
         {
             printf("Enter the %s: ", PRINTCREDIT);
-            //USER is allowed to enter \n to store a 0
-            fgets (buffer, sizeof(buffer), stdin);
+            // USER is allowed to enter \n to store a 0
+            fgets(buffer, sizeof(buffer), stdin);
             // only get rid of \n if the buffer is not just \n
             if (buffer[0] != '\n')
                 buffer[strlen(buffer) - 1] = '\0'; // get rid of the \n character at the end of the string
@@ -116,8 +117,9 @@ struct node *addModule(struct node *head, char *data)
                 break;
             }
 
-            else {
-                //check for isdigit and if it is a number, we store it into the credit 
+            else
+            {
+                // check for isdigit and if it is a number, we store it into the credit
                 for (int i = 0; buffer[i] != '\0'; i++)
                 {
                     if (isdigit(buffer[i]))
@@ -132,15 +134,14 @@ struct node *addModule(struct node *head, char *data)
                     }
                 }
                 // if the buffer is a number, we store it into the credit
-                if (valid){
+                if (valid)
+                {
                     newModule.credit = atoi(buffer);
                     break;
                 }
-                
             }
 
             // if buffer == \n, then we set the credit to 0
-
 
             // if (scanf("%d", &newModule.credit) == 1)
             // {
@@ -222,14 +223,13 @@ struct node *addModule(struct node *head, char *data)
 }
 
 /* Checks whether the value x is present in linked list */
-bool query(struct node *head, char *inputData)
+bool query(struct node *head, char *data)
 {
     // printf("What's head: %s\t%s\t%d\n", head->module.key, head->module.name, head->module.credit);
     // printf("Data: %s\n", data);
 
     int works = 0;
     int count = 0;
-    char *data = inputData;
     char *attribute;
     char *value;
 
@@ -491,7 +491,7 @@ void delete(struct node **head, char *deleteData)
     struct node *prev = NULL;
 
     if (strlen(deleteData) == 0)
-    {   
+    {
         if (cancel())
         {
             return;
@@ -504,12 +504,11 @@ void delete(struct node **head, char *deleteData)
             // Remove the newline character at the end of the string
             deleteData[strcspn(deleteData, "\n")] = '\0';
 
-            //clear the stdinput 
+            // clear the stdinput
             for (int c; (c = getchar()) != '\n' && c != EOF;)
             {
-            }   
+            }
         }
-
     }
 
     while (current != NULL && strcmp(current->module.key, deleteData) != 0)
