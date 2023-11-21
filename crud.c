@@ -148,7 +148,6 @@ struct node *addModule(struct node *head, char *data)
                         break;
                     }
                 }
-                
                 // if the buffer is a number, we store it into the credit
                 if (valid)
                 {
@@ -278,10 +277,6 @@ bool query(struct node *head, char *data)
                             printf("%-15s\t%-40s\t%-3s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
                         }
                         printf("%-15s\t%-40s\t%-3d\n", current->module.key, current->module.name, current->module.credit);
-                        // printf("%s: %s\n", PRINTKEY, current->module.key);
-                        // printf("%s: %s\n", PRINTNAME, current->module.name);
-                        // printf("%s: %d\n", PRINTCREDIT, current->module.credit);
-                        // print_query(current, value, PRINTKEY);
                         count++;
                     }
                     current = current->next;
