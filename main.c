@@ -15,6 +15,20 @@
 //functions prototype that contains functions from all the files 
 #include "functions.h" 
 
+//check existing moduelcode
+bool checkExistingModuleCode(struct node *head, char key[])
+{
+    struct node *current = head;
+    while (current != NULL)
+    {
+        if (strcasecmp(current->module.key, key) == 0)
+        {
+            return true;
+        }
+        current = current->next;
+    }
+    return false;
+}
 
 bool checkCode(char key[])
 {

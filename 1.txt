@@ -1,4 +1,5 @@
 Module Code//Module Name//Module Credit
+ICT00001//GOGO//30
 ICT10000//NEW MODULE WOO!//50
 ict1011//comsci adn theort//35
 ICT1069//MATH IS NOT FUN//3
@@ -103,4 +104,3 @@ ict1198//computational psychology//4
 ict1199//computational psychiatry//3
 ict1200//computational medicine//4
 ict20354//math35//2
-ict9099//NA//0

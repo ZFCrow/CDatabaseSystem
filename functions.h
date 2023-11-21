@@ -36,7 +36,7 @@ void addfile(char *filelist[], int *numoffiles, char *filename, int *max_capacit
 char *filenamevalidations(char *filename, int numoffiles, char *filelist[]);
 struct node *sort(struct node *head, int sortchoice);
 bool checkCode(char key[]);
-
+bool checkExistingModuleCode(struct node *head, char key[]);
 
 // functions in filemenu.c
 char *filemenu(char *filelist[], int *numoffiles, int *max_capacity);
@@ -49,6 +49,7 @@ int menu2(struct node **head, struct node **current);
 void printall(struct node *head);
 void PrintReverse(struct node *head);
 struct node *addModule(struct node *head, char *data);
+struct node *addNode(struct node *head, struct Module newModule);
 bool query(struct node *head, char *inputData);
 void update(struct node *head, char *data);
 void delete(struct node **head, char *data);

@@ -37,7 +37,24 @@ void PrintReverse(struct node *head)
     PrintReverse(head->next); // Recursively print the rest of the list
     printf("%-15s\t%-40s\t%-3d\n", head->module.key, head->module.name, head->module.credit);
 }
+
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//add node 
+struct node *addNode(struct node *head, struct Module newModule)
+{
+    struct node *newNode = (struct node *)malloc(sizeof(struct node));
+    if (newNode == NULL)
+    {
+        perror("Memory allocation failed");
+        exit(1);
+    }
+
+    newNode->module = newModule;
+    newNode->next = head; // connect the new node to the current head of the list
+    head = newNode;
+
+    return head;
+}
 
 struct node *addModule(struct node *head, char *data)
 {
@@ -46,7 +63,6 @@ struct node *addModule(struct node *head, char *data)
     // only prompt the next 2 if the data is not empty, if the last data is not a int, we remove the data part
     // and prompt the user to enter again
     printf("Data: %s\n", data); // print the pointer
-    // printf("Data deref: %s\n", *data); // wrong way to deref, it will print the first char of the string
 
     // see if the data has 3 parts, if it does, then we can add the module
 
@@ -84,22 +100,21 @@ struct node *addModule(struct node *head, char *data)
 
         //* check if the module code already exists
         struct node *current = head; // Initialize current
-        while (current != NULL)
-        {
-            if (strcasecmp(current->module.key, newModule.key) == 0)
-            {
-                printf("\n%s \"%s\" already exists in database. Please try again.\n", PRINTKEY, newModule.key);
-                return head;
-            }
-            current = current->next;
+        if(checkExistingModuleCode(head,newModule.key) == 1){
+            printf("\n%s \"%s\" already exists in database. Please try again.\n", PRINTKEY, newModule.key);
+            printf("checked by function\n");
+            return head;
         }
 
+        //!name part
         printf("Enter the %s: ", PRINTNAME);
         fgets(newModule.name, sizeof(newModule.name), stdin);
         newModule.name[strlen(newModule.name) - 1] = '\0'; // get rid of the \n character at the end of the string
         if(strlen(newModule.name) == 0){
             strcpy(newModule.name, "NA");
         }
+
+
         //!credits part
         bool valid = false;
         while (1)
@@ -139,83 +154,33 @@ struct node *addModule(struct node *head, char *data)
                 
             }
 
-            // if buffer == \n, then we set the credit to 0
-
-
-            // if (scanf("%d", &newModule.credit) == 1)
-            // {
-            //     // check if user enter extra input
-            //     fgets(buffer, sizeof(buffer), stdin);
-            //     if (buffer[0] != '\n')
-            //     {
-            //         printf("Invalid input. Please try again.\n");
-            //         continue;
-            //     }
-            //     else
-            //     {
-            //         break;
-            //     }
-            // }
-            // else // if user enter a non-integer
-            // {
-
-            //     printf("Invalid input. Please try again.\n");
-            //     scanf("%*[^\n]"); // clear input buffer
-            //     continue;
-            // }
+       
         }
 
-        struct node *newNode = (struct node *)malloc(sizeof(struct node));
-        if (newNode == NULL)
-        {
-            perror("Memory allocation failed");
-            exit(1);
-        }
+        //* ADD node to link list
 
-        newNode->module = newModule;
-        newNode->next = head; // connect the new node to the current head of the list
-        head = newNode;
 
-        printf("\nData is inserted into the database.\n");
-        printf("%s: %s\n", PRINTKEY, head->module.key);
-        printf("%s: %s\n", PRINTNAME, head->module.name);
-        printf("%s: %d\n", PRINTCREDIT, head->module.credit);
+        head = addNode(head, newModule);
 
-        //  pthread_cancel(tid); //!thread
+        
         return head;
     }
 
-    else // if the result is 3, means my module has been created successfully and we can create the node to store the module and link it to the list
+    else //* if the result is 3, means my module has been created successfully and we can create the node to store the module and link it to the list
     {
 
         // check if the module code already exists
         struct node *current = head; // Initialize current
 
-        while (current != NULL)
-        {
-            if (strcasecmp(current->module.key, newModule.key) == 0)
-            {
-                printf("\n%s \"%s\" already exists in database. Please try again.\n", PRINTKEY, newModule.key);
-                return head;
-            }
-            current = current->next;
+        if(checkExistingModuleCode(head,newModule.key) == 1){
+            printf("\n%s \"%s\" already exists in database. Please try again.\n", PRINTKEY, newModule.key);
+            printf("checked by function\n");
+            return head;
         }
 
-        struct node *newNode = (struct node *)malloc(sizeof(struct node));
-        if (newNode == NULL)
-        {
-            perror("Memory allocation failed");
-            exit(1);
-        }
+       // ! ADD node to link list
 
-        newNode->module = newModule;
-        newNode->next = head; // connect the new node to the current head of the list
-        head = newNode;
-
-        printf("\nData is inserted into the database.\n");
-        printf("%s: %s\n", PRINTKEY, head->module.key);
-        printf("%s: %s\n", PRINTNAME, head->module.name);
-        printf("%s: %d\n", PRINTCREDIT, head->module.credit);
+        head = addNode(head, newModule);
 
         return head;
     }
