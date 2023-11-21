@@ -583,10 +583,7 @@ void save(struct node *head, char *filename)
     {
         if (strlen(filename) >= 5) // check if filename has at least 5chars
         {
-            char filetype[4]; // Include space for the null
-            strcpy(filetype, filename + strlen(filename) - 3);
-
-            if (strncmp(filetype, "txt", 3) == 0) // check if last 3 chars matches txt
+            if (strcasecmp(filename + strlen(filename) - 4, ".txt") == 0) // check if last 4 chars matches .txt
             {
                 check = 0; // break out of loop and continue to save into file
             }
@@ -604,11 +601,12 @@ void save(struct node *head, char *filename)
             {
                 printf("Please enter filename again: ");
                 fgets(filename, 25, stdin);
-                filename[strcspn(filename, "\n")] = '\0'; // Remove the newline character from fgets
+                filename[strlen(filename)-1] = '\0'; // Remove the newline character from fgets
             }
         }
     }
 
+    printf("Opening File: %s...\n", filename);
     FILE *file = fopen(filename, "w"); // Open the file for writing
     if (file == NULL)
     {
@@ -616,13 +614,15 @@ void save(struct node *head, char *filename)
         return;
     }
 
-    printf("Saving File...\n");
-    // PrintReverse_save(head, file);
+    printf("Saving File: %s...\n", filename);
+    // PrintReverse_save(head, file);   
 
-    Print_save(head, file);
-    printf("Closing File...\n");
+    Print_save(head, file); //writing into the file
+
+    printf("Closing File: %s...\n", filename);
     fclose(file);
-    printf("File Saved!\n");
+    
+    printf("File Saved: %s\n", filename);
 
     return;
 }

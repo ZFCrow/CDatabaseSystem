@@ -33,9 +33,9 @@ char *filemenu(char *filelist[], int *numoffiles, int *max_capacity)
     while ((file = readdir(directory)) != NULL) // read file in directory
     {
         char *txtfilename = file->d_name;                // get name of file
-        char *file_extension = strchr(txtfilename, '.'); // get file extension
+        //char *file_extension = strchr(txtfilename, '.'); // get file extension
 
-        if (file_extension != NULL && strcmp(file_extension, ".txt") == 0) // check if file is text file
+        if (txtfilename != NULL && strcasecmp(txtfilename + strlen(txtfilename) - 4, ".txt") == 0) // check if file is text file
         {
             addfile(filelist, numoffiles, txtfilename, max_capacity);
         }
