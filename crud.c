@@ -148,6 +148,7 @@ struct node *addModule(struct node *head, char *data)
                         break;
                     }
                 }
+                
                 // if the buffer is a number, we store it into the credit
                 if (valid)
                 {
