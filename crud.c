@@ -476,7 +476,7 @@ void delete(struct node **head, char *deleteData)
 
         // Free the memory of the node
         free(current);
-
+        getchar(); // to get rid of the \n character
         printf("The record of key %s is successfully deleted.\n", data);
     }
     else
