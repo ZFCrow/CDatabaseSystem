@@ -32,14 +32,14 @@ char *inputString(FILE *fp, size_t size);
 struct node *openFile(char *filename); //! trigger by main function after filemenu function  and filenamevalidations to determine if file is valid
 void print_query_error();
 char *ask_query();
-void addfile(char *filelist[], int *numoffiles, char *filename);
+void addfile(char *filelist[], int *numoffiles, char *filename, int *max_capacity);
 char *filenamevalidations(char *filename, int numoffiles, char *filelist[]);
 struct node *sort(struct node *head, int sortchoice);
 bool checkCode(char key[]);
 
 
 // functions in filemenu.c
-char *filemenu(char *filelist[], int *numoffiles);
+char *filemenu(char *filelist[], int *numoffiles, int *max_capacity);
 int menu2(struct node **head, struct node **current);
 
 

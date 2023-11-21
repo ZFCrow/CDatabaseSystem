@@ -12,7 +12,7 @@
 //functions prototype that contains functions from all the files 
 #include "functions.h" 
 
-char *filemenu(char *filelist[], int *numoffiles)
+char *filemenu(char *filelist[], int *numoffiles, int *max_capacity)
 {
     char *currentdir = ".";
     // get the filename from user
@@ -37,7 +37,7 @@ char *filemenu(char *filelist[], int *numoffiles)
 
         if (file_extension != NULL && strcmp(file_extension, ".txt") == 0) // check if file is text file
         {
-            addfile(filelist, numoffiles, txtfilename);
+            addfile(filelist, numoffiles, txtfilename, max_capacity);
         }
     }
 

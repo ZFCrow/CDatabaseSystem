@@ -7,7 +7,7 @@
 #include <dirent.h>
 #include <conio.h>
 
-#define INITIAL_CAPACITY 10
+#define INITIAL_CAPACITY 5
 
 //! testing compiling multiple files
 // #include "testing.h"
@@ -206,13 +206,14 @@ char *ask_query()
     return value;
 }
 
-void addfile(char *filelist[], int *numoffiles, char *filename)
+void addfile(char *filelist[], int *numoffiles, char *filename, int *max_capacity)
 {
-    if (*numoffiles >= INITIAL_CAPACITY)
+    if (*numoffiles >= *max_capacity)
     {
         printf("Filellist is full, increasing size\n");
         // If the array is full, reallocate with increased capacity
         int new_capacity = *numoffiles * 2;  // Double the capacity
+        *max_capacity = new_capacity;
         *filelist = realloc(*filelist, new_capacity * sizeof(char *));
 
         if (filelist == NULL)
@@ -402,14 +403,16 @@ int main()
     //    addingtime(1, 2);
 
     int choice = 1;
+    int max_capacity = INITIAL_CAPACITY;
 
     do
     {
-        char *filelist[INITIAL_CAPACITY];            // array of pointers to store filename
+        char *filelist[max_capacity];            // array of pointers to store filename
         int numoffiles = 0;             // number of files in filelist
         int *pnumoffiles = &numoffiles; // pointer to numoffiles
+        int *pmax_capacity = &max_capacity; // pointer to max capacity
         //! print the openfile menu and get the command from user
-        char *filename = filemenu(filelist, pnumoffiles);
+        char *filename = filemenu(filelist, pnumoffiles, pmax_capacity);
         printf("filename: %s\n", filename);
 
         // validate the command/filename entered by user
