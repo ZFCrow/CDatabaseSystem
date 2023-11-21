@@ -476,9 +476,12 @@ void update(struct node *head, char *data)
 
                 current->module.credit = atoi(newcredit);
                 printf("The value for the module credit is successfully updated.\n");
+
+                free(newcredit);
             }
 
             //getchar until buffer is empty, DONT RUN IF GETF IS USED'
+            free(choice);
 
             return;
         }
