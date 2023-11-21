@@ -15,7 +15,7 @@
 // functions prototype that contains functions from all the files
 #include "functions.h"
 
-// check existing moduelcode
+// check existing moduelcode and returns a bool
 bool checkExistingModuleCode(struct node *head, char key[])
 {
     struct node *current = head;
@@ -29,6 +29,23 @@ bool checkExistingModuleCode(struct node *head, char key[])
     }
     return false;
 }
+
+// check for existing modulecode and return the current pointer where it matches
+struct node *returnExistingModuleCodeptr(struct node *head, char key[])
+{
+    struct node *current = head;
+    while (current != NULL)
+    {
+        if (strcasecmp(current->module.key, key) == 0)
+        {
+            return current;
+        }
+        current = current->next;
+    }
+
+    return current;
+}
+
 
 bool checkCode(char key[])
 {
