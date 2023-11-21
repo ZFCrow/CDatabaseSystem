@@ -483,7 +483,6 @@ void delete(struct node **head, char *deleteData)
     {
         printf("There is no record with key %s found in the database.\n", data);
     }
-    free(data);
 }
 
 //!!! SAVING SECTION

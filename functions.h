@@ -51,6 +51,7 @@ void PrintReverse(struct node *head);
 struct node *addModule(struct node *head, char *data);
 bool query(struct node *head, char *inputData);
 void update(struct node *head, char *data);
+void delete(struct node **head, char *data);
 void save(struct node *head, char *filename);
 void PrintReverse_save(struct node *head, FILE *file);
 void Print_save(struct node *head, FILE *file);
