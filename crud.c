@@ -370,15 +370,17 @@ bool query(struct node *head, char *data)
 void update(struct node *head, char *data)
 {
     struct node *current = head;
-    char *key = (char *)malloc(sizeof(key));
+    char *key = (char*)malloc(sizeof(char));
 
     if (strlen(data) == 0)
     {
-        // Get module code if
+        // Get module code 
         printf("Please type in the module code of the module you want to update:\n");
-        scanf("%s", key);
 
-        key = strtok(key, " ");
+        fgets(key, 9, stdin);
+        key[strlen(key) - 1] = '\0'; // get rid of the \n character at the end of the string
+
+        printf("%s\n", key);
     }
     else
     {
@@ -387,36 +389,35 @@ void update(struct node *head, char *data)
 
     while (current != NULL)
     {
-        // printf("value: %s\n", current->module.key);
-
-        if (strcasecmp(current->module.key, key) == 0)
+        if(strcasecmp(current->module.key,key) == 0)
         {
             printf("Key found.\n\n");
 
             printf("%s: %s\n", PRINTKEY, current->module.key);
             printf("%s: %s\n", PRINTNAME, current->module.name);
             printf("%s: %d\n\n", PRINTCREDIT, current->module.credit);
-
+            
             printf("Which attribute do you want to update?\n");
             printf("1. Module Code\n");
             printf("2. Module Name\n");
             printf("3. Module Credit\n\n");
+            
+            char *choice = (char*)malloc(sizeof(char));
 
-            int *choice = 0;
-
-            while (choice < (int *)1 || choice > (int *)3)
-            {
+            do {
                 printf("Enter the number here:\n");
-                scanf("%d", &choice);
-                printf("%d", choice);
 
-                if (choice < (int *)1 || choice > (int *)3)
+                fgets(choice, sizeof(choice), stdin);
+                choice[strlen(choice) - 1] = '\0'; // get rid of the \n character at the end of the string
+
+                if(atoi(choice) < 1 || atoi(choice) > 3)
                 {
                     printf("Invalid choice, please try again.\n\n");
                 }
-            }
+            } 
+            while (atoi(choice) <= 0 || atoi(choice) > 3);
 
-            if (choice == (int *)1)
+            if(atoi(choice) == 1)
             {
                 struct node *counter = head;
                 char newkey[20];
@@ -426,10 +427,11 @@ void update(struct node *head, char *data)
                     printf("Please enter the new module code you want to change to:\n");
                     scanf("%s", newkey);
                     getchar(); // to get rid of the \n character
+
                     // check if module code exists
                     while (counter != NULL)
                     {
-                        if (strcasecmp(counter->module.key, newkey) == 0)
+                        if(strcasecmp(counter->module.key,newkey) == 0)
                         {
                             printf("Module code already exist.\n");
                             counter = head;
@@ -443,43 +445,47 @@ void update(struct node *head, char *data)
                     }
                 }
 
-                strcpy(current->module.key, newkey);
+                strcpy(current->module.key,newkey);
                 printf("The value for the module code is successfully updated.\n");
             }
-            else if (choice == (int *)2)
+            else if(atoi(choice) == 2)
             {
                 char newname[55];
                 printf("Please enter the new module name you want to change to:\n");
-                // scanf("%s", newname);
-
-                // CLEAR buffer
-                for (int c; (c = getchar()) != '\n' && c != EOF;)
-                {
-                }
 
                 fgets(newname, sizeof(newname), stdin);
                 newname[strlen(newname) - 1] = '\0'; // get rid of the \n character at the end of the string
-                strcpy(current->module.name, newname);
+                strcpy(current->module.name,newname);
                 printf("The value for the module name is successfully updated.\n");
             }
-            else if (choice == (int *)3)
+            else if(atoi(choice) == 3)
             {
-                int newcredit;
-                printf("Please enter the new module credit you want to change to:\n");
-                scanf("%d", &newcredit);
-                getchar(); // to get rid of the \n character`
-                current->module.credit = newcredit;
+                char *newcredit = (char*)malloc(sizeof(char));
+                do {
+                    printf("Please enter the new module credit you want to change to:\n");
+
+                    fgets(newcredit, sizeof(newcredit), stdin);
+                    newcredit[strlen(newcredit) - 1] = '\0'; // get rid of the \n character at the end of the string
+
+                    if(isdigit(*newcredit) == 0)
+                    {
+                        printf("Invalid integer, please try again.\n\n");
+                    }
+                } 
+                while (isdigit(*newcredit) == 0);
+
+                current->module.credit = atoi(newcredit);
                 printf("The value for the module credit is successfully updated.\n");
             }
 
-            // getchar until buffer is empty, DONT RUN IF GETF IS USED'
+            //getchar until buffer is empty, DONT RUN IF GETF IS USED'
 
             return;
         }
 
         current = current->next;
     }
-
+    
     printf("There is no record with %s found in the database.\n", key);
 
     free(key);
