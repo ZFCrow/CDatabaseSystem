@@ -120,16 +120,27 @@ int menu2(struct node **head, struct node **current)
     {
         // SHOW_ALL: display all the modules
         printf("\n");
-        // ask user which one they want to sort by
-        printf("How do you want to sort the modules?\n");
-        printf("1. %s\n", PRINTKEY);
-        printf("2. %s\n", PRINTNAME);
-        printf("3. %s\n", PRINTCREDIT);
-        printf("Enter here: ");
+        char inputChoice[10];
         int sortchoice;
-        scanf("%d", &sortchoice);
-        getchar(); // to get rid of the \n character
+        do{
+            // ask user which one they want to sort by
+            printf("How do you want to sort the modules?\n");
 
+            printf("1. %s\n", PRINTKEY);
+            printf("2. %s\n", PRINTNAME);
+            printf("3. %s\n", PRINTCREDIT);
+            printf("Enter here: ");
+
+            //fgets the sortchoice 
+            fgets(inputChoice, sizeof(inputChoice), stdin);
+            inputChoice[strlen(inputChoice) - 1] = '\0'; // get rid of the \n character at the end of the string
+            sortchoice = atoi(inputChoice);
+            
+            if (sortchoice < 1 || sortchoice > 3)
+            {
+                printf("Invalid choice. Please try again.\n");
+            }
+        }while(sortchoice < 1 || sortchoice > 3);
         //! sort the linked list first
         *head = sort(*head, sortchoice);
 
