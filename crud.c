@@ -9,9 +9,7 @@
 
 #include "functions.h"
 
-
-
-//!!!  TO SHOW EVERYTHING 
+//!!!  TO SHOW EVERYTHING
 void printall(struct node *head)
 {
     struct node *current = head; // Initialize current
@@ -57,8 +55,8 @@ struct node *addModule(struct node *head, char *data)
     // theres a chacne that modulename contains a number, so we need to check if the last part is a number
     printf("result: %d\n", result);
 
-    //check if the module code is valid
-    if(checkCode(newModule.key) == 0)
+    // check if the module code is valid
+    if (checkCode(newModule.key) == 0)
     {
         printf("Invalid module code.\nModule Code only contains a total of not more than 8 characters.\nEnsure that your module code has the first 3-4 characters as alpha and the remaining characters as digits.\nPlease try again.\n");
         result = 0;
@@ -81,10 +79,8 @@ struct node *addModule(struct node *head, char *data)
             fgets(newModule.key, sizeof(newModule.key), stdin);
             newModule.key[strlen(newModule.key) - 1] = '\0'; // get rid of the \n character at the end of the string
 
-            
-
-         // if the length of the module code is more than 8 or contains spacing OR IT does not contain a verified code, then we need to prompt the user again
-        } while (checkCode(newModule.key) == 0 ); 
+            // if the length of the module code is more than 8 or contains spacing OR IT does not contain a verified code, then we need to prompt the user again
+        } while (checkCode(newModule.key) == 0);
 
         //* check if the module code already exists
         struct node *current = head; // Initialize current
@@ -183,7 +179,6 @@ struct node *addModule(struct node *head, char *data)
         return head;
     }
 }
-
 
 /* Checks whether the value x is present in linked list */
 bool query(struct node *head, char *inputData)
@@ -331,15 +326,14 @@ bool query(struct node *head, char *inputData)
     return true;
 }
 
-
 void update(struct node *head, char *data)
 {
     struct node *current = head;
-    char *key = (char*)malloc(sizeof(key));
+    char *key = (char *)malloc(sizeof(key));
 
     if (strlen(data) == 0)
     {
-        // Get module code if 
+        // Get module code if
         printf("Please type in the module code of the module you want to update:\n");
         scanf("%s", key);
 
@@ -353,35 +347,35 @@ void update(struct node *head, char *data)
     while (current != NULL)
     {
         // printf("value: %s\n", current->module.key);
-        
-        if(strcasecmp(current->module.key,key) == 0)
+
+        if (strcasecmp(current->module.key, key) == 0)
         {
             printf("Key found.\n\n");
 
             printf("%s: %s\n", PRINTKEY, current->module.key);
             printf("%s: %s\n", PRINTNAME, current->module.name);
             printf("%s: %d\n\n", PRINTCREDIT, current->module.credit);
-            
+
             printf("Which attribute do you want to update?\n");
             printf("1. Module Code\n");
             printf("2. Module Name\n");
             printf("3. Module Credit\n\n");
-            
+
             int *choice = 0;
 
-            while(choice < (int*)1 || choice > (int*)3)
+            while (choice < (int *)1 || choice > (int *)3)
             {
                 printf("Enter the number here:\n");
                 scanf("%d", &choice);
                 printf("%d", choice);
 
-                if(choice < (int*)1 || choice > (int*)3)
+                if (choice < (int *)1 || choice > (int *)3)
                 {
                     printf("Invalid choice, please try again.\n\n");
                 }
             }
 
-            if(choice == (int*)1)
+            if (choice == (int *)1)
             {
                 struct node *counter = head;
                 char newkey[20];
@@ -394,7 +388,7 @@ void update(struct node *head, char *data)
                     // check if module code exists
                     while (counter != NULL)
                     {
-                        if(strcasecmp(counter->module.key,newkey) == 0)
+                        if (strcasecmp(counter->module.key, newkey) == 0)
                         {
                             printf("Module code already exist.\n");
                             counter = head;
@@ -408,26 +402,26 @@ void update(struct node *head, char *data)
                     }
                 }
 
-                strcpy(current->module.key,newkey);
+                strcpy(current->module.key, newkey);
                 printf("The value for the module code is successfully updated.\n");
             }
-            else if(choice == (int*)2)
+            else if (choice == (int *)2)
             {
                 char newname[55];
                 printf("Please enter the new module name you want to change to:\n");
-                //scanf("%s", newname);
+                // scanf("%s", newname);
 
-                //CLEAR buffer
+                // CLEAR buffer
                 for (int c; (c = getchar()) != '\n' && c != EOF;)
                 {
                 }
 
                 fgets(newname, sizeof(newname), stdin);
                 newname[strlen(newname) - 1] = '\0'; // get rid of the \n character at the end of the string
-                strcpy(current->module.name,newname);
+                strcpy(current->module.name, newname);
                 printf("The value for the module name is successfully updated.\n");
             }
-            else if(choice == (int*)3)
+            else if (choice == (int *)3)
             {
                 int newcredit;
                 printf("Please enter the new module credit you want to change to:\n");
@@ -437,20 +431,60 @@ void update(struct node *head, char *data)
                 printf("The value for the module credit is successfully updated.\n");
             }
 
-            //getchar until buffer is empty, DONT RUN IF GETF IS USED'
+            // getchar until buffer is empty, DONT RUN IF GETF IS USED'
 
             return;
         }
 
         current = current->next;
     }
-    
+
     printf("There is no record with %s found in the database.\n", key);
 
     free(key);
 }
 
+void delete(struct node **head, char *deleteData)
+{
+    struct node *current = *head;
+    struct node *prev = NULL;
+    char *data = deleteData;
 
+    if (strlen(data) == 0)
+    {
+        printf("Please type in the module code that you want to delete:\n");
+        scanf("%s", data);
+    }
+
+    while (current != NULL && strcmp(current->module.key, data) != 0)
+    {
+        prev = current;
+        current = current->next;
+    }
+
+    if (current != NULL)
+    {
+        // If the node to be deleted is the head
+        if (prev == NULL)
+        {
+            *head = current->next;
+        }
+        else
+        {
+            prev->next = current->next;
+        }
+
+        // Free the memory of the node
+        free(current);
+
+        printf("The record of key %s is successfully deleted.\n", data);
+    }
+    else
+    {
+        printf("There is no record with key %s found in the database.\n", data);
+    }
+    free(data);
+}
 
 //!!! SAVING SECTION
 void PrintReverse_save(struct node *head, FILE *file)
@@ -522,7 +556,7 @@ void save(struct node *head, char *filename)
 
     printf("Saving File...\n");
     // PrintReverse_save(head, file);
-    
+
     Print_save(head, file);
     printf("Closing File...\n");
     fclose(file);

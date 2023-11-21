@@ -161,6 +161,7 @@ int menu2(struct node **head, struct node **current)
     else if (strcasecmp(command, "delete") == 0 || strcasecmp(command, "5") == 0)
     {
         // DELETE: delete a module
+        delete(head, data);
     }
     else if (strcasecmp(command, "save") == 0 || strcasecmp(command, "6") == 0)
     {
