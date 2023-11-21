@@ -97,31 +97,72 @@ struct node *addModule(struct node *head, char *data)
         printf("Enter the %s: ", PRINTNAME);
         fgets(newModule.name, sizeof(newModule.name), stdin);
         newModule.name[strlen(newModule.name) - 1] = '\0'; // get rid of the \n character at the end of the string
-
+        if(strlen(newModule.name) == 0){
+            strcpy(newModule.name, "NA");
+        }
+        //!credits part
+        bool valid = false;
         while (1)
         {
             printf("Enter the %s: ", PRINTCREDIT);
-            if (scanf("%d", &newModule.credit) == 1)
+            //USER is allowed to enter \n to store a 0
+            fgets (buffer, sizeof(buffer), stdin);
+            // only get rid of \n if the buffer is not just \n
+            if (buffer[0] != '\n')
+                buffer[strlen(buffer) - 1] = '\0'; // get rid of the \n character at the end of the string
+            if (buffer[0] == '\n')
             {
-                // check if user enter extra input
-                fgets(buffer, sizeof(buffer), stdin);
-                if (buffer[0] != '\n')
+                newModule.credit = 0;
+                break;
+            }
+
+            else {
+                //check for isdigit and if it is a number, we store it into the credit 
+                for (int i = 0; buffer[i] != '\0'; i++)
                 {
-                    printf("Invalid input. Please try again.\n");
-                    continue;
+                    if (isdigit(buffer[i]))
+                    {
+                        valid = true;
+                    }
+                    else
+                    {
+                        printf("Invalid input. Please try again.\n");
+                        valid = false;
+                        break;
+                    }
                 }
-                else
-                {
+                // if the buffer is a number, we store it into the credit
+                if (valid){
+                    newModule.credit = atoi(buffer);
                     break;
                 }
+                
             }
-            else // if user enter a non-integer
-            {
 
-                printf("Invalid input. Please try again.\n");
-                scanf("%*[^\n]"); // clear input buffer
-                continue;
-            }
+            // if buffer == \n, then we set the credit to 0
+
+
+            // if (scanf("%d", &newModule.credit) == 1)
+            // {
+            //     // check if user enter extra input
+            //     fgets(buffer, sizeof(buffer), stdin);
+            //     if (buffer[0] != '\n')
+            //     {
+            //         printf("Invalid input. Please try again.\n");
+            //         continue;
+            //     }
+            //     else
+            //     {
+            //         break;
+            //     }
+            // }
+            // else // if user enter a non-integer
+            // {
+
+            //     printf("Invalid input. Please try again.\n");
+            //     scanf("%*[^\n]"); // clear input buffer
+            //     continue;
+            // }
         }
 
         struct node *newNode = (struct node *)malloc(sizeof(struct node));
@@ -466,7 +507,7 @@ void delete(struct node **head, char *deleteData)
             //clear the stdinput 
             for (int c; (c = getchar()) != '\n' && c != EOF;)
             {
-            }
+            }   
         }
 
     }
