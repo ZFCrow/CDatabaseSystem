@@ -43,6 +43,7 @@ struct node *addModule(struct node *head, char *data);
 struct node *addNode(struct node *head, struct Module newModule);
 void print_query_error();
 char *ask_query();
+void print_found(int count, char *value, struct node *current);
 bool query(struct node *head, char *inputData);
 void update(struct node *head, char *data);
 void delete(struct node **head, char *data);
