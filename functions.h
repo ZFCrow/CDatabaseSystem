@@ -44,7 +44,6 @@ int mainmenu(struct node **head, struct node **current);
 // functions in crud.c
 void showAll(struct node *head);
 void numberofrecords(struct node *head);
-void PrintReverse(struct node *head);
 struct node *insert(struct node *head, char *data);
 struct node *addNode(struct node *head, struct Module newModule);
 void print_query_error();
@@ -54,7 +53,6 @@ void query(struct node *head, char *inputData);
 void update(struct node *head, char *data);
 void delete(struct node **head, char *data);
 void save(struct node *head, char *filename);
-void PrintReverse_save(struct node *head, FILE *file);
 void Print_save(struct node *head, FILE *file);
 
 #endif

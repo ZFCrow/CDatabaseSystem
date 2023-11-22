@@ -38,22 +38,6 @@ void showAll(struct node *head)
     }
 }
 
-void PrintReverse(struct node *head)
-{
-
-    if (head == NULL)
-    {
-        return;
-    }
-    // print the header once only
-    if (head->next == NULL)
-    {
-        printf("%-15s\t%-40s\t%-3s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
-    }
-    PrintReverse(head->next); // Recursively print the rest of the list
-    printf("%-15s\t%-40s\t%-3d\n", head->module.key, head->module.name, head->module.credit);
-}
-
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // add node
 struct node *addNode(struct node *head, struct Module newModule)
