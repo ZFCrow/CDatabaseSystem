@@ -381,13 +381,13 @@ void update(struct node *head, char *data)
 
             printf("%s\n", key);
 
-            current = checkExistingModuleCode(head, key); // return current ptr if key found
+            current = returnExistingModuleCodeptr(head, key); // return current ptr if key found
         }
     }
 
     else
     {
-        current = checkExistingModuleCode(head, data); // returns  the current ptr if  key found
+        current = returnExistingModuleCodeptr(head, data); // returns  the current ptr if  key found
     }
 
     if (current != NULL)
@@ -409,7 +409,7 @@ void update(struct node *head, char *data)
         {
             printf("Enter the number here:\n");
 
-            fgets(choice, sizeof(choice), stdin);
+            fgets(choice, 3, stdin);
             choice[strlen(choice) - 1] = '\0'; // get rid of the \n character at the end of the string
 
             if (atoi(choice) < 1 || atoi(choice) > 3)
@@ -462,25 +462,44 @@ void update(struct node *head, char *data)
 
         else if (atoi(choice) == 3)
         {
-            char *newcredit = (char *)malloc(sizeof(char));
+            // char *newcredit = (char *)malloc(sizeof(char));
+            char newcredit[255];
+            int validint = 1;
+
             do
             {
                 printf("Please enter the new module credit you want to change to:\n");
 
                 fgets(newcredit, sizeof(newcredit), stdin);
-                newcredit[strlen(newcredit) - 1] = '\0'; // get rid of the \n character at the end of the string
+                newcredit[strcspn(newcredit, "\n")] = '\0';
 
-                if (isdigit(*newcredit) == 0)
+                // printf("%d\n", sizeof(newcredit));
+                // printf("%d\n", strlen(newcredit));
+
+                for (int i = 0; i < strlen(newcredit); i++)
                 {
-                    printf("Invalid integer, please try again.\n\n");
+                    printf("%d\n", isdigit(newcredit[i]));
+
+                    if (isdigit(newcredit[i]) == 0)
+                    {
+                        validint = 0;
+                        break;
+                    }
                 }
-            } while (isdigit(*newcredit) == 0);
+                
+                if (validint == 1) {
+                    break;
+                }
+                else {
+                    printf("Invalid integer, please try again.\n");
+                }
+
+            } while (1);
 
             current->module.credit = atoi(newcredit);
             printf("The value for the module credit is successfully updated.\n");
 
-            free(newcredit);
-            printf("hello!");
+            // free(newcredit);
         }
 
         return;
