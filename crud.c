@@ -210,7 +210,7 @@ void print_found(int count, char *value, struct node *current)
 }
 
 /* Checks whether the value x is present in linked list */
-bool query(struct node *head, char *data)
+void query(struct node *head, char *data)
 {
     int works = 0; // works = 1 when there is error in the data, 0 when successful
     int count = 0; // count the number of matches
@@ -222,7 +222,7 @@ bool query(struct node *head, char *data)
         if (works)
         {
             if (cancel())
-                return true;
+                return;
             else
                 data = ask_query();
         }
@@ -275,14 +275,12 @@ bool query(struct node *head, char *data)
             // check if attribute == module code
             if (strcasecmp(attribute, PRINTKEY) == 0)
             {
-                while (current != NULL)
+                current = returnExistingModuleCodeptr(head, value);
+
+                if (current != NULL)
                 {
-                    if (strcasecmp(current->module.key, value) == 0)
-                    {
-                        print_found(count, value, current);
-                        count++;
-                    }
-                    current = current->next;
+                    print_found(count, value, current);
+                    return;
                 }
             }
             // check if attribute == module name
@@ -322,15 +320,17 @@ bool query(struct node *head, char *data)
 
     // count = 0 means no matches found
     if (count == 0)
+    {
         printf("\nThere is no record with %s = %s found in the database.\n", attribute, value);
+    }
 
-    return true;
+    return;
 }
 
 void update(struct node *head, char *data)
 {
     struct node *current = head;
-    char *key = (char *)malloc(sizeof(char));
+    char *key;
 
     if (strlen(data) == 0)
     {
@@ -345,7 +345,7 @@ void update(struct node *head, char *data)
             printf("Please type in the module code of the module you want to update:\n");
 
             fgets(key, 9, stdin);
-            key[strlen(key) - 1] = '\0'; // get rid of the \n character at the end of the string
+            key[strcspn(key, "\n")] = '\0';
 
             printf("%s\n", key);
 
@@ -452,7 +452,7 @@ void update(struct node *head, char *data)
         }
 
         free(choice);
-        free(key);
+        //free(key);
 
         return;
     }
