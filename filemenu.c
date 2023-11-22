@@ -31,17 +31,16 @@ char *filemenu(char *filelist[], int *numoffiles, int *max_capacity)
     while ((file = readdir(directory)) != NULL) // read file in directory
     {
         char *txtfilename = file->d_name; // get name of file
-        // char *file_extension = strchr(txtfilename, '.'); // get file extension
 
         if (txtfilename != NULL && strcasecmp(txtfilename + strlen(txtfilename) - 4, ".txt") == 0) // check if file is text file
         {
-            addfile(filelist, numoffiles, txtfilename, max_capacity);
+            addfile(filelist, numoffiles, txtfilename, max_capacity); //add filename to filelist if it is a text file
         }
     }
 
     for (int i = 0; i < *numoffiles; i++)
     {
-        printf("%d. %s\n", i + 1, filelist[i]);
+        printf("%d. %s\n", i + 1, filelist[i]); //print available files
     }
 
     closedir(directory); // closed directory
@@ -53,7 +52,6 @@ char *filemenu(char *filelist[], int *numoffiles, int *max_capacity)
     fgets(filename, sizeof(filename), stdin);
     filename[strcspn(filename, "\n")] = '\0'; // get rid of the \n character at the end of the string
 
-    // printf("filename: %s\n", filename);
     return strdup(filename);
 }
 
@@ -69,12 +67,8 @@ int mainmenu(struct node **head, struct node **current)
     printf("7. OPEN - open another file\n\tCommand: OPEN or\n\t\t 7\n\n");
     printf("8. EXIT - close the application\n\tCommand: EXIT or\n\t\t 8\n\n");
     printf("Enter here: ");
-    // scanf("%d", &choice);
-    // getchar(); // to get rid of the \n character
 
     input = inputString(stdin, 10);
-    // printf("Input: %s\n", input);
-    // printf("Length: %d\n", strlen(input));
 
     // Get command from input
     int i;
@@ -86,7 +80,6 @@ int mainmenu(struct node **head, struct node **current)
         command[i] = input[i];
     }
     command[i] = '\0';
-    // printf("i = %d\n", i);
 
     // Get data from input
     char data[strlen(input)];
@@ -101,13 +94,11 @@ int mainmenu(struct node **head, struct node **current)
         {
             data[j] = input[i + j + 1];
         }
-        // printf("j = %d\n", j);
+
         data[j] = '\0';
     }
 
     int choice = 1;
-    // printf("Command: %s\n", command);
-    // printf("Data: %s\n", data);
 
     if (strcasecmp(command, "show_all") == 0 || strcasecmp(command, "1") == 0)
     {
@@ -137,9 +128,6 @@ int mainmenu(struct node **head, struct node **current)
         //! sort the linked list first
         *head = sort(*head, sortchoice);
 
-        // //! print in reverse, so the header will be printed out first!
-        // PrintReverse(*head);
-
         // print normally
         showAll(*head);
         printf("\n");
@@ -148,13 +136,11 @@ int mainmenu(struct node **head, struct node **current)
     {
         // todo, pass in the data as a string, then split it into tokens, if the data contains anything
         //  INSERT: add a new module
-        // printf("Data: %s\n", data);
         *head = insert(*head, data);
     }
     else if (strcasecmp(command, "query") == 0 || strcasecmp(command, "3") == 0)
     {
         // QUERY: display a module
-        // printf("data: %s", data);
         query(*head, data);
     }
     else if (strcasecmp(command, "update") == 0 || strcasecmp(command, "4") == 0)
@@ -171,7 +157,7 @@ int mainmenu(struct node **head, struct node **current)
     else if (strcasecmp(command, "save") == 0 || strcasecmp(command, "6") == 0)
     {
         // SAVE: SAVE into File
-        sort(*head, 1);
+        sort(*head, 1); //sort file to be in order before saving the changes made to the specified file
 
         save(*head, data);
     }
@@ -209,7 +195,6 @@ int mainmenu(struct node **head, struct node **current)
         printf("Command not found. Please try again.\n");
     }
 
-    // sleep(2);
     // wait for user to press enter to continue
     printf("\nPress Enter to continue...");
     getchar();

@@ -56,15 +56,13 @@ struct node *insert(struct node *head, char *data)
 
     int result = sscanf(data, "%8[^,],%54[^,],%d", newModule.key, newModule.name, &newModule.credit);
 
-    // theres a chacne that modulename contains a number, so we need to check if the last part is a number
-    // printf("result: %d\n", result);
+    // theres a chance that modulename contains a number, so we need to check if the last part is a number
 
     // check if the module code is valid if the result ==3 , otherwise dont have to check if code is valid
     if (result == 3)
     {
         if (checkCode(newModule.key) == 0)
         {
-            // printf("Invalid module code.\nModule Code only contains a total of not more than 8 characters.\nEnsure that your module code has the first 3-4 characters as alphabets and the remaining characters as digits.\nPlease try again.\n");
             result = 0;
         }
     }
@@ -91,12 +89,7 @@ struct node *insert(struct node *head, char *data)
 
         //* check if the module code already exists
         struct node *current = head; // Initialize current
-        // if (checkExistingModuleCode(head, newModule.key) == 1)
-        // {
-        //     printf("\n%s \"%s\" already exists in database. Please try again.\n", PRINTKEY, newModule.key);
-        //     printf("checked by function\n");
-        //     return head;
-        // }
+    
         if (checkExistingModuleCode(current, newModule.key) != NULL)
         {
             printf("\n%s \"%s\" already exists in database. Please try again.\n", PRINTKEY, newModule.key);
@@ -121,7 +114,7 @@ struct node *insert(struct node *head, char *data)
             fgets(buffer, sizeof(buffer), stdin);
             // only get rid of \n if the buffer is not just \n
             if (buffer[0] != '\n')
-                buffer[strlen(buffer) - 1] = '\0'; // get rid of the \n character at the end of the string
+                buffer[strcspn(buffer, "\n")] = '\0'; // get rid of the \n character at the end of the string
             if (buffer[0] == '\n')
             {
                 newModule.credit = 0;
@@ -217,7 +210,7 @@ void query(struct node *head, char *data)
 
             // check if got extra space: "module code "
             if (isspace(attribute[strlen(attribute) - 1]))
-                attribute[strlen(attribute) - 1] = '\0';
+                attribute[strcspn(attribute, "\n")] = '\0'; // get rid of the \n character at the end of the string
 
             // check if value null
             if (value == NULL)
@@ -592,7 +585,6 @@ void save(struct node *head, char *filename)
         }
     }
 
-    // printf("Opening File: %s...\n", filename);
     FILE *file = fopen(filename, "w"); // Open the file for writing
     if (file == NULL)
     {
