@@ -393,7 +393,7 @@ void update(struct node *head, char *data)
 
     if (current != NULL)
     {
-        printf("Key found.\n\n");
+        //printf("Key found.\n\n");
 
         printf("%s: %s\n", PRINTKEY, current->module.key);
         printf("%s: %s\n", PRINTNAME, current->module.name);
@@ -568,33 +568,18 @@ void delete(struct node **head, char *deleteData)
         // Free the memory of the node
         free(current);
 
-        printf("The record of key %s is successfully deleted.\n", deleteData);
+        printf("The record of key=%s is successfully deleted.\n", deleteData);
     }
 
     else
     {
-        printf("There is no record with key %s found in the database.\n", deleteData);
+        printf("There is no record with key=%s found in the database.\n", deleteData);
     }
 
     return;
 }
 
 //!!! SAVING SECTION
-void PrintReverse_save(struct node *head, FILE *file)
-{
-
-    if (head == NULL)
-    {
-        return;
-    }
-    // print the header once only
-    if (head->next == NULL)
-    {
-        fprintf(file, "%s//%s//%s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
-    }
-    PrintReverse_save(head->next, file);
-    fprintf(file, "%s//%s//%d\n", head->module.key, head->module.name, head->module.credit); // Print the current node, the first one will run last!
-}
 
 void Print_save(struct node *head, FILE *file)
 {
@@ -637,7 +622,7 @@ void save(struct node *head, char *filename)
         }
     }
 
-    printf("Opening File: %s...\n", filename);
+    //printf("Opening File: %s...\n", filename);
     FILE *file = fopen(filename, "w"); // Open the file for writing
     if (file == NULL)
     {
@@ -645,15 +630,16 @@ void save(struct node *head, char *filename)
         return;
     }
 
-    printf("Saving File: %s...\n", filename);
+    //printf("Saving File: %s...\n", filename);
     // PrintReverse_save(head, file);
 
     Print_save(head, file); // writing into the file
 
-    printf("Closing File: %s...\n", filename);
+    //printf("Closing File: %s...\n", filename);
     fclose(file);
 
     printf("File Saved: %s\n", filename);
 
     return;
 }
+

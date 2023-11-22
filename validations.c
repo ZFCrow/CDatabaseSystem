@@ -33,7 +33,7 @@ bool checkCode(char key[])
     // 4th character will be checked if it is a alpha or digit
     // the remaining characters should be in numeric
     // if not return false
-    printf("key: %s\n", key);
+    //printf("key: %s\n", key);
     int numofchar = strlen(key);
 
     // if more than 8 or empty return false
@@ -128,13 +128,13 @@ char *filenamevalidations(char *filename, int numoffiles, char *filelist[])
             if (strcasecmp(check, "open") == 0)
             {
                 // if it is, then we need to get rid of the first 5 letters of the filename
-                printf("removing open\n");
+                //printf("removing open\n");
 
                 for (size_t i = 0; i < strlen(filename); i++)
                 {
                     filename[i] = filename[i + 5];
                 }
-                printf("filename after removing open: %s\n", filename);
+                //printf("filename after removing open: %s\n", filename);
             }
         }
 
@@ -151,19 +151,18 @@ char *filenamevalidations(char *filename, int numoffiles, char *filelist[])
         if (isnum) // change filename to the actual filename if it is a number
         {
             int fileNumber;
-            printf("filename when checking for int: %s\n", filename);
+            //printf("filename when checking for int: %s\n", filename);
             sscanf(filename, "%d", &fileNumber); // convert string to int and store in fileNumber
             if (fileNumber <= numoffiles && fileNumber != 0)
             {
                 strcpy(filename, filelist[fileNumber - 1]);
-                printf("%s\n", filename);
+                //printf("%s\n", filename);
             }
 
-            else
-            {
-                printf("Invalid file mentioned\n");
-                // return 1;
-            }
+            // else
+            // {
+            //     printf("Invalid file mentioned\n");
+            // }
         }
 
         //! =======================================================
