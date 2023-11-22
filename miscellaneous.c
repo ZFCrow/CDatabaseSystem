@@ -9,34 +9,11 @@
 
 #include "functions.h"
 
-
-
-
 void print_query_error()
 {
     printf("Available attributes: %s , %s , %s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
     printf("Example of a query: %s=ict1101\n", PRINTKEY);
 }
-
-char *ask_query()
-{
-    char *value;
-    printf("\nPlease enter query again: ");
-    value = inputString(stdin, 10);
-    return value;
-}
-
-void print_found(int count, char *value, struct node *current)
-{
-    if (count == 0)
-    {
-        printf("\nRecord for %s=%s is found in the database. Below are the details:\n\n", PRINTKEY, value);
-        printf("%-15s\t%-40s\t%-3s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
-    }
-    printf("%-15s\t%-40s\t%-3d\n", current->module.key, current->module.name, current->module.credit);
-}
-
-
 
 void numberofrecords(struct node *head)
 {
@@ -49,8 +26,6 @@ void numberofrecords(struct node *head)
     }
     printf("\nThere are in total %d records found:\n\n", count);
 }
-
-
 
 char *inputString(FILE *fp, size_t size)
 {
@@ -74,7 +49,6 @@ char *inputString(FILE *fp, size_t size)
     str[len++] = '\0';
     return realloc(str, sizeof(*str) * len);
 }
-
 
 void declaration()
 {

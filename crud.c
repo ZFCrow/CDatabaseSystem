@@ -171,7 +171,7 @@ struct node *insert(struct node *head, char *data)
             printf("\nThe record with %s=%s already exists in database. Please try again.\n", PRINTKEY, newModule.key);
             printf("checked by function\n");
             return head;
-        }   
+        }
 
         // ! ADD node to link list
 
@@ -196,7 +196,11 @@ void query(struct node *head, char *data)
             if (cancel())
                 return;
             else
-                data = ask_query();
+            {
+                char *value;
+                printf("\nPlease enter query again: ");
+                data = inputString(stdin, 10);
+            }
         }
         // check if data is empty
         if (strcmp(data, "") == 0)
@@ -251,7 +255,12 @@ void query(struct node *head, char *data)
 
                 if (current != NULL)
                 {
-                    print_found(count, value, current);
+                    if (count == 0)
+                    {
+                        printf("\nRecord for %s=%s is found in the database. Below are the details:\n\n", PRINTKEY, value);
+                        printf("%-15s\t%-40s\t%-3s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
+                    }
+                    printf("%-15s\t%-40s\t%-3d\n", current->module.key, current->module.name, current->module.credit);
                     return;
                 }
             }
@@ -262,7 +271,12 @@ void query(struct node *head, char *data)
                 {
                     if (strcasecmp(current->module.name, value) == 0)
                     {
-                        print_found(count, value, current);
+                        if (count == 0)
+                        {
+                            printf("\nRecord for %s=%s is found in the database. Below are the details:\n\n", PRINTNAME, value);
+                            printf("%-15s\t%-40s\t%-3s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
+                        }
+                        printf("%-15s\t%-40s\t%-3d\n", current->module.key, current->module.name, current->module.credit);
                         count++;
                     }
                     current = current->next;
@@ -275,7 +289,12 @@ void query(struct node *head, char *data)
                 {
                     if (current->module.credit == atoi(value))
                     {
-                        print_found(count, value, current);
+                        if (count == 0)
+                        {
+                            printf("\nRecord for %s=%s is found in the database. Below are the details:\n\n", PRINTCREDIT, value);
+                            printf("%-15s\t%-40s\t%-3s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
+                        }
+                        printf("%-15s\t%-40s\t%-3d\n", current->module.key, current->module.name, current->module.credit);
                         count++;
                     }
                     current = current->next;

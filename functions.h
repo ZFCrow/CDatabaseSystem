@@ -30,7 +30,6 @@ struct node *sort(struct node *head, int sortchoice);
 struct node *openFile(char *filename); //! trigger by main function after filemenu function  and filenamevalidations to determine if file is valid
 void addfile(char *filelist[], int *numoffiles, char *filename, int *max_capacity);
 
-
 // functions in validations.c
 int containsSpace(const char *str);
 char *filenamevalidations(char *filename, int numoffiles, char *filelist[]);
@@ -53,8 +52,6 @@ void Print_save(struct node *head, FILE *file);
 
 // functions in miscellaneous.c
 void print_query_error();
-char *ask_query();
-void print_found(int count, char *value, struct node *current);
 void numberofrecords(struct node *head);
 char *inputString(FILE *fp, size_t size);
 void declaration();
