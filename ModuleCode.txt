@@ -1,4 +1,5 @@
 Module Code//Module Name//Module Credit
+ICT0000//NOT MATH//90
 ICT0001//TESTING//0
 ICT10000//NEW MODULE WOO!//50
 ict1011//comsci adn theort//35
@@ -103,4 +104,3 @@ ict1197//computational cognitive science//5
 ict1198//computational psychology//4
 ict1199//computational psychiatry//3
 ict1200//computational medicine//4
-ict20354//NOT MATH//90

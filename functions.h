@@ -24,10 +24,13 @@ struct node
 // functions in main.c
 bool cancel();
 struct node *sort(struct node *head, int sortchoice);
-int containsSpace(const char *str);
 char *inputString(FILE *fp, size_t size);
 struct node *openFile(char *filename); //! trigger by main function after filemenu function  and filenamevalidations to determine if file is valid
 void addfile(char *filelist[], int *numoffiles, char *filename, int *max_capacity);
+
+
+// functions in validations.c
+int containsSpace(const char *str);
 char *filenamevalidations(char *filename, int numoffiles, char *filelist[]);
 bool checkCode(char key[]);
 struct node *checkExistingModuleCode(struct node *head, char key[]);
