@@ -7,7 +7,7 @@
 #define PRINTNAME "Module Name"
 #define PRINTCREDIT "Module Credit"
 
-#define INITIAL_CAPACITY 5
+#define INITIAL_CAPACITY 5 //initial filelist capacity
 
 struct Module
 {

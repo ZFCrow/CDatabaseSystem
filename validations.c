@@ -25,8 +25,6 @@ struct node *checkExistingModuleCode(struct node *head, char key[])
     return current;
 }
 
-
-
 bool checkCode(char key[])
 {
     // use isalpha to check for first 3 characters of module code to see if its alpha
@@ -71,6 +69,7 @@ bool checkCode(char key[])
                 return false;
             }
         }
+
         else if (i >= 4)
         {
             if (!isdigit(key[i])) // check if last 4 char is digit
@@ -85,8 +84,6 @@ bool checkCode(char key[])
     return true;
 }
 
-
-
 // validation functions
 int containsSpace(const char *str)
 {
@@ -99,8 +96,6 @@ int containsSpace(const char *str)
     }
     return 0; // String does not contain a space
 }
-
-
 
 char *filenamevalidations(char *filename, int numoffiles, char *filelist[])
 {

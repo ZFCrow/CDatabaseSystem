@@ -20,6 +20,7 @@ bool cancel() //allow user to exit the current operation that they are in
         printf("Exiting Function... \n");
         return true;
     }
+
     else
     {
         return false;
@@ -30,8 +31,6 @@ bool cancel() //allow user to exit the current operation that they are in
 // then return the head of the linked list to main
 struct node *openFile(char *filename)
 {
-
-   
     FILE *file = fopen(filename, "r");
 
     if (file == NULL)
@@ -52,9 +51,9 @@ struct node *openFile(char *filename)
         // ignore the first line
         if (strcmp(line, "Module Code//Module Name//Module Credit\n") == 0)
         {
-
             continue;
         }
+
         char *token = strtok(line, "//"); // Split the line into tokens separated by //
         strcpy(newModule.key, token);
         token = strtok(NULL, "//"); // NULL as the first argument tells strtok() to continue splitting the same string
@@ -87,10 +86,10 @@ void addfile(char *filelist[], int *numoffiles, char *filename, int *max_capacit
         }
     }
 
-    char *newtxtfilename = strdup(filename); //
+    char *newtxtfilename = strdup(filename); //copy filename to newtextfilename
     if (newtxtfilename != NULL)
     {
-        filelist[*numoffiles] = newtxtfilename; //
+        filelist[*numoffiles] = newtxtfilename; //add the index of the filelist add the newtxtfilename
       
         *numoffiles += 1;
     }
@@ -113,11 +112,11 @@ struct node *sort(struct node *head, int sortchoice)
     {
         return head;
     }
+
     else
     {
         while (current != NULL)
         {
-            
             index = current->next;
 
             while (index != NULL)
@@ -127,7 +126,6 @@ struct node *sort(struct node *head, int sortchoice)
                 {
                     if (strcasecmp(current->module.key, index->module.key) > 0)
                     {
-                        
                         //  if the current module code is greater than the index module code, then we need to swap the modules
                         // once swap, the next iteration will compare the newly swapped module with the next module
                         
@@ -171,7 +169,6 @@ int main()
     declaration();
     printf("Welcome to EzDB!\n");
     
-
     int choice = 1;
     int max_capacity = INITIAL_CAPACITY;
 
@@ -185,18 +182,14 @@ int main()
         //! print the openfile menu and get the command from user
         char *filename = filemenu(filelist, pnumoffiles, pmax_capacity);
        
-
         //! validate the command/filename entered by user
         filename = filenamevalidations(filename, numoffiles, filelist);
     
-
         // free everything before opening a new file
         for (int i = 0; i < numoffiles; i++)
         {
             free(filelist[i]);
         }
-
-  
 
         // open the file
         struct node *head = openFile(filename);
@@ -205,11 +198,10 @@ int main()
 
         while (choice)
         {
-
             //! ask user what they want to do?
             printf("\nWhat do you want to do with %s?\n", filename);
 
-            //! menu2
+            //! mainmenu
             choice = mainmenu(&head, &current); // this is pointer to pointer, so we can change the head pointer in the function
             // UPDATE MY HEAD
             if (choice == 7)

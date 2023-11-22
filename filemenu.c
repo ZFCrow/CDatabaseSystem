@@ -132,27 +132,32 @@ int mainmenu(struct node **head, struct node **current)
         showAll(*head);
         printf("\n");
     }
+
     else if (strcasecmp(command, "insert") == 0 || strcasecmp(command, "2") == 0 )
     {
         //  INSERT: add a new module
         *head = insert(*head, data);
     }
+
     else if (strcasecmp(command, "query") == 0 || strcasecmp(command, "3") == 0)
     {
         // QUERY: display a module
         query(*head, data);
     }
+
     else if (strcasecmp(command, "update") == 0 || strcasecmp(command, "4") == 0)
     {
         // UPDATE: change a specific module
         update(*head, data);
     }
+
     else if (strcasecmp(command, "delete") == 0 || strcasecmp(command, "5") == 0)
     {
         // DELETE: delete a module
         delete (head, data);
         // check if the the std is empty
     }
+
     else if (strcasecmp(command, "save") == 0 || strcasecmp(command, "6") == 0)
     {
         // SAVE: SAVE into File
@@ -160,6 +165,7 @@ int mainmenu(struct node **head, struct node **current)
 
         save(*head, data);
     }
+
     else if (strcasecmp(command, "open") == 0 || strcasecmp(command, "7") == 0)
     {
         // OPEN: open another file
@@ -167,6 +173,7 @@ int mainmenu(struct node **head, struct node **current)
         choice = 7;
         return choice;
     }
+
     else if (strcasecmp(command, "exit") == 0 || strcasecmp(command, "8") == 0)
     {
         // EXIT: close the application
@@ -188,6 +195,7 @@ int mainmenu(struct node **head, struct node **current)
         }
         return choice;
     }
+    
     else
     {
         // If command not found

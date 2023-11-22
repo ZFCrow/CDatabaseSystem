@@ -19,11 +19,13 @@ void numberofrecords(struct node *head)
 {
     int count = 0;
     struct node *current = head; // Initialize current
+    
     while (current != NULL)
     {
         count++;
         current = current->next;
     }
+
     printf("\nThere are in total %d records found:\n\n", count);
 }
 
@@ -33,19 +35,27 @@ char *inputString(FILE *fp, size_t size)
     char *str;
     int ch;
     size_t len = 0;
+    
     str = realloc(NULL, sizeof(*str) * size); // size is start size
     if (!str)
+    {
         return str;
+    }
+
     while (EOF != (ch = fgetc(fp)) && ch != '\n')
     {
         str[len++] = ch;
+        
         if (len == size)
         {
             str = realloc(str, sizeof(*str) * (size += 16));
             if (!str)
+            {
                 return str;
+            }
         }
     }
+    
     str[len++] = '\0';
     return realloc(str, sizeof(*str) * len);
 }

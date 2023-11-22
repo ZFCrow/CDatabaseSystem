@@ -69,12 +69,13 @@ struct node *insert(struct node *head, char *data)
 
     if (result != 3 || containsSpace(newModule.key)) //* if the result is not 3 or modulecode contain spaces, then we need to prompt the user to enter again
     {
-
         printf("Invalid input. Please choose to either cancel the operation or we will be prompting you to add values manually now.(enter \'Esc\' to cancel)\n");
+
         if (cancel())
         {
             return head;
         }
+
         char buffer[100]; // this is to check for extra input key in by user
 
         do
@@ -101,10 +102,12 @@ struct node *insert(struct node *head, char *data)
         printf("\nEnter the %s: ", PRINTNAME);
         fgets(newModule.name, sizeof(newModule.name), stdin);
         newModule.name[strcspn(newModule.name, "\n")] = '\0'; // get rid of the \n character at the end of the string
+        
         if (strlen(newModule.name) == 0)
         {
             strcpy(newModule.name, "NA");
         }
+
         //! credits part
         bool valid = false;
         while (1)
@@ -115,6 +118,7 @@ struct node *insert(struct node *head, char *data)
             // only get rid of \n if the buffer is not just \n
             if (buffer[0] != '\n')
                 buffer[strcspn(buffer, "\n")] = '\0'; // get rid of the \n character at the end of the string
+            
             if (buffer[0] == '\n')
             {
                 newModule.credit = 0;
@@ -130,6 +134,7 @@ struct node *insert(struct node *head, char *data)
                     {
                         valid = true;
                     }
+
                     else
                     {
                         printf("Invalid input. Please try again.\n");
@@ -155,7 +160,6 @@ struct node *insert(struct node *head, char *data)
 
     else //* if the result is 3, means my module has been created successfully and we can create the node to store the module and link it to the list
     {
-
         // check if the module code already exists
         struct node *current = head; // Initialize current
 
@@ -226,9 +230,13 @@ void query(struct node *head, char *data)
                     value[i] = value[i + 1];
                 works = 0;
             }
+
             else
+            {
                 works = 0;
+            }
         }
+
         else
         {
             // if no attribute, set as default module code
@@ -292,6 +300,7 @@ void query(struct node *head, char *data)
                     current = current->next;
                 }
             }
+
             else
             {
                 printf("\nAttribute name \"%s\" not found.\n", attribute);
@@ -466,6 +475,7 @@ void update(struct node *head, char *data)
                 {
                     break;
                 }
+
                 else
                 {
                     printf("Invalid integer, please try again.\n");
@@ -523,6 +533,7 @@ void delete(struct node **head, char *deleteData)
         {
             *head = current->next;
         }
+
         else
         {
             prev->next = current->next;
@@ -548,7 +559,7 @@ void Print_save(struct node *head, FILE *file)
 {
     fprintf(file, "%s//%s//%s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
 
-    while (head != NULL)
+    while (head != NULL) //traverse through the linked list and write into the file
     {
         fprintf(file, "%s//%s//%d\n", head->module.key, head->module.name, head->module.credit); // Print the current node and the respective details
         head = head->next;
