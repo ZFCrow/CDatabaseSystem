@@ -155,7 +155,7 @@ char *filenamevalidations(char *filename, int numoffiles, char *filelist[])
 
         for (int i = 0; i < numoffiles; i++)
         {
-            if (strcmp(filename, filelist[i]) == 0) // check if filename to open exists
+            if (strcasecmp(filename, filelist[i]) == 0) // check if filename to open exists
             {
                 isnotinlist = 0;
                 break;
