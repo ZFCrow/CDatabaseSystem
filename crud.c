@@ -539,14 +539,11 @@ void delete(struct node **head, char *deleteData)
         else
         {
             printf("Please type in the module code that you want to delete:\n");
-            fgets(deleteData, sizeof(deleteData), stdin);
+            fgets(deleteData, 20, stdin);
             // Remove the newline character at the end of the string
             deleteData[strcspn(deleteData, "\n")] = '\0';
 
-            // clear the stdinput
-            for (int c; (c = getchar()) != '\n' && c != EOF;)
-            {
-            }
+
         }
     }
 
