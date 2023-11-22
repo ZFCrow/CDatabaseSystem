@@ -11,17 +11,7 @@
 
 //!!!  TO SHOW EVERYTHING
 
-void numberofrecords(struct node *head)
-{
-    int count = 0;
-    struct node *current = head; // Initialize current
-    while (current != NULL)
-    {
-        count++;
-        current = current->next;
-    }
-    printf("\nThere are %d records in the database.\n\n", count);
-}
+
 
 void showAll(struct node *head)
 {
@@ -193,29 +183,7 @@ struct node *insert(struct node *head, char *data)
     }
 }
 
-void print_query_error()
-{
-    printf("Available attributes: %s , %s , %s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
-    printf("Example of a query: %s=ict1101\n", PRINTKEY);
-}
 
-char *ask_query()
-{
-    char *value;
-    printf("\nPlease enter query again: ");
-    value = inputString(stdin, 10);
-    return value;
-}
-
-void print_found(int count, char *value, struct node *current)
-{
-    if (count == 0)
-    {
-        printf("\nRecord for %s = %s is found in the database. Below are the details:\n\n", PRINTKEY, value);
-        printf("%-15s\t%-40s\t%-3s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
-    }
-    printf("%-15s\t%-40s\t%-3d\n", current->module.key, current->module.name, current->module.credit);
-}
 
 /* Checks whether the value x is present in linked list */
 void query(struct node *head, char *data)

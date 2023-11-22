@@ -26,44 +26,13 @@ bool cancel()
     }
 }
 
-char *inputString(FILE *fp, size_t size)
-{
-    // The size is extended by the input with the value of the provisional
-    char *str;
-    int ch;
-    size_t len = 0;
-    str = realloc(NULL, sizeof(*str) * size); // size is start size
-    if (!str)
-        return str;
-    while (EOF != (ch = fgetc(fp)) && ch != '\n')
-    {
-        str[len++] = ch;
-        if (len == size)
-        {
-            str = realloc(str, sizeof(*str) * (size += 16));
-            if (!str)
-                return str;
-        }
-    }
-    str[len++] = '\0';
-    return realloc(str, sizeof(*str) * len);
-}
+
 
 // instead of reading all these modules from the file in main, create a openfile function and create a linkedlist from there,
 // then return the head of the linked list to main
 struct node *openFile(char *filename)
 {
-    // printf("Reading from the file...\n");
-    // printf("Filename: %s\n", filename);
-    //  replace the filename with moduletime.txt
-    //  strcpy(filename, "a.txt");
-    //  check if i got space to open file
-    //  int availableFileHandles = _getmaxstdio();
-    //  if (availableFileHandles == -1)
-    //  {
-    //      perror("_getmaxstdio");
-    //      exit(1);
-    //  }
+
 
     // printf("Maximum number of open file handles: %d\n", availableFileHandles);
     FILE *file = fopen(filename, "r");
@@ -73,10 +42,7 @@ struct node *openFile(char *filename)
         perror("Error opening the file");
         exit(1);
     }
-    // else
-    // {
-    //     printf("%s opened successfully!\n", filename);
-    // }
+
 
     struct node *head = NULL; // Create an empty linked list
     char line[100];           // Adjust the buffer size based on your file's format
@@ -90,7 +56,7 @@ struct node *openFile(char *filename)
         // ignore the first line
         if (strcmp(line, "Module Code//Module Name//Module Credit\n") == 0)
         {
-            // printf("Ignoring the first line\n");
+            
             continue;
         }
         char *token = strtok(line, "//"); // Split the line into tokens separated by //
@@ -104,7 +70,7 @@ struct node *openFile(char *filename)
         head = addNode(head, newModule);
     }
     fclose(file); // Close the file when you're done reading from it
-    // printf("linked list created!\n");
+   
     return head; // return the head of the linked list
 }
 
@@ -204,24 +170,7 @@ struct node *sort(struct node *head, int sortchoice)
     return head;
 }
 
-void declaration()
-{
-    printf("\"\nDeclaration\n");
-    printf("SIT\'s policy on copying does not allow the students to copy source code as well as assessment solutions\nfrom another person or other places. It is the students\' responsibility to guarantee that their assessment\nsolutions are their own work. Meanwhile, the students must also ensure that their work is not accessible\nby others. Where such plagiarism is detected, both of the assessments involved will receive ZERO mark.\n");
-    printf("\nWe hereby declare that:\n");
-    printf("- We fully understand and agree to the abovementioned plagiarism policy.\n");
-    printf("- We did not copy any code from others or from other places.\n");
-    printf("- We did not share our codes with others or upload to any other places for public access.\n");
-    printf("- We agree that our project will receive Zero mark if there is any plagiarism detected.\n");
-    printf("\nDeclared by: P5_4\n");
-    printf("Team members:\n");
-    printf("1. Chua Shing Ying\n");
-    printf("2. Lim Mei Tian\n");
-    printf("3. Lee Zhiqi, Charlene\n");
-    printf("4. Cheah Zheng Feng\n");
-    printf("5. Phang Zi Heng\n");
-    printf("Date: 23 November 2023\n\"\n\n");
-}
+
 
 int main()
 {
