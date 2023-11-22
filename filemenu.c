@@ -51,7 +51,7 @@ char *filemenu(char *filelist[], int *numoffiles, int *max_capacity)
     // scan the choice, user can enter either 'OPEN #N' or 'open <filename>' or just '#N'
     char filename[25];
     fgets(filename, sizeof(filename), stdin);
-    filename[strlen(filename) - 1] = '\0'; // get rid of the \n character at the end of the string
+    filename[strcspn(filename, "\n")] = '\0'; // get rid of the \n character at the end of the string
 
     // printf("filename: %s\n", filename);
     return strdup(filename);
@@ -126,7 +126,7 @@ int mainmenu(struct node **head, struct node **current)
 
             // fgets the sortchoice
             fgets(inputChoice, sizeof(inputChoice), stdin);
-            inputChoice[strlen(inputChoice) - 1] = '\0'; // get rid of the \n character at the end of the string
+            inputChoice[strcspn(inputChoice, "\n")] = '\0'; // get rid of the \n character at the end of the string
             sortchoice = atoi(inputChoice);
 
             if (sortchoice < 1 || sortchoice > 3)

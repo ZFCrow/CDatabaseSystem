@@ -185,7 +185,7 @@ char *filenamevalidations(char *filename, int numoffiles, char *filelist[])
             // return 1;
             printf("Please enter the File name again: ");
             fgets(filename, 15, stdin);
-            filename[strlen(filename) - 1] = '\0'; // get rid of the \n character at the end of the string
+            filename[strcspn(filename, "\n")] = '\0'; // get rid of the \n character at the end of the string
             flag = true;
         }
     }

@@ -30,7 +30,7 @@ void print_found(int count, char *value, struct node *current)
 {
     if (count == 0)
     {
-        printf("\nRecord for %s = %s is found in the database. Below are the details:\n\n", PRINTKEY, value);
+        printf("\nRecord for %s=%s is found in the database. Below are the details:\n\n", PRINTKEY, value);
         printf("%-15s\t%-40s\t%-3s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
     }
     printf("%-15s\t%-40s\t%-3d\n", current->module.key, current->module.name, current->module.credit);
@@ -47,7 +47,7 @@ void numberofrecords(struct node *head)
         count++;
         current = current->next;
     }
-    printf("\nThere are %d records in the database.\n\n", count);
+    printf("\nThere are in total %d records found:\n\n", count);
 }
 
 
