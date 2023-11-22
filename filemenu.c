@@ -142,7 +142,7 @@ int menu2(struct node **head, struct node **current)
         // PrintReverse(*head);
 
         // print normally
-        printall(*head);
+        showAll(*head);
         printf("\n");
     }
     else if (strcasecmp(command, "insert") == 0 || strcasecmp(command, "2") == 0)
@@ -150,7 +150,7 @@ int menu2(struct node **head, struct node **current)
         // todo, pass in the data as a string, then split it into tokens, if the data contains anything
         //  INSERT: add a new module
         // printf("Data: %s\n", data);
-        *head = addModule(*head, data);
+        *head = insert(*head, data);
     }
     else if (strcasecmp(command, "query") == 0 || strcasecmp(command, "3") == 0)
     {

@@ -9,29 +9,28 @@
 
 #define INITIAL_CAPACITY 5
 
-//! testing compiling multiple files
-// #include "testing.h"
+
 
 // functions prototype that contains functions from all the files
 #include "functions.h"
 
 // check existing moduelcode and returns a bool
-bool checkExistingModuleCode(struct node *head, char key[])
-{
-    struct node *current = head;
-    while (current != NULL)
-    {
-        if (strcasecmp(current->module.key, key) == 0)
-        {
-            return true;
-        }
-        current = current->next;
-    }
-    return false;
-}
+// bool checkExistingModuleCode(struct node *head, char key[])
+// {
+//     struct node *current = head;
+//     while (current != NULL)
+//     {
+//         if (strcasecmp(current->module.key, key) == 0)
+//         {
+//             return true;
+//         }
+//         current = current->next;
+//     }
+//     return false;
+// }
 
 // check for existing modulecode and return the current pointer where it matches
-struct node *returnExistingModuleCodeptr(struct node *head, char key[])
+struct node *checkExistingModuleCode(struct node *head, char key[])
 {
     struct node *current = head;
     while (current != NULL)
@@ -166,6 +165,7 @@ struct node *openFile(char *filename)
         perror("_getmaxstdio");
         exit(1);
     }
+
     printf("Maximum number of open file handles: %d\n", availableFileHandles);
     FILE *file = fopen(filename, "r");
 
@@ -423,11 +423,12 @@ int main()
         int numoffiles = 0;                 // number of files in filelist
         int *pnumoffiles = &numoffiles;     // pointer to numoffiles
         int *pmax_capacity = &max_capacity; // pointer to max capacity
+
         //! print the openfile menu and get the command from user
         char *filename = filemenu(filelist, pnumoffiles, pmax_capacity);
         printf("filename: %s\n", filename);
 
-        // validate the command/filename entered by user
+        //! validate the command/filename entered by user
         filename = filenamevalidations(filename, numoffiles, filelist);
         printf("filename after validations: %s\n", filename);
 

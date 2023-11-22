@@ -25,12 +25,12 @@ void numberofrecords(struct node *head)
     printf("There are %d records in the database.\n", count);
 }
 
-void printall(struct node *head)
+void showAll(struct node *head)
 {
     int count = 0;
     struct node *current = head; // Initialize current
     numberofrecords(head);
-    
+
     // print name of columns
     printf("%-15s\t%-40s\t%-3s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
     while (current != NULL)
@@ -74,7 +74,7 @@ struct node *addNode(struct node *head, struct Module newModule)
     return head;
 }
 
-struct node *addModule(struct node *head, char *data)
+struct node *insert(struct node *head, char *data)
 {
     struct Module newModule;
 
@@ -118,7 +118,13 @@ struct node *addModule(struct node *head, char *data)
 
         //* check if the module code already exists
         struct node *current = head; // Initialize current
-        if (checkExistingModuleCode(head, newModule.key) == 1)
+        // if (checkExistingModuleCode(head, newModule.key) == 1)
+        // {
+        //     printf("\n%s \"%s\" already exists in database. Please try again.\n", PRINTKEY, newModule.key);
+        //     printf("checked by function\n");
+        //     return head;
+        // }
+        if (checkExistingModuleCode(current, newModule.key) != NULL)
         {
             printf("\n%s \"%s\" already exists in database. Please try again.\n", PRINTKEY, newModule.key);
             printf("checked by function\n");
@@ -188,7 +194,15 @@ struct node *addModule(struct node *head, char *data)
         // check if the module code already exists
         struct node *current = head; // Initialize current
 
-        if (checkExistingModuleCode(head, newModule.key) == 1)
+        // if (checkExistingModuleCode(head, newModule.key) == 1)
+        // {
+        //     printf("\n%s \"%s\" already exists in database. Please try again.\n", PRINTKEY, newModule.key);
+        //     printf("checked by function\n");
+        //     return head;
+        // }
+        // use the current instead so use the returnExistingModuleCodeptr()
+
+        if (checkExistingModuleCode(current, newModule.key) != NULL)
         {
             printf("\n%s \"%s\" already exists in database. Please try again.\n", PRINTKEY, newModule.key);
             printf("checked by function\n");
@@ -293,7 +307,7 @@ void query(struct node *head, char *data)
             // check if attribute == module code
             if (strcasecmp(attribute, PRINTKEY) == 0)
             {
-                current = returnExistingModuleCodeptr(head, value);
+                current = checkExistingModuleCode(head, value);
 
                 if (current != NULL)
                 {
@@ -367,13 +381,13 @@ void update(struct node *head, char *data)
 
             printf("%s\n", key);
 
-            current = returnExistingModuleCodeptr(head, key); // return current ptr if key found
+            current = checkExistingModuleCode(head, key); // return current ptr if key found
         }
     }
 
     else
     {
-        current = returnExistingModuleCodeptr(head, data); // returns  the current ptr if  key found
+        current = checkExistingModuleCode(head, data); // returns  the current ptr if  key found
     }
 
     if (current != NULL)
