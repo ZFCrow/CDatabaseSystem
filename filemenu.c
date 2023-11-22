@@ -112,13 +112,12 @@ int mainmenu(struct node **head, struct node **current)
     if (strcasecmp(command, "show_all") == 0 || strcasecmp(command, "1") == 0)
     {
         // SHOW_ALL: display all the modules
-        printf("\n");
         char inputChoice[10];
         int sortchoice;
         do
         {
             // ask user which one they want to sort by
-            printf("How do you want to sort the modules?\n");
+            printf("\nHow do you want to sort the modules?\n");
 
             printf("1. %s\n", PRINTKEY);
             printf("2. %s\n", PRINTNAME);
