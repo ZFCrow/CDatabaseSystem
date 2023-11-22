@@ -134,10 +134,6 @@ int mainmenu(struct node **head, struct node **current)
     }
     else if (strcasecmp(command, "insert") == 0 || strcasecmp(command, "2") == 0 )
     {
-<<<<<<< HEAD
-        
-=======
->>>>>>> 31226d108988b10a106aafcb3a97745292fc7796
         //  INSERT: add a new module
         *head = insert(*head, data);
     }

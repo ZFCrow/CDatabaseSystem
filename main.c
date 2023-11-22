@@ -10,12 +10,12 @@
 // functions prototype that contains functions from all the files
 #include "functions.h"
 
-bool cancel()
+bool cancel() //allow user to exit the current operation that they are in
 {
-    printf("\nPress any key to continue or \'Esc\' to exit\n");
-    char escape = _getch();
+    printf("\nPress any key to continue or \'Esc\' to exit\n"); 
+    char escape = _getch(); //accept 'esc' key to exit the function
 
-    if (escape == 27)
+    if (escape == 27) //check if 'esc' key is pressed
     {
         printf("Exiting Function... \n");
         return true;
