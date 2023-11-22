@@ -12,7 +12,7 @@
 
 bool cancel()
 {
-    printf("\nPress 'ESC' to exit or any key to continue\n");
+    printf("\nPress any key to continue or \'Esc\' to exit\n");
     char escape = _getch();
 
     if (escape == 27)
@@ -53,17 +53,17 @@ char *inputString(FILE *fp, size_t size)
 // then return the head of the linked list to main
 struct node *openFile(char *filename)
 {
-    //printf("Reading from the file...\n");
-    //printf("Filename: %s\n", filename);
-    // replace the filename with moduletime.txt
-    // strcpy(filename, "a.txt");
-    // check if i got space to open file
-    // int availableFileHandles = _getmaxstdio();
-    // if (availableFileHandles == -1)
-    // {
-    //     perror("_getmaxstdio");
-    //     exit(1);
-    // }
+    // printf("Reading from the file...\n");
+    // printf("Filename: %s\n", filename);
+    //  replace the filename with moduletime.txt
+    //  strcpy(filename, "a.txt");
+    //  check if i got space to open file
+    //  int availableFileHandles = _getmaxstdio();
+    //  if (availableFileHandles == -1)
+    //  {
+    //      perror("_getmaxstdio");
+    //      exit(1);
+    //  }
 
     // printf("Maximum number of open file handles: %d\n", availableFileHandles);
     FILE *file = fopen(filename, "r");
@@ -90,7 +90,7 @@ struct node *openFile(char *filename)
         // ignore the first line
         if (strcmp(line, "Module Code//Module Name//Module Credit\n") == 0)
         {
-            //printf("Ignoring the first line\n");
+            // printf("Ignoring the first line\n");
             continue;
         }
         char *token = strtok(line, "//"); // Split the line into tokens separated by //
@@ -104,7 +104,7 @@ struct node *openFile(char *filename)
         head = addNode(head, newModule);
     }
     fclose(file); // Close the file when you're done reading from it
-    //printf("linked list created!\n");
+    // printf("linked list created!\n");
     return head; // return the head of the linked list
 }
 
@@ -129,7 +129,7 @@ void addfile(char *filelist[], int *numoffiles, char *filename, int *max_capacit
     if (newtxtfilename != NULL)
     {
         filelist[*numoffiles] = newtxtfilename; //
-        //printf("filename added: %s\n", filelist[*numoffiles]);
+        // printf("filename added: %s\n", filelist[*numoffiles]);
         *numoffiles += 1;
     }
 
@@ -226,6 +226,7 @@ void declaration()
 int main()
 {
     declaration();
+    printf("Welcome to EzDB!\n\n");
     //    addingtime(1, 2);
 
     int choice = 1;
@@ -240,11 +241,11 @@ int main()
 
         //! print the openfile menu and get the command from user
         char *filename = filemenu(filelist, pnumoffiles, pmax_capacity);
-        //printf("filename: %s\n", filename);
+        // printf("filename: %s\n", filename);
 
         //! validate the command/filename entered by user
         filename = filenamevalidations(filename, numoffiles, filelist);
-        //printf("filename after validations: %s\n", filename);
+        // printf("filename after validations: %s\n", filename);
 
         // free everything before opening a new file
         for (int i = 0; i < numoffiles; i++)

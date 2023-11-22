@@ -20,7 +20,7 @@ void numberofrecords(struct node *head)
         count++;
         current = current->next;
     }
-    printf("There are %d records in the database.\n", count);
+    printf("\nThere are %d records in the database.\n\n", count);
 }
 
 void showAll(struct node *head)
@@ -36,22 +36,6 @@ void showAll(struct node *head)
         printf("%-15s\t%-40s\t%-3d\n", current->module.key, current->module.name, current->module.credit);
         current = current->next;
     }
-}
-
-void PrintReverse(struct node *head)
-{
-
-    if (head == NULL)
-    {
-        return;
-    }
-    // print the header once only
-    if (head->next == NULL)
-    {
-        printf("%-15s\t%-40s\t%-3s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
-    }
-    PrintReverse(head->next); // Recursively print the rest of the list
-    printf("%-15s\t%-40s\t%-3d\n", head->module.key, head->module.name, head->module.credit);
 }
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -78,17 +62,18 @@ struct node *insert(struct node *head, char *data)
 
     // only prompt the next 2 if the data is not empty, if the last data is not a int, we remove the data part
     // and prompt the user to enter again
-   // printf("Data: %s\n", data); // print the pointer
+    // printf("Data: %s\n", data); // print the pointer
 
     // see if the data has 3 parts, if it does, then we can add the module
 
     int result = sscanf(data, "%8[^,],%54[^,],%d", newModule.key, newModule.name, &newModule.credit);
 
     // theres a chacne that modulename contains a number, so we need to check if the last part is a number
-    //printf("result: %d\n", result);
+    // printf("result: %d\n", result);
 
     // check if the module code is valid if the result ==3 , otherwise dont have to check if code is valid
-    if (result == 3){
+    if (result == 3)
+    {
         if (checkCode(newModule.key) == 0)
         {
             // printf("Invalid module code.\nModule Code only contains a total of not more than 8 characters.\nEnsure that your module code has the first 3-4 characters as alphabets and the remaining characters as digits.\nPlease try again.\n");
@@ -99,7 +84,7 @@ struct node *insert(struct node *head, char *data)
     if (result != 3 || containsSpace(newModule.key)) //* if the result is not 3 or modulecode contain spaces, then we need to prompt the user to enter again
     {
 
-        printf("Invalid input. please choose to either cancel the operation or we will be prompting you to add values manually now.(enter esc to cancel)\n");
+        printf("Invalid input. Please choose to either cancel the operation or we will be prompting you to add values manually now.(enter \'Esc\' to cancel)\n");
         if (cancel())
         {
             return head;
@@ -183,7 +168,7 @@ struct node *insert(struct node *head, char *data)
         //* ADD node to link list
 
         head = addNode(head, newModule);
-        printf("A new record of %s=%s, %s=%s, %s=%d is successfully inserted. ", PRINTKEY, head->module.key, PRINTNAME, head->module.name, PRINTCREDIT, head->module.credit);
+        printf("\nA new record of %s=%s, %s=%s, %s=%d is successfully inserted.\n", PRINTKEY, head->module.key, PRINTNAME, head->module.name, PRINTCREDIT, head->module.credit);
         return head;
     }
 
@@ -192,8 +177,6 @@ struct node *insert(struct node *head, char *data)
 
         // check if the module code already exists
         struct node *current = head; // Initialize current
-
-
 
         if (checkExistingModuleCode(current, newModule.key) != NULL)
         {
@@ -205,7 +188,7 @@ struct node *insert(struct node *head, char *data)
         // ! ADD node to link list
 
         head = addNode(head, newModule);
-        printf("A new record of %s=%s, %s=%s, %s=%d is successfully inserted. ", PRINTKEY, head->module.key, PRINTNAME, head->module.name, PRINTCREDIT, head->module.credit);
+        printf("\nA new record of %s=%s, %s=%s, %s=%d is successfully inserted.\n", PRINTKEY, head->module.key, PRINTNAME, head->module.name, PRINTCREDIT, head->module.credit);
         return head;
     }
 }
@@ -366,18 +349,21 @@ void update(struct node *head, char *data)
 
         else
         {
-            do {
+            do
+            {
                 // Get module code if it was not already specified
                 printf("Please type in the module code of the module you want to update:\n");
 
                 fgets(key, sizeof(key), stdin);
                 key[strcspn(key, "\n")] = '\0';
-                
-                if(strlen(key) > 20)
+
+                if (strlen(key) > 20)
                 {
-                    for (int c; (c = getchar()) != '\n' && c != EOF;) {}    
+                    for (int c; (c = getchar()) != '\n' && c != EOF;)
+                    {
+                    }
                 }
-                
+
                 current = checkExistingModuleCode(head, key); // return current ptr if key found
 
                 data = NULL;
@@ -393,7 +379,7 @@ void update(struct node *head, char *data)
 
     if (current != NULL)
     {
-        //printf("Key found.\n\n");
+        // printf("Key found.\n\n");
 
         printf("%s: %s\n", PRINTKEY, current->module.key);
         printf("%s: %s\n", PRINTNAME, current->module.name);
@@ -421,7 +407,9 @@ void update(struct node *head, char *data)
                 // clear buffer
                 if ((atoi(choice) == 0 && strlen(choice) > 1) || atoi(choice) > 9)
                 {
-                    for (int c; (c = getchar()) != '\n' && c != EOF;) {}
+                    for (int c; (c = getchar()) != '\n' && c != EOF;)
+                    {
+                    }
                 }
             }
         } while (atoi(choice) <= 0 || atoi(choice) > 3 || strlen(choice) > 2);
@@ -466,12 +454,14 @@ void update(struct node *head, char *data)
             fgets(newname, sizeof(newname), stdin);
             newname[strlen(newname) - 1] = '\0'; // get rid of the \n character at the end of the string
 
-            if (strlen(newname) == 0) //set name to NA if not specified
+            if (strlen(newname) == 0) // set name to NA if not specified
             {
                 strcpy(newname, "NA");
             }
 
-            for (int c; (c = getchar()) != '\n' && c != EOF;) {}
+            for (int c; (c = getchar()) != '\n' && c != EOF;)
+            {
+            }
 
             strcpy(current->module.name, newname);
             printf("The value of the module name for the record %s=%s is successfully updated.\n", PRINTKEY, key);
@@ -519,7 +509,7 @@ void update(struct node *head, char *data)
 
     else
     {
-        printf("There is no record with %s=%s found in the database.\n", PRINTKEY,key);
+        printf("There is no record with %s=%s found in the database.\n", PRINTKEY, key);
         return;
     }
 }
@@ -542,8 +532,6 @@ void delete(struct node **head, char *deleteData)
             fgets(deleteData, 20, stdin);
             // Remove the newline character at the end of the string
             deleteData[strcspn(deleteData, "\n")] = '\0';
-
-
         }
     }
 
@@ -622,7 +610,7 @@ void save(struct node *head, char *filename)
         }
     }
 
-    //printf("Opening File: %s...\n", filename);
+    // printf("Opening File: %s...\n", filename);
     FILE *file = fopen(filename, "w"); // Open the file for writing
     if (file == NULL)
     {
@@ -630,16 +618,15 @@ void save(struct node *head, char *filename)
         return;
     }
 
-    //printf("Saving File: %s...\n", filename);
-    // PrintReverse_save(head, file);
+    // printf("Saving File: %s...\n", filename);
+    //  PrintReverse_save(head, file);
 
     Print_save(head, file); // writing into the file
 
-    //printf("Closing File: %s...\n", filename);
+    // printf("Closing File: %s...\n", filename);
     fclose(file);
 
     printf("File Saved: %s\n", filename);
 
     return;
 }
-
