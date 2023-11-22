@@ -31,6 +31,7 @@ char *filenamevalidations(char *filename, int numoffiles, char *filelist[]);
 struct node *sort(struct node *head, int sortchoice);
 bool checkCode(char key[]);
 bool checkExistingModuleCode(struct node *head, char key[]);
+struct node *returnExistingModuleCodeptr(struct node *head, char key[]);
 
 // functions in filemenu.c
 char *filemenu(char *filelist[], int *numoffiles, int *max_capacity);
