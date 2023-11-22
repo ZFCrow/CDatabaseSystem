@@ -525,7 +525,7 @@ void delete(struct node **head, char *deleteData)
 
     else
     {
-        printf("\nThere is no record with %s=%s found in the database.\n",PRINTKEY, deleteData);
+        printf("\nThere is no record with %s=%s found in the database.\n", PRINTKEY, deleteData);
     }
 
     return;
@@ -560,7 +560,7 @@ void save(struct node *head, char *filename)
         if (check)
         {
             printf("\nInvalid File. Please save to a .txt file!\n");
-            if (cancel()) //option for user to break out of function
+            if (cancel()) // option for user to break out of function
             {
                 return;
             }

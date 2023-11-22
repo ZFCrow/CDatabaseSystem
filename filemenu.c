@@ -189,7 +189,7 @@ int mainmenu(struct node **head, struct node **current)
         choice = 0;
         {
             // exit the application
-            printf("Exiting the application\n");
+            printf("\nExiting the application\n");
 
             //* free the memory and exit
             //* go through the linked list and free the memory
