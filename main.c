@@ -266,7 +266,7 @@ int main()
             printf("\nWhat do you want to do with %s?\n", filename);
 
             //! menu2
-            choice = menu2(&head, &current); // this is pointer to pointer, so we can change the head pointer in the function
+            choice = mainmenu(&head, &current); // this is pointer to pointer, so we can change the head pointer in the function
             // UPDATE MY HEAD
             if (choice == 7)
             {

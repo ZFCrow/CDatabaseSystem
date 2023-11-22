@@ -39,7 +39,7 @@ struct node *checkExistingModuleCode(struct node *head, char key[]);
 
 // functions in filemenu.c
 char *filemenu(char *filelist[], int *numoffiles, int *max_capacity);
-int menu2(struct node **head, struct node **current);
+int mainmenu(struct node **head, struct node **current);
 
 // functions in crud.c
 void showAll(struct node *head);
