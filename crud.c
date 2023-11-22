@@ -197,7 +197,6 @@ void query(struct node *head, char *data)
                 return;
             else
             {
-                char *value;
                 printf("\nPlease enter query again: ");
                 data = inputString(stdin, 10);
             }
