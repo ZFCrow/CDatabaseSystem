@@ -411,8 +411,15 @@ void update(struct node *head, char *data)
             printf("Enter the number here:\n");
 
             fgets(choice, 3, stdin);
-            choice[strlen(choice) - 1] = '\0'; // get rid of the \n character at the end of the string
+            printf("strlen of input = %d\n",strlen(choice));
+            if (choice[strlen(choice) - 1] == '\n'){
+                printf("strlen choice -1 equals to \\n\n");
+                choice[strlen(choice) - 1] = '\0'; // get rid of the \n character at the end of the string
+            }else{
+                printf("choice before termination :%s\n", choice);
+            }
 
+            printf("choice after termination :%s\n", choice);
             if (atoi(choice) < 1 || atoi(choice) > 3)
             {
                 printf("Invalid choice, please try again.\n\n");
