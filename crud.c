@@ -381,13 +381,14 @@ void update(struct node *head, char *data)
 
             printf("%s\n", key);
 
-            current = returnExistingModuleCodeptr(head, key); // return current ptr if key found
+            current = checkExistingModuleCode(head, key); // return current ptr if key found
+            data = NULL;
         }
     }
 
     else
     {
-        current = returnExistingModuleCodeptr(head, data); // returns  the current ptr if  key found
+        current = checkExistingModuleCode(head, data); // returns  the current ptr if  key found
     }
 
     if (current != NULL)
@@ -507,7 +508,16 @@ void update(struct node *head, char *data)
 
     else
     {
-        printf("There is no record with %s found in the database.\n", key);
+        if (data != NULL)
+        {
+            printf("There is no record with Key=%s found in the database.\n", data);
+        }
+
+        else
+        {
+            printf("There is no record with Key=%s found in the database.\n", key);
+        }
+
         return;
     }
 }
