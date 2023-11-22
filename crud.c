@@ -544,7 +544,7 @@ void Print_save(struct node *head, FILE *file)
 
     while (head != NULL)
     {
-        fprintf(file, "%s//%s//%d\n", head->module.key, head->module.name, head->module.credit); // Print the current node, the first one will run last!
+        fprintf(file, "%s//%s//%d\n", head->module.key, head->module.name, head->module.credit); // Print the current node and the respective details
         head = head->next;
     }
 }
@@ -565,7 +565,7 @@ void save(struct node *head, char *filename)
         if (check)
         {
             printf("\nInvalid File. Please save to a .txt file!\n");
-            if (cancel())
+            if (cancel()) //option for user to break out of function
             {
                 return;
             }
@@ -587,12 +587,8 @@ void save(struct node *head, char *filename)
         return;
     }
 
-    // printf("Saving File: %s...\n", filename);
-    //  PrintReverse_save(head, file);
-
     Print_save(head, file); // writing into the file
 
-    // printf("Closing File: %s...\n", filename);
     fclose(file);
 
     printf("File Saved: %s\n", filename);
