@@ -9,8 +9,6 @@
 
 #include "functions.h"
 
-
-
 //!!!  TO SHOW EVERYTHING
 
 void numberofrecords(struct node *head)
@@ -382,6 +380,7 @@ void update(struct node *head, char *data)
             printf("%s\n", key);
 
             current = checkExistingModuleCode(head, key); // return current ptr if key found
+
             data = NULL;
         }
     }
@@ -411,20 +410,18 @@ void update(struct node *head, char *data)
             printf("Enter the number here:\n");
 
             fgets(choice, 3, stdin);
-            printf("strlen of input = %d\n",strlen(choice));
-            if (choice[strlen(choice) - 1] == '\n'){
-                printf("strlen choice -1 equals to \\n\n");
-                choice[strlen(choice) - 1] = '\0'; // get rid of the \n character at the end of the string
-            }else{
-                printf("choice before termination :%s\n", choice);
-            }
+            key[strcspn(key, "\n")] = '\0';
 
-            printf("choice after termination :%s\n", choice);
-            if (atoi(choice) < 1 || atoi(choice) > 3)
+            if (atoi(choice) <= 0 || atoi(choice) > 3 || strlen(choice) > 2)
             {
                 printf("Invalid choice, please try again.\n\n");
+
+                // clear buffer
+                for (int c; (c = getchar()) != '\n' && c != EOF;)
+                {
+                }
             }
-        } while (atoi(choice) <= 0 || atoi(choice) > 3);
+        } while (atoi(choice) <= 0 || atoi(choice) > 3 || strlen(choice) > 2);
 
         if (atoi(choice) == 1)
         {
@@ -494,11 +491,13 @@ void update(struct node *head, char *data)
                         break;
                     }
                 }
-                
-                if (validint == 1) {
+
+                if (validint == 1)
+                {
                     break;
                 }
-                else {
+                else
+                {
                     printf("Invalid integer, please try again.\n");
                 }
 
@@ -518,7 +517,7 @@ void update(struct node *head, char *data)
         if (data != NULL)
         {
             printf("There is no record with Key=%s found in the database.\n", data);
-        }
+        }   
 
         else
         {
