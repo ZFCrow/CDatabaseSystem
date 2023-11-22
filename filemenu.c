@@ -100,7 +100,7 @@ int mainmenu(struct node **head, struct node **current)
 
     int choice = 1;
 
-    if (strcasecmp(command, "show_all") == 0 || strcasecmp(command, "1") == 0)
+    if (strcasecmp(command, "show_all") == 0 || strcasecmp(command, "1") == 0 || strcasecmp(command, "select") == 0)
     {
         // SHOW_ALL: display all the modules
         char inputChoice[10];
@@ -134,7 +134,6 @@ int mainmenu(struct node **head, struct node **current)
     }
     else if (strcasecmp(command, "insert") == 0 || strcasecmp(command, "2") == 0)
     {
-        // todo, pass in the data as a string, then split it into tokens, if the data contains anything
         //  INSERT: add a new module
         *head = insert(*head, data);
     }
