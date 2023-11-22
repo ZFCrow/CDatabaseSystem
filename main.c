@@ -31,7 +31,7 @@ bool cancel()
 struct node *openFile(char *filename)
 {
 
-    // printf("Maximum number of open file handles: %d\n", availableFileHandles);
+   
     FILE *file = fopen(filename, "r");
 
     if (file == NULL)
@@ -91,7 +91,7 @@ void addfile(char *filelist[], int *numoffiles, char *filename, int *max_capacit
     if (newtxtfilename != NULL)
     {
         filelist[*numoffiles] = newtxtfilename; //
-        // printf("filename added: %s\n", filelist[*numoffiles]);
+      
         *numoffiles += 1;
     }
 
@@ -102,7 +102,7 @@ void addfile(char *filelist[], int *numoffiles, char *filename, int *max_capacit
     }
 }
 
-// sorting nodes base on module code
+// sorting nodes 
 struct node *sort(struct node *head, int sortchoice)
 {
     struct node *current = head;
@@ -117,7 +117,7 @@ struct node *sort(struct node *head, int sortchoice)
     {
         while (current != NULL)
         {
-            // printf ("looking at next key %s \n", current->module.key);
+            
             index = current->next;
 
             while (index != NULL)
@@ -127,10 +127,10 @@ struct node *sort(struct node *head, int sortchoice)
                 {
                     if (strcasecmp(current->module.key, index->module.key) > 0)
                     {
-                        // printf("looking at current key %s \n", current->module.key);
+                        
                         //  if the current module code is greater than the index module code, then we need to swap the modules
                         // once swap, the next iteration will compare the newly swapped module with the next module
-                        // printf("swapping %s and %s\n", current->module.key, index->module.key);
+                        
                         temp = current->module;
                         current->module = index->module;
                         index->module = temp;
@@ -170,7 +170,7 @@ int main()
 {
     declaration();
     printf("Welcome to EzDB!\n");
-    //    addingtime(1, 2);
+    
 
     int choice = 1;
     int max_capacity = INITIAL_CAPACITY;
@@ -184,11 +184,11 @@ int main()
 
         //! print the openfile menu and get the command from user
         char *filename = filemenu(filelist, pnumoffiles, pmax_capacity);
-        // printf("filename: %s\n", filename);
+       
 
         //! validate the command/filename entered by user
         filename = filenamevalidations(filename, numoffiles, filelist);
-        // printf("filename after validations: %s\n", filename);
+    
 
         // free everything before opening a new file
         for (int i = 0; i < numoffiles; i++)
@@ -196,7 +196,7 @@ int main()
             free(filelist[i]);
         }
 
-        // free(pnumoffiles);
+  
 
         // open the file
         struct node *head = openFile(filename);

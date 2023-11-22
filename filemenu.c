@@ -132,9 +132,9 @@ int mainmenu(struct node **head, struct node **current)
         showAll(*head);
         printf("\n");
     }
-    else if (strcasecmp(command, "insert") == 0 || strcasecmp(command, "2") == 0)
+    else if (strcasecmp(command, "insert") == 0 || strcasecmp(command, "2") == 0 )
     {
-        // todo, pass in the data as a string, then split it into tokens, if the data contains anything
+        
         //  INSERT: add a new module
         *head = insert(*head, data);
     }
