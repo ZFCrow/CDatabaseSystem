@@ -212,7 +212,7 @@ int menu2(struct node **head, struct node **current)
 
     // sleep(2);
     // wait for user to press enter to continue
-    printf("Press Enter to continue...");
+    printf("\nPress Enter to continue...");
     getchar();
 
     return choice;
