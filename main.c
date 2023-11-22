@@ -7,14 +7,8 @@
 #include <dirent.h>
 #include <conio.h>
 
-
-
-
 // functions prototype that contains functions from all the files
 #include "functions.h"
-
-
-
 
 bool cancel()
 {
@@ -31,7 +25,6 @@ bool cancel()
         return false;
     }
 }
-
 
 char *inputString(FILE *fp, size_t size)
 {
@@ -147,8 +140,6 @@ void addfile(char *filelist[], int *numoffiles, char *filename, int *max_capacit
     }
 }
 
-
-
 // sorting nodes base on module code
 struct node *sort(struct node *head, int sortchoice)
 {
@@ -213,9 +204,28 @@ struct node *sort(struct node *head, int sortchoice)
     return head;
 }
 
+void declaration()
+{
+    printf("\"\nDeclaration\n");
+    printf("SIT\'s policy on copying does not allow the students to copy source code as well as assessment solutions\nfrom another person or other places. It is the students\' responsibility to guarantee that their assessment\nsolutions are their own work. Meanwhile, the students must also ensure that their work is not accessible\nby others. Where such plagiarism is detected, both of the assessments involved will receive ZERO mark.\n");
+    printf("\nWe hereby declare that:\n");
+    printf("- We fully understand and agree to the abovementioned plagiarism policy.\n");
+    printf("- We did not copy any code from others or from other places.\n");
+    printf("- We did not share our codes with others or upload to any other places for public access.\n");
+    printf("- We agree that our project will receive Zero mark if there is any plagiarism detected.\n");
+    printf("\nDeclared by: P5_4\n");
+    printf("Team members:\n");
+    printf("1. Chua Shing Ying\n");
+    printf("2. Lim Mei Tian\n");
+    printf("3. Lee Zhiqi, Charlene\n");
+    printf("4. Cheah Zheng Feng\n");
+    printf("5. Phang Zi Heng\n");
+    printf("Date: 23 November 2023\n\"\n\n");
+}
+
 int main()
 {
-
+    declaration();
     //    addingtime(1, 2);
 
     int choice = 1;
