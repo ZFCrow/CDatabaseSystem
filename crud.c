@@ -330,7 +330,7 @@ void query(struct node *head, char *data)
 void update(struct node *head, char *data)
 {
     struct node *current = head;
-    char *key;
+    char key[20];
 
     if (strlen(data) == 0)
     {
@@ -344,7 +344,7 @@ void update(struct node *head, char *data)
             // Get module code
             printf("Please type in the module code of the module you want to update:\n");
 
-            fgets(key, 9, stdin);
+            fgets(key, sizeof(key), stdin);
             key[strcspn(key, "\n")] = '\0';
 
             printf("%s\n", key);
@@ -355,8 +355,7 @@ void update(struct node *head, char *data)
 
     else
     {
-        key = strtok(data, " ");
-        current = returnExistingModuleCodeptr(head, key); // returns  the current ptr if  key found
+        current = returnExistingModuleCodeptr(head, data); // returns  the current ptr if  key found
     }
 
     if (current != NULL)
@@ -372,7 +371,7 @@ void update(struct node *head, char *data)
         printf("2. Module Name\n");
         printf("3. Module Credit\n\n");
 
-        char *choice = (char *)malloc(sizeof(char));
+        char choice[3];
 
         do
         {
@@ -401,10 +400,10 @@ void update(struct node *head, char *data)
                 if (checkExistingModuleCode(head, newkey))
                 {
                     printf("Module code already exist.\n");
-                    return;
                 }
 
-                if (checkCode(newkey))
+                // if module code does not exist, update module code
+                else if (checkCode(newkey))
                 {
                     strcpy(current->module.key, newkey);
                     printf("The value for the module code is successfully updated.\n");
@@ -413,7 +412,7 @@ void update(struct node *head, char *data)
 
                 else
                 {
-                    printf("Invalid module code.\nModule Code only contains a total of not more than 8 characters.\nEnsure that your module code has the first 3-4 characters as alpha and the remaining characters as digits.\nPlease try again.\n");
+                    printf("\nInvalid module code.\nModule Code only contains a total of not more than 8 characters.\nEnsure that your module code has the first 3-4 characters as alpha and the remaining characters as digits.\nPlease try again.\n");
                 }
             }
         }
@@ -450,9 +449,6 @@ void update(struct node *head, char *data)
 
             free(newcredit);
         }
-
-        free(choice);
-        //free(key);
 
         return;
     }
