@@ -3,6 +3,7 @@
     "stdio.h": "c",
     "type_traits": "c",
     "init.h": "c",
-    "functions.h": "c"
+    "functions.h": "c",
+    "conio.h": "c"
   }
 }

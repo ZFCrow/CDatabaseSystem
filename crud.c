@@ -11,8 +11,6 @@
 
 //!!!  TO SHOW EVERYTHING
 
-
-
 void showAll(struct node *head)
 {
     int count = 0;
@@ -182,8 +180,6 @@ struct node *insert(struct node *head, char *data)
         return head;
     }
 }
-
-
 
 /* Checks whether the value x is present in linked list */
 void query(struct node *head, char *data)

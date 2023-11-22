@@ -14,7 +14,7 @@ char *filemenu(char *filelist[], int *numoffiles, int *max_capacity)
 {
     char *currentdir = ".";
     // get the filename from user
-    printf("Opening Directory...\n");
+    printf("\nOpening Directory...\n");
     DIR *directory = opendir(currentdir);
 
     if (directory == NULL)

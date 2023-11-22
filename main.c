@@ -26,13 +26,10 @@ bool cancel()
     }
 }
 
-
-
 // instead of reading all these modules from the file in main, create a openfile function and create a linkedlist from there,
 // then return the head of the linked list to main
 struct node *openFile(char *filename)
 {
-
 
     // printf("Maximum number of open file handles: %d\n", availableFileHandles);
     FILE *file = fopen(filename, "r");
@@ -42,7 +39,6 @@ struct node *openFile(char *filename)
         perror("Error opening the file");
         exit(1);
     }
-
 
     struct node *head = NULL; // Create an empty linked list
     char line[100];           // Adjust the buffer size based on your file's format
@@ -56,7 +52,7 @@ struct node *openFile(char *filename)
         // ignore the first line
         if (strcmp(line, "Module Code//Module Name//Module Credit\n") == 0)
         {
-            
+
             continue;
         }
         char *token = strtok(line, "//"); // Split the line into tokens separated by //
@@ -70,7 +66,7 @@ struct node *openFile(char *filename)
         head = addNode(head, newModule);
     }
     fclose(file); // Close the file when you're done reading from it
-   
+
     return head; // return the head of the linked list
 }
 
@@ -170,12 +166,10 @@ struct node *sort(struct node *head, int sortchoice)
     return head;
 }
 
-
-
 int main()
 {
     declaration();
-    printf("Welcome to EzDB!\n\n");
+    printf("Welcome to EzDB!\n");
     //    addingtime(1, 2);
 
     int choice = 1;
