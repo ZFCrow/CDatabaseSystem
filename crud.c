@@ -370,23 +370,29 @@ void update(struct node *head, char *data)
 
         else
         {
-            // Get module code
-            printf("Please type in the module code of the module you want to update:\n");
+            do {
+                // Get module code if it was not already specified
+                printf("Please type in the module code of the module you want to update:\n");
 
-            fgets(key, sizeof(key), stdin);
-            key[strcspn(key, "\n")] = '\0';
+                fgets(key, sizeof(key), stdin);
+                key[strcspn(key, "\n")] = '\0';
+                
+                if(strlen(key) > 20)
+                {
+                    for (int c; (c = getchar()) != '\n' && c != EOF;) {}    
+                }
+                
+                current = checkExistingModuleCode(head, key); // return current ptr if key found
 
-            printf("%s\n", key);
-
-            current = checkExistingModuleCode(head, key); // return current ptr if key found
-
-            data = NULL;
+                data = NULL;
+            } while (strlen(key) == 0 || strcmp(key, " ") == 0);
         }
     }
 
     else
     {
-        current = checkExistingModuleCode(head, data); // returns  the current ptr if  key found
+        strcpy(key, data);
+        current = checkExistingModuleCode(head, key); // returns  the current ptr if  key found
     }
 
     if (current != NULL)
@@ -397,6 +403,7 @@ void update(struct node *head, char *data)
         printf("%s: %s\n", PRINTNAME, current->module.name);
         printf("%s: %d\n\n", PRINTCREDIT, current->module.credit);
 
+        // ask user which attribute they want to update
         printf("Which attribute do you want to update?\n");
         printf("1. Module Code\n");
         printf("2. Module Name\n");
@@ -409,15 +416,16 @@ void update(struct node *head, char *data)
             printf("Enter the number here:\n");
 
             fgets(choice, 3, stdin);
-            key[strcspn(key, "\n")] = '\0';
+            choice[strcspn(choice, "\n")] = '\0';
 
             if (atoi(choice) <= 0 || atoi(choice) > 3 || strlen(choice) > 2)
             {
                 printf("Invalid choice, please try again.\n\n");
 
                 // clear buffer
-                for (int c; (c = getchar()) != '\n' && c != EOF;)
+                if ((atoi(choice) == 0 && strlen(choice) > 1) || atoi(choice) > 9)
                 {
+                    for (int c; (c = getchar()) != '\n' && c != EOF;) {}
                 }
             }
         } while (atoi(choice) <= 0 || atoi(choice) > 3 || strlen(choice) > 2);
@@ -442,7 +450,7 @@ void update(struct node *head, char *data)
                 else if (checkCode(newkey))
                 {
                     strcpy(current->module.key, newkey);
-                    printf("The value for the module code is successfully updated.\n");
+                    printf("The value of the module code for the record %s=%s is successfully updated.\n", PRINTKEY, key);
                     return;
                 }
 
@@ -460,13 +468,20 @@ void update(struct node *head, char *data)
 
             fgets(newname, sizeof(newname), stdin);
             newname[strlen(newname) - 1] = '\0'; // get rid of the \n character at the end of the string
+
+            if (strlen(newname) == 0) //set name to NA if not specified
+            {
+                strcpy(newname, "NA");
+            }
+
+            for (int c; (c = getchar()) != '\n' && c != EOF;) {}
+
             strcpy(current->module.name, newname);
-            printf("The value for the module name is successfully updated.\n");
+            printf("The value of the module name for the record %s=%s is successfully updated.\n", PRINTKEY, key);
         }
 
         else if (atoi(choice) == 3)
         {
-            // char *newcredit = (char *)malloc(sizeof(char));
             char newcredit[255];
             int validint = 1;
 
@@ -477,13 +492,8 @@ void update(struct node *head, char *data)
                 fgets(newcredit, sizeof(newcredit), stdin);
                 newcredit[strcspn(newcredit, "\n")] = '\0';
 
-                // printf("%d\n", sizeof(newcredit));
-                // printf("%d\n", strlen(newcredit));
-
                 for (int i = 0; i < strlen(newcredit); i++)
                 {
-                    printf("%d\n", isdigit(newcredit[i]));
-
                     if (isdigit(newcredit[i]) == 0)
                     {
                         validint = 0;
@@ -498,14 +508,13 @@ void update(struct node *head, char *data)
                 else
                 {
                     printf("Invalid integer, please try again.\n");
+                    validint = 1;
                 }
 
             } while (1);
 
             current->module.credit = atoi(newcredit);
-            printf("The value for the module credit is successfully updated.\n");
-
-            // free(newcredit);
+            printf("The value of the module credit for the record %s=%s is successfully updated.\n", PRINTKEY, key);
         }
 
         return;
@@ -513,16 +522,7 @@ void update(struct node *head, char *data)
 
     else
     {
-        if (data != NULL)
-        {
-            printf("There is no record with Key=%s found in the database.\n", data);
-        }   
-
-        else
-        {
-            printf("There is no record with Key=%s found in the database.\n", key);
-        }
-
+        printf("There is no record with %s=%s found in the database.\n", PRINTKEY,key);
         return;
     }
 }

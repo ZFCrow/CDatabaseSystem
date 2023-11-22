@@ -57,7 +57,7 @@ char *filemenu(char *filelist[], int *numoffiles, int *max_capacity)
     return strdup(filename);
 }
 
-int menu2(struct node **head, struct node **current)
+int mainmenu(struct node **head, struct node **current)
 {
     char *input;
     printf("1. SHOW_ALL - display all the modules\n\tCommand: SHOW_ALL or\n\t\t 1\n\n");
