@@ -330,7 +330,10 @@ bool query(struct node *head, char *data)
 void update(struct node *head, char *data)
 {
     struct node *current = head;
-    char *key = (char *)malloc(sizeof(char));
+   // char *key = (char *)malloc(sizeof(char));
+    char *key;
+    //char key1[9];
+    key = (char *)malloc(9 * sizeof(char));
 
     if (strlen(data) == 0)
     {
@@ -343,9 +346,10 @@ void update(struct node *head, char *data)
         {
             // Get module code
             printf("Please type in the module code of the module you want to update:\n");
-
-            fgets(key, 9, stdin);
-            key[strlen(key) - 1] = '\0'; // get rid of the \n character at the end of the string
+            
+            fgets(key, sizeof(key), stdin);
+            printf("key taken in : %s\n", key);
+            key[strlen(key) - 1] = '\0'; // Remove the newline character from fgets
 
             printf("%s\n", key);
 
@@ -355,6 +359,7 @@ void update(struct node *head, char *data)
 
     else
     {
+
         key = strtok(data, " ");
         current = returnExistingModuleCodeptr(head, key); // returns  the current ptr if  key found
     }
@@ -449,8 +454,10 @@ void update(struct node *head, char *data)
             printf("The value for the module credit is successfully updated.\n");
 
             free(newcredit);
+            printf("hello!");
         }
 
+        printf("done freeing the choice and key now!");
         free(choice);
         free(key);
 
