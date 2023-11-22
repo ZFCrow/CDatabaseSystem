@@ -343,8 +343,6 @@ void update(struct node *head, char *data)
 
     if (current != NULL)
     {
-        // printf("Key found.\n\n");
-
         printf("\n%s: %s\n", PRINTKEY, current->module.key);
         printf("%s: %s\n", PRINTNAME, current->module.name);
         printf("%s: %d\n\n", PRINTCREDIT, current->module.credit);
@@ -385,7 +383,7 @@ void update(struct node *head, char *data)
             while (1)
             {
                 // ask user to enter the new module code
-                printf("Please enter the new module code you want to change to: ");
+                printf("\nPlease enter the new module code you want to change to: \n");
                 fgets(newkey, sizeof(newkey), stdin);
                 newkey[strlen(newkey) - 1] = '\0'; // get rid of the \n character at the end of the string
 
@@ -402,12 +400,6 @@ void update(struct node *head, char *data)
                     printf("The value of the module code for the record %s=%s is successfully updated.\n", PRINTKEY, key);
                     return;
                 }
-
-                // else
-                // {
-
-                //     //printf("\nInvalid module code.\nModule Code only contains a total of not more than 8 characters.\nEnsure that your module code has the first 3-4 characters as alpha and the remaining characters as digits.\nPlease try again.\n");
-                // }
             }
         }
 
@@ -416,7 +408,7 @@ void update(struct node *head, char *data)
             char newname[55];
 
             // ask user to enter the new module name
-            printf("Please enter the new module name you want to change to: ");
+            printf("\nPlease enter the new module name you want to change to: \n");
 
             fgets(newname, sizeof(newname), stdin);
             newname[strlen(newname) - 1] = '\0'; // get rid of the \n character at the end of the string
@@ -426,8 +418,11 @@ void update(struct node *head, char *data)
                 strcpy(newname, "NA");
             }
 
-            for (int c; (c = getchar()) != '\n' && c != EOF;)
+            if (strlen(newname) > 50)
             {
+                for (int c; (c = getchar()) != '\n' && c != EOF;)
+                {
+                }
             }
 
             strcpy(current->module.name, newname);
@@ -442,7 +437,7 @@ void update(struct node *head, char *data)
             do
             {
                 // ask user to enter the new module credit
-                printf("Please enter the new module credit you want to change to: ");
+                printf("\nPlease enter the new module credit you want to change to: \n");
 
                 fgets(newcredit, sizeof(newcredit), stdin);
                 newcredit[strcspn(newcredit, "\n")] = '\0';
