@@ -160,7 +160,7 @@ struct node *addModule(struct node *head, char *data)
         //* ADD node to link list
 
         head = addNode(head, newModule);
-
+        printf("A new record of Module Code=%s, Module Name=%s, Module Credit=%d is successfully inserted. ", head->module.key, head->module.name, head->module.credit);
         return head;
     }
 
@@ -180,7 +180,7 @@ struct node *addModule(struct node *head, char *data)
         // ! ADD node to link list
 
         head = addNode(head, newModule);
-
+        printf("A new record of Module Code=%s, Module Name=%s, Module Credit=%d is successfully inserted. ", head->module.key, head->module.name, head->module.credit);
         return head;
     }
 }
@@ -199,11 +199,21 @@ char *ask_query()
     return value;
 }
 
+void print_found(int count, char *value, struct node *current)
+{
+    if (count == 0)
+    {
+        printf("\nRecord for %s = %s is found in the database. Below are the details:\n\n", PRINTKEY, value);
+        printf("%-15s\t%-40s\t%-3s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
+    }
+    printf("%-15s\t%-40s\t%-3d\n", current->module.key, current->module.name, current->module.credit);
+}
+
 /* Checks whether the value x is present in linked list */
 bool query(struct node *head, char *data)
 {
-    int works = 0;
-    int count = 0;
+    int works = 0; // works = 1 when there is error in the data, 0 when successful
+    int count = 0; // count the number of matches
     char *attribute;
     char *value;
 
@@ -221,7 +231,6 @@ bool query(struct node *head, char *data)
         {
             printf("\nQuery data was not found.\n");
             print_query_error();
-            // return true;
             works = 1;
         }
         else if (strchr(data, '=') != NULL)
@@ -241,7 +250,6 @@ bool query(struct node *head, char *data)
                 printf("\nQuery data for \"%s\" attribute was not found.\n", attribute);
                 print_query_error();
                 works = 1;
-                // return true;
             }
             // check if got extra space: " inf1001"
             else if (isspace(value[0]))
@@ -271,12 +279,7 @@ bool query(struct node *head, char *data)
                 {
                     if (strcasecmp(current->module.key, value) == 0)
                     {
-                        if (count == 0)
-                        {
-                            printf("\nRecord for %s = %s is found in the database. Below are the details:\n\n", PRINTKEY, value);
-                            printf("%-15s\t%-40s\t%-3s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
-                        }
-                        printf("%-15s\t%-40s\t%-3d\n", current->module.key, current->module.name, current->module.credit);
+                        print_found(count, value, current);
                         count++;
                     }
                     current = current->next;
@@ -289,13 +292,7 @@ bool query(struct node *head, char *data)
                 {
                     if (strcasecmp(current->module.name, value) == 0)
                     {
-                        if (count == 0)
-                        {
-                            printf("\nRecord for %s = %s is found in the database. Below are the details:\n", PRINTNAME, value);
-                            printf("%-15s\t%-40s\t%-3s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
-                        }
-                        printf("%-15s\t%-40s\t%-3d\n", current->module.key, current->module.name, current->module.credit);
-                        // print_query(current, value, PRINTNAME);
+                        print_found(count, value, current);
                         count++;
                     }
                     current = current->next;
@@ -308,13 +305,7 @@ bool query(struct node *head, char *data)
                 {
                     if (current->module.credit == atoi(value))
                     {
-                        if (count == 0)
-                        {
-                            printf("\nRecord for %s = %s is found in the database. Below are the details:\n", PRINTCREDIT, value);
-                            printf("%-15s\t%-40s\t%-3s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
-                        }
-                        printf("%-15s\t%-40s\t%-3d\n", current->module.key, current->module.name, current->module.credit);
-                        // print_query(current, value, PRINTCREDIT);
+                        print_found(count, value, current);
                         count++;
                     }
                     current = current->next;
@@ -325,15 +316,14 @@ bool query(struct node *head, char *data)
                 printf("\nAttribute name \"%s\" not found.\n", attribute);
                 print_query_error();
                 works = 1;
-                // return true;
             }
         }
     } while (works);
 
+    // count = 0 means no matches found
     if (count == 0)
         printf("\nThere is no record with %s = %s found in the database.\n", attribute, value);
 
-    printf("\n");
     return true;
 }
 
@@ -359,14 +349,14 @@ void update(struct node *head, char *data)
 
             printf("%s\n", key);
 
-            current = returnExistingModuleCodeptr(head, key); //return current ptr if key found
+            current = returnExistingModuleCodeptr(head, key); // return current ptr if key found
         }
     }
 
     else
     {
         key = strtok(data, " ");
-        current = returnExistingModuleCodeptr(head, key); //returns  the current ptr if  key found
+        current = returnExistingModuleCodeptr(head, key); // returns  the current ptr if  key found
     }
 
     if (current != NULL)
@@ -466,14 +456,13 @@ void update(struct node *head, char *data)
 
         return;
     }
-    
+
     else
     {
         printf("There is no record with %s found in the database.\n", key);
         return;
     }
 }
-
 
 void delete(struct node **head, char *deleteData)
 {
@@ -586,7 +575,7 @@ void save(struct node *head, char *filename)
             {
                 printf("Please enter filename again: ");
                 fgets(filename, 25, stdin);
-                filename[strlen(filename)-1] = '\0'; // Remove the newline character from fgets
+                filename[strlen(filename) - 1] = '\0'; // Remove the newline character from fgets
             }
         }
     }
@@ -600,9 +589,9 @@ void save(struct node *head, char *filename)
     }
 
     printf("Saving File: %s...\n", filename);
-    // PrintReverse_save(head, file);   
+    // PrintReverse_save(head, file);
 
-    Print_save(head, file); //writing into the file
+    Print_save(head, file); // writing into the file
 
     printf("Closing File: %s...\n", filename);
     fclose(file);
