@@ -12,10 +12,10 @@
 //! testing compiling multiple files
 // #include "testing.h"
 
-//functions prototype that contains functions from all the files 
-#include "functions.h" 
+// functions prototype that contains functions from all the files
+#include "functions.h"
 
-//check existing moduelcode
+// check existing moduelcode and returns a bool
 bool checkExistingModuleCode(struct node *head, char key[])
 {
     struct node *current = head;
@@ -30,22 +30,39 @@ bool checkExistingModuleCode(struct node *head, char key[])
     return false;
 }
 
+// check for existing modulecode and return the current pointer where it matches
+struct node *returnExistingModuleCodeptr(struct node *head, char key[])
+{
+    struct node *current = head;
+    while (current != NULL)
+    {
+        if (strcasecmp(current->module.key, key) == 0)
+        {
+            return current;
+        }
+        current = current->next;
+    }
+
+    return current;
+}
+
+
 bool checkCode(char key[])
 {
-    // use isalpha to check for first 3 characters of module code to see if its alpha 
+    // use isalpha to check for first 3 characters of module code to see if its alpha
     // 4th character will be checked if it is a alpha or digit
-    // the remaining characters should be in numeric 
+    // the remaining characters should be in numeric
     // if not return false
     printf("key: %s\n", key);
     int numofchar = strlen(key);
 
-    // if more than 8 or empty return false 
+    // if more than 8 or empty return false
     if (numofchar > 8 | numofchar == 0)
     {
         printf("DETECTED: more than 8 characters or empty\n");
         return false;
     }
-    // if contains space return false 
+    // if contains space return false
     if (containsSpace(key))
     {
         printf("DETECTED: contains space\n");
@@ -56,7 +73,7 @@ bool checkCode(char key[])
     {
         if (i < 3)
         {
-            if (!isalpha(key[i])) //check if first 3 char is alpha
+            if (!isalpha(key[i])) // check if first 3 char is alpha
             {
                 printf("DETECTED: character %c is not alpha\n", key[i]);
                 return false;
@@ -65,16 +82,15 @@ bool checkCode(char key[])
 
         else if (i == 3)
         {
-            if (!isalnum(key[i])) //check if 4th char is alpha or digit
+            if (!isalnum(key[i])) // check if 4th char is alpha or digit
             {
                 printf("DETECTED: character %c is not alpha or digit\n", key[i]);
                 return false;
             }
-
         }
         else if (i >= 4)
         {
-            if (!isdigit(key[i])) //check if last 4 char is digit
+            if (!isdigit(key[i])) // check if last 4 char is digit
             {
                 printf("DETECTED: character %c is not digit\n", key[i]);
                 return false;
@@ -82,9 +98,7 @@ bool checkCode(char key[])
         }
     }
 
-    
     return true;
-
 }
 bool cancel()
 {
@@ -206,27 +220,13 @@ struct node *openFile(char *filename)
     return head; // return the head of the linked list
 }
 
-void print_query_error()
-{
-    printf("Available attributes: %s , %s , %s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
-    printf("Example of a query: %s=ict1101\n", PRINTKEY);
-}
-
-char *ask_query()
-{
-    char *value;
-    printf("\nPlease enter query again: ");
-    value = inputString(stdin, 10);
-    return value;
-}
-
 void addfile(char *filelist[], int *numoffiles, char *filename, int *max_capacity)
 {
     if (*numoffiles >= *max_capacity)
     {
         printf("Filellist is full, increasing size\n");
         // If the array is full, reallocate with increased capacity
-        int new_capacity = *numoffiles * 2;  // Double the capacity
+        int new_capacity = *numoffiles * 2; // Double the capacity
         *max_capacity = new_capacity;
         *filelist = realloc(*filelist, new_capacity * sizeof(char *));
 
@@ -251,7 +251,6 @@ void addfile(char *filelist[], int *numoffiles, char *filename, int *max_capacit
         exit(1);
     }
 }
-
 
 char *filenamevalidations(char *filename, int numoffiles, char *filelist[])
 {
@@ -302,7 +301,7 @@ char *filenamevalidations(char *filename, int numoffiles, char *filelist[])
             int fileNumber;
             printf("filename when checking for int: %s\n", filename);
             sscanf(filename, "%d", &fileNumber); // convert string to int and store in fileNumber
-            if (fileNumber <= numoffiles)
+            if (fileNumber <= numoffiles && fileNumber != 0)
             {
                 strcpy(filename, filelist[fileNumber - 1]);
                 printf("%s\n", filename);
@@ -361,7 +360,7 @@ struct node *sort(struct node *head, int sortchoice)
     {
         while (current != NULL)
         {
-            //printf ("looking at next key %s \n", current->module.key);
+            // printf ("looking at next key %s \n", current->module.key);
             index = current->next;
 
             while (index != NULL)
@@ -371,14 +370,13 @@ struct node *sort(struct node *head, int sortchoice)
                 {
                     if (strcasecmp(current->module.key, index->module.key) > 0)
                     {
-                        //printf("looking at current key %s \n", current->module.key);
-                        // if the current module code is greater than the index module code, then we need to swap the modules
-                        //once swap, the next iteration will compare the newly swapped module with the next module
-                       // printf("swapping %s and %s\n", current->module.key, index->module.key);
+                        // printf("looking at current key %s \n", current->module.key);
+                        //  if the current module code is greater than the index module code, then we need to swap the modules
+                        // once swap, the next iteration will compare the newly swapped module with the next module
+                        // printf("swapping %s and %s\n", current->module.key, index->module.key);
                         temp = current->module;
                         current->module = index->module;
                         index->module = temp;
-                         
                     }
                 }
                 // if 2 then sort by module name
@@ -421,9 +419,9 @@ int main()
 
     do
     {
-        char *filelist[max_capacity];            // array of pointers to store filename
-        int numoffiles = 0;             // number of files in filelist
-        int *pnumoffiles = &numoffiles; // pointer to numoffiles
+        char *filelist[max_capacity];       // array of pointers to store filename
+        int numoffiles = 0;                 // number of files in filelist
+        int *pnumoffiles = &numoffiles;     // pointer to numoffiles
         int *pmax_capacity = &max_capacity; // pointer to max capacity
         //! print the openfile menu and get the command from user
         char *filename = filemenu(filelist, pnumoffiles, pmax_capacity);

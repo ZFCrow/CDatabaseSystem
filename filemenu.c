@@ -7,10 +7,8 @@
 #include <dirent.h>
 #include <conio.h>
 
-
-
-//functions prototype that contains functions from all the files 
-#include "functions.h" 
+// functions prototype that contains functions from all the files
+#include "functions.h"
 
 char *filemenu(char *filelist[], int *numoffiles, int *max_capacity)
 {
@@ -32,10 +30,10 @@ char *filemenu(char *filelist[], int *numoffiles, int *max_capacity)
 
     while ((file = readdir(directory)) != NULL) // read file in directory
     {
-        char *txtfilename = file->d_name;                // get name of file
-        char *file_extension = strchr(txtfilename, '.'); // get file extension
+        char *txtfilename = file->d_name; // get name of file
+        // char *file_extension = strchr(txtfilename, '.'); // get file extension
 
-        if (file_extension != NULL && strcmp(file_extension, ".txt") == 0) // check if file is text file
+        if (txtfilename != NULL && strcasecmp(txtfilename + strlen(txtfilename) - 4, ".txt") == 0) // check if file is text file
         {
             addfile(filelist, numoffiles, txtfilename, max_capacity);
         }
@@ -59,18 +57,13 @@ char *filemenu(char *filelist[], int *numoffiles, int *max_capacity)
     return strdup(filename);
 }
 
-
-
-
-
-
 int menu2(struct node **head, struct node **current)
 {
     char *input;
     printf("1. SHOW_ALL - display all the modules\n\tCommand: SHOW_ALL or\n\t\t 1\n\n");
-    printf("2. INSERT - add a new module\n\tCommand: INSERT <key>,<value 1>,<value 2>,...,<value n> or\n\t\t 2 <key>,<value 1>,<value 2>,...,<value n>\n\n");
+    printf("2. INSERT - add a new module\n\tCommand: INSERT <key>,<value 1>,<value 2> or\n\t\t 2 <key>,<value 1>,<value 2>\n\n");
     printf("3. QUERY - display a module\n\tCommand: QUERY <key> or\n\t\t QUERY <key/value name>=<key/value>\n\t\t 3 <key>\n\t\t 3 <key/value name>=<key/value>\n\n");
-    printf("4. UPDATE - change a specific module\n\tCommand: UPDATE <key> <values...> or\n\t\t 4 <key> <values...>\n\n");
+    printf("4. UPDATE - change a specific module\n\tCommand: UPDATE <key> or\n\t\t 4 <key>\n\n");
     printf("5. DELETE - delete a module\n\tCommand: DELETE <key> or\n\t\t 5 <key>\n\n");
     printf("6. SAVE - save all the latest records in memory into the database file\n\tCommand: SAVE <filename> or\n\t\t 6 <filename>\n\n");
     printf("7. OPEN - open another file\n\tCommand: OPEN or\n\t\t 7\n\n");
@@ -122,7 +115,8 @@ int menu2(struct node **head, struct node **current)
         printf("\n");
         char inputChoice[10];
         int sortchoice;
-        do{
+        do
+        {
             // ask user which one they want to sort by
             printf("How do you want to sort the modules?\n");
 
@@ -131,16 +125,16 @@ int menu2(struct node **head, struct node **current)
             printf("3. %s\n", PRINTCREDIT);
             printf("Enter here: ");
 
-            //fgets the sortchoice 
+            // fgets the sortchoice
             fgets(inputChoice, sizeof(inputChoice), stdin);
             inputChoice[strlen(inputChoice) - 1] = '\0'; // get rid of the \n character at the end of the string
             sortchoice = atoi(inputChoice);
-            
+
             if (sortchoice < 1 || sortchoice > 3)
             {
                 printf("Invalid choice. Please try again.\n");
             }
-        }while(sortchoice < 1 || sortchoice > 3);
+        } while (sortchoice < 1 || sortchoice > 3);
         //! sort the linked list first
         *head = sort(*head, sortchoice);
 
@@ -172,10 +166,8 @@ int menu2(struct node **head, struct node **current)
     else if (strcasecmp(command, "delete") == 0 || strcasecmp(command, "5") == 0)
     {
         // DELETE: delete a module
-        delete(head, data);
-        //check if the the std is empty
-        
-
+        delete (head, data);
+        // check if the the std is empty
     }
     else if (strcasecmp(command, "save") == 0 || strcasecmp(command, "6") == 0)
     {
@@ -220,7 +212,7 @@ int menu2(struct node **head, struct node **current)
 
     // sleep(2);
     // wait for user to press enter to continue
-    printf("Press Enter to continue...");
+    printf("\nPress Enter to continue...");
     getchar();
 
     return choice;

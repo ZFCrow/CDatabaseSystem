@@ -39,7 +39,7 @@ void PrintReverse(struct node *head)
 }
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//add node 
+// add node
 struct node *addNode(struct node *head, struct Module newModule)
 {
     struct node *newNode = (struct node *)malloc(sizeof(struct node));
@@ -100,13 +100,14 @@ struct node *addModule(struct node *head, char *data)
 
         //* check if the module code already exists
         struct node *current = head; // Initialize current
-        if(checkExistingModuleCode(head,newModule.key) == 1){
+        if (checkExistingModuleCode(head, newModule.key) == 1)
+        {
             printf("\n%s \"%s\" already exists in database. Please try again.\n", PRINTKEY, newModule.key);
             printf("checked by function\n");
             return head;
         }
 
-        //!name part
+        //! name part
         printf("Enter the %s: ", PRINTNAME);
         fgets(newModule.name, sizeof(newModule.name), stdin);
         newModule.name[strlen(newModule.name) - 1] = '\0'; // get rid of the \n character at the end of the string
@@ -115,8 +116,7 @@ struct node *addModule(struct node *head, char *data)
             strcpy(newModule.name, "NA");
         }
 
-
-        //!credits part
+        //! credits part
         bool valid = false;
         while (1)
         {
@@ -155,16 +155,12 @@ struct node *addModule(struct node *head, char *data)
                     break;
                 }
             }
-
-       
         }
 
         //* ADD node to link list
 
-
         head = addNode(head, newModule);
-
-        
+        printf("A new record of Module Code=%s, Module Name=%s, Module Credit=%d is successfully inserted. ", head->module.key, head->module.name, head->module.credit);
         return head;
     }
 
@@ -174,28 +170,50 @@ struct node *addModule(struct node *head, char *data)
         // check if the module code already exists
         struct node *current = head; // Initialize current
 
-        if(checkExistingModuleCode(head,newModule.key) == 1){
+        if (checkExistingModuleCode(head, newModule.key) == 1)
+        {
             printf("\n%s \"%s\" already exists in database. Please try again.\n", PRINTKEY, newModule.key);
             printf("checked by function\n");
             return head;
         }
 
-       // ! ADD node to link list
+        // ! ADD node to link list
 
         head = addNode(head, newModule);
-
+        printf("A new record of Module Code=%s, Module Name=%s, Module Credit=%d is successfully inserted. ", head->module.key, head->module.name, head->module.credit);
         return head;
     }
+}
+
+void print_query_error()
+{
+    printf("Available attributes: %s , %s , %s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
+    printf("Example of a query: %s=ict1101\n", PRINTKEY);
+}
+
+char *ask_query()
+{
+    char *value;
+    printf("\nPlease enter query again: ");
+    value = inputString(stdin, 10);
+    return value;
+}
+
+void print_found(int count, char *value, struct node *current)
+{
+    if (count == 0)
+    {
+        printf("\nRecord for %s = %s is found in the database. Below are the details:\n\n", PRINTKEY, value);
+        printf("%-15s\t%-40s\t%-3s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
+    }
+    printf("%-15s\t%-40s\t%-3d\n", current->module.key, current->module.name, current->module.credit);
 }
 
 /* Checks whether the value x is present in linked list */
 bool query(struct node *head, char *data)
 {
-    // printf("What's head: %s\t%s\t%d\n", head->module.key, head->module.name, head->module.credit);
-    // printf("Data: %s\n", data);
-
-    int works = 0;
-    int count = 0;
+    int works = 0; // works = 1 when there is error in the data, 0 when successful
+    int count = 0; // count the number of matches
     char *attribute;
     char *value;
 
@@ -213,7 +231,6 @@ bool query(struct node *head, char *data)
         {
             printf("\nQuery data was not found.\n");
             print_query_error();
-            // return true;
             works = 1;
         }
         else if (strchr(data, '=') != NULL)
@@ -233,7 +250,6 @@ bool query(struct node *head, char *data)
                 printf("\nQuery data for \"%s\" attribute was not found.\n", attribute);
                 print_query_error();
                 works = 1;
-                // return true;
             }
             // check if got extra space: " inf1001"
             else if (isspace(value[0]))
@@ -263,16 +279,7 @@ bool query(struct node *head, char *data)
                 {
                     if (strcasecmp(current->module.key, value) == 0)
                     {
-                        if (count == 0)
-                        {
-                            printf("\nRecord for %s = %s is found in the database. Below are the details:\n\n", PRINTKEY, value);
-                            printf("%-15s\t%-40s\t%-3s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
-                        }
-                        printf("%-15s\t%-40s\t%-3d\n", current->module.key, current->module.name, current->module.credit);
-                        // printf("%s: %s\n", PRINTKEY, current->module.key);
-                        // printf("%s: %s\n", PRINTNAME, current->module.name);
-                        // printf("%s: %d\n", PRINTCREDIT, current->module.credit);
-                        // print_query(current, value, PRINTKEY);
+                        print_found(count, value, current);
                         count++;
                     }
                     current = current->next;
@@ -285,13 +292,7 @@ bool query(struct node *head, char *data)
                 {
                     if (strcasecmp(current->module.name, value) == 0)
                     {
-                        if (count == 0)
-                        {
-                            printf("\nRecord for %s = %s is found in the database. Below are the details:\n", PRINTNAME, value);
-                            printf("%-15s\t%-40s\t%-3s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
-                        }
-                        printf("%-15s\t%-40s\t%-3d\n", current->module.key, current->module.name, current->module.credit);
-                        // print_query(current, value, PRINTNAME);
+                        print_found(count, value, current);
                         count++;
                     }
                     current = current->next;
@@ -304,13 +305,7 @@ bool query(struct node *head, char *data)
                 {
                     if (current->module.credit == atoi(value))
                     {
-                        if (count == 0)
-                        {
-                            printf("\nRecord for %s = %s is found in the database. Below are the details:\n", PRINTCREDIT, value);
-                            printf("%-15s\t%-40s\t%-3s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
-                        }
-                        printf("%-15s\t%-40s\t%-3d\n", current->module.key, current->module.name, current->module.credit);
-                        // print_query(current, value, PRINTCREDIT);
+                        print_found(count, value, current);
                         count++;
                     }
                     current = current->next;
@@ -321,22 +316,21 @@ bool query(struct node *head, char *data)
                 printf("\nAttribute name \"%s\" not found.\n", attribute);
                 print_query_error();
                 works = 1;
-                // return true;
             }
         }
     } while (works);
 
+    // count = 0 means no matches found
     if (count == 0)
         printf("\nThere is no record with %s = %s found in the database.\n", attribute, value);
 
-    printf("\n");
     return true;
 }
 
 void update(struct node *head, char *data)
 {
     struct node *current = head;
-    char *key = (char*)malloc(sizeof(char));
+    char *key = (char *)malloc(sizeof(char));
 
     if (strlen(data) == 0)
     {
@@ -344,144 +338,130 @@ void update(struct node *head, char *data)
         {
             return;
         }
-        
+
         else
         {
-            // Get module code 
+            // Get module code
             printf("Please type in the module code of the module you want to update:\n");
 
             fgets(key, 9, stdin);
             key[strlen(key) - 1] = '\0'; // get rid of the \n character at the end of the string
 
             printf("%s\n", key);
+
+            current = returnExistingModuleCodeptr(head, key); // return current ptr if key found
         }
     }
-    
+
     else
     {
         key = strtok(data, " ");
+        current = returnExistingModuleCodeptr(head, key); // returns  the current ptr if  key found
     }
 
-    while (current != NULL)
+    if (current != NULL)
     {
-        if(strcasecmp(current->module.key,key) == 0)
+        printf("Key found.\n\n");
+
+        printf("%s: %s\n", PRINTKEY, current->module.key);
+        printf("%s: %s\n", PRINTNAME, current->module.name);
+        printf("%s: %d\n\n", PRINTCREDIT, current->module.credit);
+
+        printf("Which attribute do you want to update?\n");
+        printf("1. Module Code\n");
+        printf("2. Module Name\n");
+        printf("3. Module Credit\n\n");
+
+        char *choice = (char *)malloc(sizeof(char));
+
+        do
         {
-            printf("Key found.\n\n");
+            printf("Enter the number here:\n");
 
-            printf("%s: %s\n", PRINTKEY, current->module.key);
-            printf("%s: %s\n", PRINTNAME, current->module.name);
-            printf("%s: %d\n\n", PRINTCREDIT, current->module.credit);
-            
-            printf("Which attribute do you want to update?\n");
-            printf("1. Module Code\n");
-            printf("2. Module Name\n");
-            printf("3. Module Credit\n\n");
-            
-            char *choice = (char*)malloc(sizeof(char));
+            fgets(choice, sizeof(choice), stdin);
+            choice[strlen(choice) - 1] = '\0'; // get rid of the \n character at the end of the string
 
-            do {
-                printf("Enter the number here:\n");
+            if (atoi(choice) < 1 || atoi(choice) > 3)
+            {
+                printf("Invalid choice, please try again.\n\n");
+            }
+        } while (atoi(choice) <= 0 || atoi(choice) > 3);
 
-                fgets(choice, sizeof(choice), stdin);
-                choice[strlen(choice) - 1] = '\0'; // get rid of the \n character at the end of the string
+        if (atoi(choice) == 1)
+        {
+            char newkey[20];
 
-                if(atoi(choice) < 1 || atoi(choice) > 3)
+            while (1)
+            {
+                printf("Please enter the new module code you want to change to:\n");
+                fgets(newkey, sizeof(newkey), stdin);
+                newkey[strlen(newkey) - 1] = '\0'; // get rid of the \n character at the end of the string
+
+                // check if module code exists
+                if (checkExistingModuleCode(head, newkey))
                 {
-                    printf("Invalid choice, please try again.\n\n");
+                    printf("Module code already exist.\n");
+                    return;
                 }
-            } 
-            while (atoi(choice) <= 0 || atoi(choice) > 3);
 
-            if(atoi(choice) == 1)
-            {
-                struct node *counter = head;
-                char newkey[20];
-                
-                bool flag = true;
-
-                while (flag)
-                {   
-                    printf("Please enter the new module code you want to change to:\n");
-                    fgets(newkey, sizeof(newkey), stdin);
-                    newkey[strlen(newkey) - 1] = '\0'; // get rid of the \n character at the end of the string
-                    // check if module code exists
-                    bool codeExists = false;
-
-                    while (counter != NULL)
-                    {
-                        if(strcasecmp(counter->module.key,newkey) == 0)
-                        {
-                            printf("Module code already exist.\n");
-                            counter = head;
-                            codeExists = true;
-                            break;
-                        }
-
-                        else
-                        {
-                            counter = counter->next;
-                        }
-
-                    }
-
-                    if (!codeExists && checkCode(newkey))
-                    {
-                        strcpy(current->module.key,newkey);
-                        printf("The value for the module code is successfully updated.\n");
-                        flag = false;
-                    }
-
-                    else
-                    {
-                        printf("Invalid module code.\nModule Code only contains a total of not more than 8 characters.\nEnsure that your module code has the first 3-4 characters as alpha and the remaining characters as digits.\nPlease try again.\n");
-                    }
+                if (checkCode(newkey))
+                {
+                    strcpy(current->module.key, newkey);
+                    printf("The value for the module code is successfully updated.\n");
+                    return;
                 }
-                
+
+                else
+                {
+                    printf("Invalid module code.\nModule Code only contains a total of not more than 8 characters.\nEnsure that your module code has the first 3-4 characters as alpha and the remaining characters as digits.\nPlease try again.\n");
+                }
             }
-            else if(atoi(choice) == 2)
-            {
-                char newname[55];
-                printf("Please enter the new module name you want to change to:\n");
-
-                fgets(newname, sizeof(newname), stdin);
-                newname[strlen(newname) - 1] = '\0'; // get rid of the \n character at the end of the string
-                strcpy(current->module.name,newname);
-                printf("The value for the module name is successfully updated.\n");
-            }
-            else if(atoi(choice) == 3)
-            {
-                char *newcredit = (char*)malloc(sizeof(char));
-                do {
-                    printf("Please enter the new module credit you want to change to:\n");
-
-                    fgets(newcredit, sizeof(newcredit), stdin);
-                    newcredit[strlen(newcredit) - 1] = '\0'; // get rid of the \n character at the end of the string
-
-                    if(isdigit(*newcredit) == 0)
-                    {
-                        printf("Invalid integer, please try again.\n\n");
-                    }
-                } 
-                while (isdigit(*newcredit) == 0);
-
-                current->module.credit = atoi(newcredit);
-                printf("The value for the module credit is successfully updated.\n");
-
-                free(newcredit);
-            }
-
-            //getchar until buffer is empty, DONT RUN IF GETF IS USED'
-            free(choice);
-
-            return;
         }
 
-        current = current->next;
-    }
-    
-    printf("There is no record with %s found in the database.\n", key);
+        else if (atoi(choice) == 2)
+        {
+            char newname[55];
+            printf("Please enter the new module name you want to change to:\n");
 
-    free(key);
+            fgets(newname, sizeof(newname), stdin);
+            newname[strlen(newname) - 1] = '\0'; // get rid of the \n character at the end of the string
+            strcpy(current->module.name, newname);
+            printf("The value for the module name is successfully updated.\n");
+        }
+
+        else if (atoi(choice) == 3)
+        {
+            char *newcredit = (char *)malloc(sizeof(char));
+            do
+            {
+                printf("Please enter the new module credit you want to change to:\n");
+
+                fgets(newcredit, sizeof(newcredit), stdin);
+                newcredit[strlen(newcredit) - 1] = '\0'; // get rid of the \n character at the end of the string
+
+                if (isdigit(*newcredit) == 0)
+                {
+                    printf("Invalid integer, please try again.\n\n");
+                }
+            } while (isdigit(*newcredit) == 0);
+
+            current->module.credit = atoi(newcredit);
+            printf("The value for the module credit is successfully updated.\n");
+
+            free(newcredit);
+        }
+
+        free(choice);
+        free(key);
+
+        return;
+    }
+
+    else
+    {
+        printf("There is no record with %s found in the database.\n", key);
+        return;
+    }
 }
 
 void delete(struct node **head, char *deleteData)
@@ -577,10 +557,7 @@ void save(struct node *head, char *filename)
     {
         if (strlen(filename) >= 5) // check if filename has at least 5chars
         {
-            char filetype[4]; // Include space for the null
-            strcpy(filetype, filename + strlen(filename) - 3);
-
-            if (strncmp(filetype, "txt", 3) == 0) // check if last 3 chars matches txt
+            if (strcasecmp(filename + strlen(filename) - 4, ".txt") == 0) // check if last 4 chars matches .txt
             {
                 check = 0; // break out of loop and continue to save into file
             }
@@ -598,11 +575,12 @@ void save(struct node *head, char *filename)
             {
                 printf("Please enter filename again: ");
                 fgets(filename, 25, stdin);
-                filename[strcspn(filename, "\n")] = '\0'; // Remove the newline character from fgets
+                filename[strlen(filename) - 1] = '\0'; // Remove the newline character from fgets
             }
         }
     }
 
+    printf("Opening File: %s...\n", filename);
     FILE *file = fopen(filename, "w"); // Open the file for writing
     if (file == NULL)
     {
@@ -610,13 +588,15 @@ void save(struct node *head, char *filename)
         return;
     }
 
-    printf("Saving File...\n");
+    printf("Saving File: %s...\n", filename);
     // PrintReverse_save(head, file);
 
-    Print_save(head, file);
-    printf("Closing File...\n");
+    Print_save(head, file); // writing into the file
+
+    printf("Closing File: %s...\n", filename);
     fclose(file);
-    printf("File Saved!\n");
+
+    printf("File Saved: %s\n", filename);
 
     return;
 }
