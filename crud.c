@@ -461,6 +461,12 @@ void update(struct node *head, char *data)
 
             fgets(newname, sizeof(newname), stdin);
             newname[strlen(newname) - 1] = '\0'; // get rid of the \n character at the end of the string
+
+            if (strlen(newname) == 0) //set name to NA if not specified
+            {
+                strcpy(newname, "NA");
+            }
+
             strcpy(current->module.name, newname);
             printf("The value for the module name is successfully updated.\n");
         }
