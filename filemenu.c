@@ -123,7 +123,7 @@ int mainmenu(struct node **head, struct node **current)
             printf("1. %s\n", PRINTKEY);
             printf("2. %s\n", PRINTNAME);
             printf("3. %s\n", PRINTCREDIT);
-            printf("Enter here: ");
+            printf("Enter the number here: ");
 
             // fgets the sortchoice
             fgets(inputChoice, sizeof(inputChoice), stdin);
