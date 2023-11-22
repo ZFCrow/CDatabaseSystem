@@ -9,8 +9,6 @@
 
 #include "functions.h"
 
-
-
 //!!!  TO SHOW EVERYTHING
 
 void numberofrecords(struct node *head)
@@ -411,14 +409,12 @@ void update(struct node *head, char *data)
 
             fgets(choice, 3, stdin);
             key[strcspn(key, "\n")] = '\0';
-            
-            printf("%d\n", strlen(choice));
 
             if (atoi(choice) <= 0 || atoi(choice) > 3 || strlen(choice) > 2)
             {
                 printf("Invalid choice, please try again.\n\n");
 
-                //clear buffer
+                // clear buffer
                 for (int c; (c = getchar()) != '\n' && c != EOF;)
                 {
                 }
@@ -493,11 +489,13 @@ void update(struct node *head, char *data)
                         break;
                     }
                 }
-                
-                if (validint == 1) {
+
+                if (validint == 1)
+                {
                     break;
                 }
-                else {
+                else
+                {
                     printf("Invalid integer, please try again.\n");
                 }
 
