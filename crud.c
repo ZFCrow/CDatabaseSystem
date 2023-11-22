@@ -160,7 +160,7 @@ struct node *addModule(struct node *head, char *data)
         //* ADD node to link list
 
         head = addNode(head, newModule);
-        printf("A new record of Module Code=%s, Module Name=%s, Module Credit=%d is successfully inserted. ", head->module.key, head->module.name, head->module.credit);
+        printf("A new record of %s=%s, %s=%s, %s=%d is successfully inserted. ", PRINTKEY, head->module.key, PRINTNAME, head->module.name, PRINTCREDIT, head->module.credit);
         return head;
     }
 
@@ -180,7 +180,7 @@ struct node *addModule(struct node *head, char *data)
         // ! ADD node to link list
 
         head = addNode(head, newModule);
-        printf("A new record of Module Code=%s, Module Name=%s, Module Credit=%d is successfully inserted. ", head->module.key, head->module.name, head->module.credit);
+        printf("A new record of %s=%s, %s=%s, %s=%d is successfully inserted. ", PRINTKEY, head->module.key, PRINTNAME, head->module.name, PRINTCREDIT, head->module.credit);
         return head;
     }
 }
