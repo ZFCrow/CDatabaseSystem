@@ -93,7 +93,7 @@ struct node *insert(struct node *head, char *data)
 
         do
         {
-            printf("Enter the %s: ", PRINTKEY);
+            printf("\nEnter the %s: ", PRINTKEY);
 
             fgets(newModule.key, sizeof(newModule.key), stdin);
             newModule.key[strlen(newModule.key) - 1] = '\0'; // get rid of the \n character at the end of the string
@@ -117,7 +117,7 @@ struct node *insert(struct node *head, char *data)
         }
 
         //! name part
-        printf("Enter the %s: ", PRINTNAME);
+        printf("\nEnter the %s: ", PRINTNAME);
         fgets(newModule.name, sizeof(newModule.name), stdin);
         newModule.name[strlen(newModule.name) - 1] = '\0'; // get rid of the \n character at the end of the string
         if (strlen(newModule.name) == 0)
@@ -128,7 +128,7 @@ struct node *insert(struct node *head, char *data)
         bool valid = false;
         while (1)
         {
-            printf("Enter the %s: ", PRINTCREDIT);
+            printf("\nEnter the %s: ", PRINTCREDIT);
             // USER is allowed to enter \n to store a 0
             fgets(buffer, sizeof(buffer), stdin);
             // only get rid of \n if the buffer is not just \n
@@ -352,7 +352,7 @@ void update(struct node *head, char *data)
             do
             {
                 // Get module code if it was not already specified
-                printf("Please type in the module code of the module you want to update:\n");
+                printf("\nPlease type in the module code of the module you want to update:\n");
 
                 fgets(key, sizeof(key), stdin);
                 key[strcspn(key, "\n")] = '\0';
@@ -381,7 +381,7 @@ void update(struct node *head, char *data)
     {
         // printf("Key found.\n\n");
 
-        printf("%s: %s\n", PRINTKEY, current->module.key);
+        printf("\n%s: %s\n", PRINTKEY, current->module.key);
         printf("%s: %s\n", PRINTNAME, current->module.name);
         printf("%s: %d\n\n", PRINTCREDIT, current->module.credit);
 
@@ -395,7 +395,7 @@ void update(struct node *head, char *data)
 
         do
         {
-            printf("Enter the number here:\n");
+            printf("Enter the number here: ");
 
             fgets(choice, 3, stdin);
             choice[strcspn(choice, "\n")] = '\0';
@@ -420,7 +420,7 @@ void update(struct node *head, char *data)
 
             while (1)
             {
-                printf("Please enter the new module code you want to change to:\n");
+                printf("Please enter the new module code you want to change to: ");
                 fgets(newkey, sizeof(newkey), stdin);
                 newkey[strlen(newkey) - 1] = '\0'; // get rid of the \n character at the end of the string
 
@@ -449,7 +449,7 @@ void update(struct node *head, char *data)
         else if (atoi(choice) == 2)
         {
             char newname[55];
-            printf("Please enter the new module name you want to change to:\n");
+            printf("Please enter the new module name you want to change to: ");
 
             fgets(newname, sizeof(newname), stdin);
             newname[strlen(newname) - 1] = '\0'; // get rid of the \n character at the end of the string
@@ -474,7 +474,7 @@ void update(struct node *head, char *data)
 
             do
             {
-                printf("Please enter the new module credit you want to change to:\n");
+                printf("Please enter the new module credit you want to change to: ");
 
                 fgets(newcredit, sizeof(newcredit), stdin);
                 newcredit[strcspn(newcredit, "\n")] = '\0';
@@ -509,7 +509,7 @@ void update(struct node *head, char *data)
 
     else
     {
-        printf("There is no record with %s=%s found in the database.\n", PRINTKEY, key);
+        printf("\nThere is no record with %s=%s found in the database.\n", PRINTKEY, key);
         return;
     }
 }
@@ -528,7 +528,7 @@ void delete(struct node **head, char *deleteData)
 
         else
         {
-            printf("Please type in the module code that you want to delete:\n");
+            printf("\nPlease type in the module code that you want to delete:\n");
             fgets(deleteData, 20, stdin);
             // Remove the newline character at the end of the string
             deleteData[strcspn(deleteData, "\n")] = '\0';
@@ -556,12 +556,12 @@ void delete(struct node **head, char *deleteData)
         // Free the memory of the node
         free(current);
 
-        printf("The record of key=%s is successfully deleted.\n", deleteData);
+        printf("\nThe record of key=%s is successfully deleted.\n", deleteData);
     }
 
     else
     {
-        printf("There is no record with key=%s found in the database.\n", deleteData);
+        printf("\nThere is no record with key=%s found in the database.\n", deleteData);
     }
 
     return;
@@ -595,7 +595,7 @@ void save(struct node *head, char *filename)
 
         if (check)
         {
-            printf("Invalid File. Please save to a .txt file!\n");
+            printf("\nInvalid File. Please save to a .txt file!\n");
             if (cancel())
             {
                 return;
@@ -603,7 +603,7 @@ void save(struct node *head, char *filename)
 
             else
             {
-                printf("Please enter filename again: ");
+                printf("\nPlease enter filename again: ");
                 fgets(filename, 25, stdin);
                 filename[strlen(filename) - 1] = '\0'; // Remove the newline character from fgets
             }
