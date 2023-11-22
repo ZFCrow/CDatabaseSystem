@@ -9,10 +9,28 @@
 
 #include "functions.h"
 
+
+
 //!!!  TO SHOW EVERYTHING
+
+void numberofrecords(struct node *head)
+{
+    int count = 0;
+    struct node *current = head; // Initialize current
+    while (current != NULL)
+    {
+        count++;
+        current = current->next;
+    }
+    printf("There are %d records in the database.\n", count);
+}
+
 void printall(struct node *head)
 {
+    int count = 0;
     struct node *current = head; // Initialize current
+    numberofrecords(head);
+    
     // print name of columns
     printf("%-15s\t%-40s\t%-3s\n", PRINTKEY, PRINTNAME, PRINTCREDIT);
     while (current != NULL)
@@ -160,7 +178,7 @@ struct node *addModule(struct node *head, char *data)
         //* ADD node to link list
 
         head = addNode(head, newModule);
-        printf("A new record of Module Code=%s, Module Name=%s, Module Credit=%d is successfully inserted. ", head->module.key, head->module.name, head->module.credit);
+        printf("A new record of %s=%s, %s=%s, %s=%d is successfully inserted. ", PRINTKEY, head->module.key, PRINTNAME, head->module.name, PRINTCREDIT, head->module.credit);
         return head;
     }
 
@@ -180,7 +198,7 @@ struct node *addModule(struct node *head, char *data)
         // ! ADD node to link list
 
         head = addNode(head, newModule);
-        printf("A new record of Module Code=%s, Module Name=%s, Module Credit=%d is successfully inserted. ", head->module.key, head->module.name, head->module.credit);
+        printf("A new record of %s=%s, %s=%s, %s=%d is successfully inserted. ", PRINTKEY, head->module.key, PRINTNAME, head->module.name, PRINTCREDIT, head->module.credit);
         return head;
     }
 }
@@ -210,7 +228,7 @@ void print_found(int count, char *value, struct node *current)
 }
 
 /* Checks whether the value x is present in linked list */
-bool query(struct node *head, char *data)
+void query(struct node *head, char *data)
 {
     int works = 0; // works = 1 when there is error in the data, 0 when successful
     int count = 0; // count the number of matches
@@ -222,7 +240,7 @@ bool query(struct node *head, char *data)
         if (works)
         {
             if (cancel())
-                return true;
+                return;
             else
                 data = ask_query();
         }
@@ -275,14 +293,12 @@ bool query(struct node *head, char *data)
             // check if attribute == module code
             if (strcasecmp(attribute, PRINTKEY) == 0)
             {
-                while (current != NULL)
+                current = returnExistingModuleCodeptr(head, value);
+
+                if (current != NULL)
                 {
-                    if (strcasecmp(current->module.key, value) == 0)
-                    {
-                        print_found(count, value, current);
-                        count++;
-                    }
-                    current = current->next;
+                    print_found(count, value, current);
+                    return;
                 }
             }
             // check if attribute == module name
@@ -322,18 +338,17 @@ bool query(struct node *head, char *data)
 
     // count = 0 means no matches found
     if (count == 0)
+    {
         printf("\nThere is no record with %s = %s found in the database.\n", attribute, value);
+    }
 
-    return true;
+    return;
 }
 
 void update(struct node *head, char *data)
 {
     struct node *current = head;
-   // char *key = (char *)malloc(sizeof(char));
-    char *key;
-    //char key1[9];
-    key = (char *)malloc(9 * sizeof(char));
+    char key[20];
 
     if (strlen(data) == 0)
     {
@@ -346,10 +361,9 @@ void update(struct node *head, char *data)
         {
             // Get module code
             printf("Please type in the module code of the module you want to update:\n");
-            
+
             fgets(key, sizeof(key), stdin);
-            printf("key taken in : %s\n", key);
-            key[strlen(key) - 1] = '\0'; // Remove the newline character from fgets
+            key[strcspn(key, "\n")] = '\0';
 
             printf("%s\n", key);
 
@@ -359,9 +373,7 @@ void update(struct node *head, char *data)
 
     else
     {
-
-        key = strtok(data, " ");
-        current = returnExistingModuleCodeptr(head, key); // returns  the current ptr if  key found
+        current = returnExistingModuleCodeptr(head, data); // returns  the current ptr if  key found
     }
 
     if (current != NULL)
@@ -377,7 +389,7 @@ void update(struct node *head, char *data)
         printf("2. Module Name\n");
         printf("3. Module Credit\n\n");
 
-        char *choice = (char *)malloc(sizeof(char));
+        char choice[3];
 
         do
         {
@@ -406,10 +418,10 @@ void update(struct node *head, char *data)
                 if (checkExistingModuleCode(head, newkey))
                 {
                     printf("Module code already exist.\n");
-                    return;
                 }
 
-                if (checkCode(newkey))
+                // if module code does not exist, update module code
+                else if (checkCode(newkey))
                 {
                     strcpy(current->module.key, newkey);
                     printf("The value for the module code is successfully updated.\n");
@@ -418,7 +430,7 @@ void update(struct node *head, char *data)
 
                 else
                 {
-                    printf("Invalid module code.\nModule Code only contains a total of not more than 8 characters.\nEnsure that your module code has the first 3-4 characters as alpha and the remaining characters as digits.\nPlease try again.\n");
+                    printf("\nInvalid module code.\nModule Code only contains a total of not more than 8 characters.\nEnsure that your module code has the first 3-4 characters as alpha and the remaining characters as digits.\nPlease try again.\n");
                 }
             }
         }
@@ -456,10 +468,6 @@ void update(struct node *head, char *data)
             free(newcredit);
             printf("hello!");
         }
-
-        printf("done freeing the choice and key now!");
-        free(choice);
-        free(key);
 
         return;
     }
