@@ -26,6 +26,7 @@ struct node *checkExistingModuleCode(struct node *head, char key[])
 }
 
 
+
 bool checkCode(char key[])
 {
     // use isalpha to check for first 3 characters of module code to see if its alpha
@@ -38,23 +39,27 @@ bool checkCode(char key[])
     // if more than 8 or empty return false
     if (numofchar > 8 | numofchar == 0)
     {
-        printf("ERROR: more than 8 characters or empty\n");
+        printf("ERROR: Number of characters input is not valid\nPlease enter a valid module Code.\n");
+        printf("Invalid module code.\nModule Code only contains a total of not more than 8 characters.\nEnsure that your module code has the first 3-4 characters as alphabets and the remaining characters as digits.\nPlease try again.\n");
         return false;
     }
     // if contains space return false
     if (containsSpace(key))
     {
-        printf("DETECTED: contains space\n");
+        printf("ERROR: the module Code contains space\nPlease enter a valid module Code.\n");
+        printf("Invalid module code.\nModule Code only contains a total of not more than 8 characters.\nEnsure that your module code has the first 3-4 characters as alphabets and the remaining characters as digits.\nPlease try again.\n");
         return false;
     }
-    printf("numofchar: %d\n", numofchar);
+
+   // printf("numofchar: %d\n", numofchar);
     for (int i = 0; i < numofchar; i++)
     {
         if (i < 3)
         {
             if (!isalpha(key[i])) // check if first 3 char is alpha
             {
-                printf("DETECTED: character %c is not alpha\n", key[i]);
+                printf("ERROR: character %c in the input is not a alphabet\nPlease enter a valid module Code.\n", key[i]);
+                printf("Invalid module code.\nModule Code only contains a total of not more than 8 characters.\nEnsure that your module code has the first 3-4 characters as alphabets and the remaining characters as digits.\nPlease try again.\n");
                 return false;
             }
         }
@@ -63,7 +68,8 @@ bool checkCode(char key[])
         {
             if (!isalnum(key[i])) // check if 4th char is alpha or digit
             {
-                printf("DETECTED: character %c is not alpha or digit\n", key[i]);
+                printf("ERROR: character %c in the input is not alphabet or digit\nPlease enter a valid module Code.\n", key[i]);
+                printf("Invalid module code.\nModule Code only contains a total of not more than 8 characters.\nEnsure that your module code has the first 3-4 characters as alphabets and the remaining characters as digits.\nPlease try again.\n");
                 return false;
             }
         }
@@ -72,6 +78,7 @@ bool checkCode(char key[])
             if (!isdigit(key[i])) // check if last 4 char is digit
             {
                 printf("DETECTED: character %c is not digit\n", key[i]);
+                printf("Invalid module code.\nModule Code only contains a total of not more than 8 characters.\nEnsure that your module code has the first 3-4 characters as alphabets and the remaining characters as digits.\nPlease try again.\n");
                 return false;
             }
         }

@@ -78,20 +78,22 @@ struct node *insert(struct node *head, char *data)
 
     // only prompt the next 2 if the data is not empty, if the last data is not a int, we remove the data part
     // and prompt the user to enter again
-    printf("Data: %s\n", data); // print the pointer
+   // printf("Data: %s\n", data); // print the pointer
 
     // see if the data has 3 parts, if it does, then we can add the module
 
     int result = sscanf(data, "%8[^,],%54[^,],%d", newModule.key, newModule.name, &newModule.credit);
 
     // theres a chacne that modulename contains a number, so we need to check if the last part is a number
-    printf("result: %d\n", result);
+    //printf("result: %d\n", result);
 
-    // check if the module code is valid
-    if (checkCode(newModule.key) == 0)
-    {
-        printf("Invalid module code.\nModule Code only contains a total of not more than 8 characters.\nEnsure that your module code has the first 3-4 characters as alpha and the remaining characters as digits.\nPlease try again.\n");
-        result = 0;
+    // check if the module code is valid if the result ==3 , otherwise dont have to check if code is valid
+    if (result == 3){
+        if (checkCode(newModule.key) == 0)
+        {
+            // printf("Invalid module code.\nModule Code only contains a total of not more than 8 characters.\nEnsure that your module code has the first 3-4 characters as alphabets and the remaining characters as digits.\nPlease try again.\n");
+            result = 0;
+        }
     }
 
     if (result != 3 || containsSpace(newModule.key)) //* if the result is not 3 or modulecode contain spaces, then we need to prompt the user to enter again
@@ -191,13 +193,7 @@ struct node *insert(struct node *head, char *data)
         // check if the module code already exists
         struct node *current = head; // Initialize current
 
-        // if (checkExistingModuleCode(head, newModule.key) == 1)
-        // {
-        //     printf("\n%s \"%s\" already exists in database. Please try again.\n", PRINTKEY, newModule.key);
-        //     printf("checked by function\n");
-        //     return head;
-        // }
-        // use the current instead so use the returnExistingModuleCodeptr()
+
 
         if (checkExistingModuleCode(current, newModule.key) != NULL)
         {
@@ -454,10 +450,11 @@ void update(struct node *head, char *data)
                     return;
                 }
 
-                else
-                {
-                    printf("\nInvalid module code.\nModule Code only contains a total of not more than 8 characters.\nEnsure that your module code has the first 3-4 characters as alpha and the remaining characters as digits.\nPlease try again.\n");
-                }
+                // else
+                // {
+
+                //     //printf("\nInvalid module code.\nModule Code only contains a total of not more than 8 characters.\nEnsure that your module code has the first 3-4 characters as alpha and the remaining characters as digits.\nPlease try again.\n");
+                // }
             }
         }
 
