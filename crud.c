@@ -388,6 +388,7 @@ void update(struct node *head, char *data)
 
             while (1)
             {
+                // ask user to enter the new module code
                 printf("Please enter the new module code you want to change to: ");
                 fgets(newkey, sizeof(newkey), stdin);
                 newkey[strlen(newkey) - 1] = '\0'; // get rid of the \n character at the end of the string
@@ -417,6 +418,8 @@ void update(struct node *head, char *data)
         else if (atoi(choice) == 2)
         {
             char newname[55];
+
+            // ask user to enter the new module name
             printf("Please enter the new module name you want to change to: ");
 
             fgets(newname, sizeof(newname), stdin);
@@ -442,6 +445,7 @@ void update(struct node *head, char *data)
 
             do
             {
+                // ask user to enter the new module credit
                 printf("Please enter the new module credit you want to change to: ");
 
                 fgets(newcredit, sizeof(newcredit), stdin);
@@ -477,6 +481,7 @@ void update(struct node *head, char *data)
 
     else
     {
+        // exit to main menu if there are no records found
         printf("\nThere is no record with %s=%s found in the database.\n", PRINTKEY, key);
         return;
     }
