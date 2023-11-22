@@ -7,6 +7,8 @@
 #define PRINTNAME "Module Name"
 #define PRINTCREDIT "Module Credit"
 
+#define INITIAL_CAPACITY 5
+
 struct Module
 {
     char key[20];  // module code

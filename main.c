@@ -7,7 +7,6 @@
 #include <dirent.h>
 #include <conio.h>
 
-#define INITIAL_CAPACITY 5
 
 
 
