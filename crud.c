@@ -137,7 +137,6 @@ struct node *insert(struct node *head, char *data)
         {
             strcpy(newModule.name, "NA");
         }
-
         //! credits part
         bool valid = false;
         while (1)

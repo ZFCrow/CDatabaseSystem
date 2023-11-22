@@ -38,7 +38,7 @@ bool checkCode(char key[])
     // if more than 8 or empty return false
     if (numofchar > 8 | numofchar == 0)
     {
-        printf("DETECTED: more than 8 characters or empty\n");
+        printf("ERROR: more than 8 characters or empty\n");
         return false;
     }
     // if contains space return false
