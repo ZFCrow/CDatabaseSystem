@@ -3,7 +3,7 @@
 # Overview 
 This C-based database system employs a linked list to store information about academic modules. It features a modular design, utilizing a node struct that contains a module struct. The module struct holds essential details such as module code, module name, and module credits. The program utilizes bubble sort for sorting and supports all four CRUD (Create, Read, Update, Delete) operations.
 
-#Features
+# Features
 Linked List Structure: Utilizes a linked list for efficient data organization.
 
 Modular Design: The program is modularized, breaking down functionality into well-defined modules for better maintainability.
