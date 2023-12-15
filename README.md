@@ -3,6 +3,8 @@
 # Overview 
 This C-based database system employs a linked list to store information about academic modules. It features a modular design, utilizing a node struct that contains a module struct. The module struct holds essential details such as module code, module name, and module credits. The program utilizes bubble sort for sorting and supports all four CRUD (Create, Read, Update, Delete) operations.
 
+Additionally, the system uses the dirent library to read the directory and identify available text files for use as the database.
+
 # Features
 Linked List Structure: Utilizes a linked list for efficient data organization.
 
@@ -16,6 +18,8 @@ Create: Add new modules with module code, module name, and module credits.
 Read: View the list of stored modules.
 Update: Modify information about a specific module.
 Delete: Remove a module from the database.
+
+Directory Listing: Utilizes the dirent library to read the directory and identify available text files for use as the database.
 
 
 # Getting Started
